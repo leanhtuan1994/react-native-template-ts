@@ -1,0 +1,6 @@
+{
+  "extends": "react-native-wcandillon",
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off"
+  }
+}
