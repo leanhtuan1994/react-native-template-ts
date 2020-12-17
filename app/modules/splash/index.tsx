@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {View, StyleSheet, Text} from "react-native";
 import {useTranslation} from "react-i18next";
-import RNSplashScreen from "react-native-splash-screen";
+import {registerScreen, ScreenComponent} from "navigation/utils";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,12 +11,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const SplashScreen = () => {
-  const {t} = useTranslation();
+const Name = "Splash";
 
-  useEffect(() => {
-    RNSplashScreen.hide();
-  }, []);
+export type SplashParam = {
+  [Name]: {};
+};
+
+const Splash: ScreenComponent<SplashParam, "Splash"> = ({}) => {
+  const {t} = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -25,4 +27,4 @@ const SplashScreen = () => {
   );
 };
 
-export default SplashScreen;
+export default registerScreen<SplashParam, "Splash">(Name, Splash);

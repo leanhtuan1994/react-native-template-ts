@@ -10,6 +10,7 @@
           "images": "./assets/images",
           "navigation": "./app/navigation",
           "navigation/*": "./app/navigation/*",
+          "modules": "./app/modules",
           "modules/*": "./app/modules/*",
           "splash": "./app/modules/splash",
           "utils": "./app/utils",
