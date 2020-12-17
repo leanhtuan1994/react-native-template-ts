@@ -22,4 +22,4 @@ const TouchableComponent = Platform.select({
   default: TouchableOpacity,
 });
 
-export {TouchableNativeComponent, TouchableComponent};
+export { TouchableNativeComponent, TouchableComponent };

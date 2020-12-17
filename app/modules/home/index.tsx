@@ -1,7 +1,7 @@
 import React from "react";
-import {View, StyleSheet} from "react-native";
-import {registerScreen, ScreenComponent} from "navigation/utils";
-import {Colors} from "styles";
+import { View, StyleSheet } from "react-native";
+import { registerScreen, ScreenComponent } from "navigation/utils";
+import { Colors } from "styles";
 
 const styles = StyleSheet.create({
   container: {

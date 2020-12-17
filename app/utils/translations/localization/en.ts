@@ -1,4 +1,4 @@
-import {en as common} from "languages";
+import { en as common } from "languages";
 
 const en = {
   common,

@@ -1,11 +1,11 @@
 import React from "react";
-import {StatusBar} from "react-native";
-import {enableScreens} from "react-native-screens";
+import { StatusBar } from "react-native";
+import { enableScreens } from "react-native-screens";
 import RNSplashScreen from "react-native-splash-screen";
-import {SafeAreaProvider} from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppNavigator from "navigation/navigator/AppNavigator";
 import "translations/initi18next";
-import AppTheme, {Colors} from "styles";
+import AppTheme, { Colors } from "styles";
 
 //* required to improvement native screens
 enableScreens();

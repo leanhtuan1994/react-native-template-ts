@@ -1,10 +1,10 @@
 import React from "react";
-import {ViewStyle, Platform, TextStyle, ImageStyle} from "react-native";
-import {Theme, ThemeProvider} from "react-native-elements";
+import { ViewStyle, Platform, TextStyle, ImageStyle } from "react-native";
+import { Theme, ThemeProvider } from "react-native-elements";
 
-import {Colors} from "../colors";
-import {AndroidFontFamily, FontSize, FontWeight, FontFamily} from "../fonts";
-import {TouchableComponent} from "../components";
+import { Colors } from "../colors";
+import { AndroidFontFamily, FontSize, FontWeight, FontFamily } from "../fonts";
+import { TouchableComponent } from "../components";
 
 const LayoutPadding = {
   horizontal: 24,
@@ -100,7 +100,7 @@ const theme: Theme = {
     allowFontScaling: true,
   },
   Header: {
-    style: {borderBottomWidth: 0},
+    style: { borderBottomWidth: 0 },
     containerStyle: {
       backgroundColor: Colors.White,
       paddingHorizontal: LayoutPadding.horizontal,
@@ -132,8 +132,8 @@ const theme: Theme = {
     subtitleStyle: GlobalStyles.font(),
   },
   Image: {
-    placeholderStyle: {backgroundColor: Colors.White},
-    style: {resizeMode: "cover"},
+    placeholderStyle: { backgroundColor: Colors.White },
+    style: { resizeMode: "cover" },
   },
   Button: {
     TouchableComponent,
@@ -176,8 +176,8 @@ const theme: Theme = {
   },
 };
 
-const AppTheme: React.FC<{}> = ({children}) => (
-  <ThemeProvider {...{theme, children}} />
+const AppTheme: React.FC<{}> = ({ children }) => (
+  <ThemeProvider {...{ theme, children }} />
 );
 
-export {GlobalStyles, AppTheme};
+export { GlobalStyles, AppTheme };

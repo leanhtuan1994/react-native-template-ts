@@ -1,8 +1,8 @@
 import React from "react";
-import {createNativeStackNavigator} from "react-native-screens/native-stack";
-import {Colors} from "styles";
-import Splash, {SplashParam} from "modules/splash";
-import Home, {HomeParam} from "modules/home";
+import { createNativeStackNavigator } from "react-native-screens/native-stack";
+import { Colors } from "styles";
+import Splash, { SplashParam } from "modules/splash";
+import Home, { HomeParam } from "modules/home";
 
 type MainParam = SplashParam & HomeParam;
 
@@ -13,7 +13,7 @@ const MainScreen = () => {
     <MainStack.Navigator
       screenOptions={{
         headerTitle: "",
-        headerStyle: {backgroundColor: Colors.White},
+        headerStyle: { backgroundColor: Colors.White },
         headerShown: false,
       }}>
       <MainStack.Screen {...Splash.screen} />

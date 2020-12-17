@@ -41,7 +41,7 @@ export function registerScreen<
       options,
     },
     present: (navigation: NavigationProp<P>, params?: P[N]) => {
-      navigation.navigate({name, params: params as P[N]});
+      navigation.navigate({ name, params: params as P[N] });
     },
   };
 }

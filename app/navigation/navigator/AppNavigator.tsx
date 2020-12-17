@@ -1,7 +1,7 @@
 import React from "react";
-import {NavigationContainer} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 
-import {navigatorRef} from "../utils";
+import { navigatorRef } from "../utils";
 
 import MainScreen from "./Main";
 

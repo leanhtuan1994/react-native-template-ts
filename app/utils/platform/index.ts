@@ -1,3 +1,3 @@
-import {isAndroid, isIOS} from "./platform";
+import { isAndroid, isIOS } from "./platform";
 
-export {isAndroid, isIOS};
+export { isAndroid, isIOS };

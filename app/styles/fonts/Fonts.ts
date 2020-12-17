@@ -57,4 +57,4 @@ enum FontFamily {
   normal = "iCiel Galano Grotesque",
 }
 
-export {FontSize, FontWeight, AndroidFontFamily, FontFamily};
+export { FontSize, FontWeight, AndroidFontFamily, FontFamily };

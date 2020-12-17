@@ -3,11 +3,11 @@ import i18n, {
   Services,
   InitOptions,
 } from "i18next";
-import {initReactI18next} from "react-i18next";
+import { initReactI18next } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as RNLocalize from "react-native-localize";
 
-import {en, vi} from "./localization";
+import { en, vi } from "./localization";
 
 export const AVAILABLE_LANGUAGES = {
   en,
