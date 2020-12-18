@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
 
 const Name = "Splash";
 
+const options = {
+  stackAnimation: "fade",
+};
+
 export type SplashParam = {
   [Name]: {};
 };
@@ -36,4 +40,4 @@ const Splash: ScreenComponent<SplashParam, "Splash"> = ({}) => {
   );
 };
 
-export default registerScreen<SplashParam, "Splash">(Name, Splash);
+export default registerScreen<SplashParam, "Splash">(Name, Splash, options);

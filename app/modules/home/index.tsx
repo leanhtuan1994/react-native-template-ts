@@ -1,16 +1,14 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { registerScreen, ScreenComponent } from "navigation/utils";
-import { Colors } from "styles";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.White,
-  },
-});
+import CoopHome from "./coop-home";
+import Categories from "./categories";
+import Basket from "./basket";
+import Order from "./order";
+import { TabBarIcon, TabBar } from "./components";
 
-const options = {};
+const Tab = createBottomTabNavigator();
 
 const Name = "Home";
 
@@ -19,7 +17,54 @@ export type HomeParam = {
 };
 
 const Home: ScreenComponent<HomeParam, "Home"> = () => {
-  return <View style={styles.container} />;
+  return (
+    <Tab.Navigator
+      lazy={false}
+      tabBar={(props) => <TabBar {...props} />}
+      tabBarOptions={{ style: { paddingTop: 8 } }}>
+      <Tab.Screen
+        {...CoopHome.screen}
+        options={{
+          tabBarIcon: (props) => (
+            <TabBarIcon {...props} source={require("./assets/IconsHome.png")} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        {...Categories.screen}
+        options={{
+          tabBarIcon: (props) => (
+            <TabBarIcon
+              {...props}
+              source={require("./assets/IconsCategory.png")}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        {...Order.screen}
+        options={{
+          tabBarIcon: (props) => (
+            <TabBarIcon
+              {...props}
+              source={require("./assets/IconsOrder.png")}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        {...Basket.screen}
+        options={{
+          tabBarIcon: (props) => (
+            <TabBarIcon
+              {...props}
+              source={require("./assets/IconsBasket.png")}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 };
 
-export default registerScreen<HomeParam, "Home">("Home", Home, options);
+export default registerScreen<HomeParam, "Home">("Home", Home);
