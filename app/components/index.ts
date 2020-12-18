@@ -1,3 +1,4 @@
 import KeyboardContainer from "./KeyboardContainer";
+import NabBar from "./NavBar";
 
-export { KeyboardContainer };
+export { KeyboardContainer, NabBar };

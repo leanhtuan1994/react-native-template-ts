@@ -26,7 +26,9 @@
       "translations/*": ["app/utils/translations/*"],
       "languages": ["languages"],
       "styles": ["app/styles"],
-      "styles/*": ["app/styles/*"]
+      "styles/*": ["app/styles/*"],
+      "components": ["app/components"],
+      "components/*": ["app/components/*"]
     }
   },
   "exclude": [

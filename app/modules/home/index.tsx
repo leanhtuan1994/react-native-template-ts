@@ -6,7 +6,7 @@ import { Colors } from "styles";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.Purple,
+    backgroundColor: Colors.White,
   },
 });
 

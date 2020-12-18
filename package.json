@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "pod": "cd ios && pod install",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -13,6 +14,7 @@
     "@gorhom/bottom-sheet": "^1.4.1",
     "@react-hook/throttle": "^2.2.0",
     "@react-native-async-storage/async-storage": "^1.13.2",
+    "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/core": "^5.14.4",
