@@ -1,13 +1,20 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { useTranslation } from "react-i18next";
+import { View, StyleSheet } from "react-native";
 import { registerScreen, ScreenComponent } from "navigation/utils";
+import LottieView from "lottie-react-native";
+import { Layout } from "constant";
+
+const ANI_SIZE = Layout.screen.width / 2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  ani: {
+    width: ANI_SIZE,
+    height: ANI_SIZE,
   },
 });
 
@@ -18,11 +25,13 @@ export type SplashParam = {
 };
 
 const Splash: ScreenComponent<SplashParam, "Splash"> = ({}) => {
-  const { t } = useTranslation();
-
   return (
     <View style={styles.container}>
-      <Text>{t("Welcome")}</Text>
+      <LottieView
+        style={styles.ani}
+        autoPlay
+        source={require("assets/animations/splash-animation.json")}
+      />
     </View>
   );
 };
