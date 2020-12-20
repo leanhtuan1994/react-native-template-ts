@@ -50,6 +50,7 @@
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
     "@types/jest": "^25.2.3",
+    "@types/lodash.throttle": "^4.1.6",
     "@types/ramda": "^0.27.33",
     "@types/react-native": "^0.63.2",
     "@types/react-test-renderer": "^16.9.2",

@@ -5,6 +5,10 @@ import {
   ParamListBase,
   RouteProp,
 } from "@react-navigation/core";
+import throttle from "lodash.throttle";
+
+const navigateSafe = (navigate: any, time = 2000) =>
+  throttle(navigate, time, { trailing: false });
 
 export const navigatorRef = React.createRef<NavigationContainerRef>();
 
@@ -41,7 +45,7 @@ export function registerScreen<
       options,
     },
     present: (navigation: NavigationProp<P>, params?: P[N]) => {
-      navigation.navigate({ name, params: params as P[N] });
+      navigateSafe(navigation.navigate({ name, params: params as P[N] }));
     },
   };
 }
