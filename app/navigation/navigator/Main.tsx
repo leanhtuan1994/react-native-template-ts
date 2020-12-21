@@ -11,9 +11,11 @@ const MainScreen = () => {
 
   React.useEffect(() => {
     //* async init module here
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
