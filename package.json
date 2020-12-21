@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "clear": "cd android && ./gradlew clean",
     "pod": "cd ios && pod install",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
@@ -31,6 +32,7 @@
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "react": "16.13.1",
+    "react-dom": "^17.0.1",
     "react-hook-form": "^6.13.0",
     "react-i18next": "^11.8.4",
     "react-native": "0.63.3",
@@ -50,6 +52,8 @@
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
+    "@types/enzyme": "^3.10.8",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.2.3",
     "@types/lodash.throttle": "^4.1.6",
     "@types/ramda": "^0.27.33",
@@ -59,6 +63,9 @@
     "@typescript-eslint/parser": "^2.27.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
     "eslint": "^6.5.1",
     "eslint-config-react-native-wcandillon": "^3.3.4",
     "jest": "^25.1.0",
@@ -76,6 +83,12 @@
       "jsx",
       "json",
       "node"
+    ],
+    "setupFiles": [
+      "./jest/setup.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ]
   }
 }
