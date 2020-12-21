@@ -11,7 +11,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^1.4.1",
+    "@gorhom/bottom-sheet": "^2.0.0",
     "@react-hook/throttle": "^2.2.0",
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/hooks": "^2.6.0",
@@ -37,6 +37,7 @@
     "react-native-device-info": "^7.3.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "^1.9.0",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-localize": "^2.0.1",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
