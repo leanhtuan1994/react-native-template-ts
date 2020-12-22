@@ -29,7 +29,8 @@
       "styles/*": ["app/styles/*"],
       "components": ["app/components"],
       "components/*": ["app/components/*"],
-      "constant": ["app/constant"]
+      "constant": ["app/constant"],
+      "context/*": ["app/context/*"]
     }
   },
   "exclude": [

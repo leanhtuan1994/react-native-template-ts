@@ -20,7 +20,8 @@
           "styles": "./app/styles",
           "styles/*": "./app/styles/*",
           "components": "./app/components",
-          "constant": "./app/constant"
+          "constant": "./app/constant",
+          "context": "./app/context"
         }
       }
     ]
