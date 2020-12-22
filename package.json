@@ -23,6 +23,7 @@
     "@react-navigation/stack": "^5.12.8",
     "date-fns": "^2.16.1",
     "date-fns-tz": "^1.0.12",
+    "events": "^3.2.0",
     "i18n-js": "^3.8.0",
     "i18next": "^19.8.4",
     "intl": "^1.2.5",

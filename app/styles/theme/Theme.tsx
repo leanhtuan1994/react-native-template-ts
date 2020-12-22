@@ -6,7 +6,7 @@ import { Colors } from "../colors";
 import { AndroidFontFamily, FontSize, FontWeight, FontFamily } from "../fonts";
 import { TouchableComponent } from "../components";
 
-const LayoutPadding = {
+export const LayoutPadding = {
   horizontal: 24,
   scrollViewRemainRight: 15,
   androidBottom: 16,
