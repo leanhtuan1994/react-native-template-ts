@@ -30,13 +30,15 @@ export type SplashParam = {
 
 const Splash: ScreenComponent<SplashParam, "Splash"> = ({}) => {
   return (
-    <View style={styles.container}>
-      <LottieView
-        style={styles.ani}
-        autoPlay
-        source={require("assets/animations/splash-animation.json")}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <LottieView
+          style={styles.ani}
+          autoPlay
+          source={require("assets/animations/splash-animation.json")}
+        />
+      </View>
+    </>
   );
 };
 
