@@ -6,9 +6,25 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppNavigator from "navigation/navigator/AppNavigator";
 import "translations/initi18next";
 import AppTheme, { Colors } from "styles";
+import * as Sentry from "@sentry/react-native";
+import {
+  getBuildNumber,
+  getBundleId,
+  getVersion,
+} from "react-native-device-info";
+import Config from "react-native-config";
 
 //* required to improvement native screens
 enableScreens();
+
+//* Init Sentry
+if (!__DEV__) {
+  Sentry.init({
+    dsn: Config.DNS,
+    release: `${getBundleId()}:${getVersion()}:${getBuildNumber()}`,
+    dist: getBuildNumber(),
+  });
+}
 
 //* check init intl
 if (!global.Intl) {
