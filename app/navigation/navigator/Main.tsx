@@ -1,23 +1,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "react-native-screens/native-stack";
 import { Colors } from "styles";
-import Home from "screens/home";
 import Splash from "screens/splash";
 
 const MainStack = createNativeStackNavigator();
 
 const MainScreen = () => {
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    //* async init module here
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <MainStack.Navigator
       screenOptions={{
@@ -25,8 +13,7 @@ const MainScreen = () => {
         headerStyle: { backgroundColor: Colors.White },
         headerShown: false,
       }}>
-      {loading && <MainStack.Screen {...Splash.screen} />}
-      <MainStack.Screen {...Home.screen} />
+      <MainStack.Screen {...Splash.screen} />
     </MainStack.Navigator>
   );
 };
