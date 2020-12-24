@@ -1,3 +1,3 @@
-import { AppTheme, GlobalStyles } from "./Theme";
+import { AppTheme, GlobalStyles, LayoutPadding } from "./Theme";
 
-export { AppTheme, GlobalStyles };
+export { AppTheme, GlobalStyles, LayoutPadding };
