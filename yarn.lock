@@ -7199,6 +7199,15 @@ react-native-redash@^14.2.4:
     normalize-svg-path "^1.0.1"
     parse-svg-path "^0.1.2"
 
+react-native-redash@^16.0.4:
+  version "16.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.0.4.tgz#d3bef676a91b21f22b8d663925231272aa3d1125"
+  integrity sha512-Pz+Tj09Esn5A6ESlUP+Mtc/U2UnAhZEUt7FUrPlkz7SHHsnnCb+9T3tOeWlXimuJrFc7uYnqFfHG9iVUlD/aDg==
+  dependencies:
+    abs-svg-path "^0.1.1"
+    normalize-svg-path "^1.0.1"
+    parse-svg-path "^0.1.2"
+
 react-native-safe-area-context@^3.1.9:
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.1.9.tgz#48864ea976b0fa57142a2cc523e1fd3314e7247e"
