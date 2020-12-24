@@ -4,7 +4,32 @@
 
 <br />
 
-## Navigation
+## 📦 Getting started
+
+Installing Dependencies:
+
+```bash
+$ yarn install
+$ yarn pod
+```
+
+Running the app:
+
+```bash
+$ yarn start
+```
+
+For starting the app on a specific OS:
+
+```bash
+$ yarn ios | yarn android
+```
+
+<br />
+
+## 👩🏾‍💻 Development
+
+### Navigation
 
 - https://reactnavigation.org/
 
@@ -14,23 +39,23 @@
 
 <br/>
 
-## State Management using Context API & Hooks
+### State Management using Context API & Hooks
 
-## SVG
+### SVG
 
 - https://github.com/react-native-community/react-native-svg
 - https://github.com/kristerkari/react-native-svg-transformer
 
-## i18n & l10n
+### i18n & l10n
 
-### Setup:
+#### Setup:
 
 - https://react.i18next.com/
 - https://www.i18next.com/
 - https://github.com/zoontek/react-native-localize
 - https://github.com/react-native-async-storage/async-storage
 
-### How to use:
+#### How to use:
 
 - Follow setup languages at `./app/utils/translations`
 - Using `./languages` by common localize, using anywhere in the project
@@ -50,22 +75,22 @@ export function MyComponent() {
 }
 ```
 
-## Animated
+### Animated
 
 - https://github.com/wcandillon/react-native-redash
 - https://github.com/software-mansion/react-native-reanimated
 
-## BottomSheet
+### BottomSheet
 
 - A performant interactive bottom sheet with fully configurable options: [Gorhom React Native Bottom Sheet](https://gorhom.github.io/react-native-bottom-sheet/)
 
-## UI Kit
+### UI Kit
 
 - [React Native Elements](https://reactnativeelements.com/docs)
 - [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
 - Please check custom theme at here: `./app/styles/theme`
 
-## Unit test
+### Unit test
 
 - Write your own test suit by create a js file in `__test__` folder
 - Test suit must have postfix `.test.test`
@@ -76,11 +101,11 @@ export function MyComponent() {
   - https://jestjs.io/docs/en/getting-started
   - https://enzymejs.github.io/enzyme/docs/guides/react-native.html
 
-## Firebase
+### Firebase
 
 If you wanna use firebase in this project, please check branch `features/firebase` with fully setup firebase & notification.
 
-## Visual Studio Extensions Recommendation
+### Visual Studio Extensions Recommendation
 
 - Auto Close Tag
 - Bracket Pair Colorizer
