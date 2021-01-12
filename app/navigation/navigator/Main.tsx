@@ -1,8 +1,9 @@
 import React from "react";
 import { createNativeStackNavigator } from "react-native-screens/native-stack";
 import { Colors } from "styles";
-import Home from "screens/home";
 import Splash from "screens/splash";
+import Finger from "screens/finger";
+import Home from "screens/home";
 
 const MainStack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const MainScreen = () => {
         headerShown: false,
       }}>
       {loading && <MainStack.Screen {...Splash.screen} />}
+      <MainStack.Screen {...Finger.screen} />
       <MainStack.Screen {...Home.screen} />
     </MainStack.Navigator>
   );

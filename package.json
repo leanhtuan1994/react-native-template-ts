@@ -43,6 +43,7 @@
     "react-native-config": "^1.4.1",
     "react-native-device-info": "^7.3.1",
     "react-native-elements": "^3.0.1",
+    "react-native-fingerprint-scanner": "^6.0.0",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-localize": "^2.0.1",
