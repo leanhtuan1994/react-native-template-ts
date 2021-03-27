@@ -320,8 +320,35 @@ PODS:
     - React-Core
   - RNLocalize (2.0.1):
     - React-Core
-  - RNReanimated (1.13.2):
+  - RNReanimated (2.0.1):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - Folly
+    - glog
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
     - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - React-RCTVibration
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (2.16.1):
     - React-Core
   - RNSentry (2.1.0):
@@ -553,7 +580,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 6ecb1d1c87d20e4c62354be0348de23362824dcd
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNReanimated: c5e9d841d33ed7f83861462756cec7146e73afaa
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNSentry: 51972e3fe50e2fb38ae459af8c87d61f63f364db
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
@@ -564,4 +591,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c78670da36736caf9c59d93e7b8242401a7ff8ff
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1

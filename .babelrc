@@ -24,7 +24,8 @@
           "context": "./app/context"
         }
       }
-    ]
+    ],
+    ["react-native-reanimated/plugin"]
   ],
   "env": {
     "production": {
