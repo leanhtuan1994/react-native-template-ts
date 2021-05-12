@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar navbar match to snapshoot 1`] = `
+<ForwardRef(Themed.Header)
+  containerStyle={Object {}}
+  leftComponent={
+    Object {
+      "hitSlop": Object {
+        "bottom": 6,
+        "left": 6,
+        "right": 6,
+        "top": 6,
+      },
+      "icon": "arrow-left",
+      "onPress": [Function],
+      "size": 24,
+      "type": "feather",
+    }
+  }
+  statusBarProps={
+    Object {
+      "backgroundColor": "#FFFFFF",
+      "barStyle": "dark-content",
+      "networkActivityIndicatorVisible": true,
+      "translucent": true,
+    }
+  }
+/>
+`;
