@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["bootsplash"]
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "eslint.packageManager": "yarn",
+  "cSpell.words": ["bootsplash", "bandcamp", "Entypo", "gorhom", "gradlew"]
 }

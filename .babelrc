@@ -6,11 +6,11 @@
       {
         "root": ["."],
         "alias": {
+          "app" : "./app",
           "assets/*": "./assets/*",
           "images": "./assets/images",
           "navigation": "./app/navigation",
           "screens": "./app/screens",
-          "splash": "./app/modules/splash",
           "utils": "./app/utils",
           "translations": "./app/utils/translations",
           "languages": "./languages",

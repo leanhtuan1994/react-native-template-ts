@@ -21,8 +21,7 @@ const languageDetector: LanguageDetectorAsyncModule = {
   async: true,
   init: (
     _services: Services,
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    _detectorOptions: object,
+    _detectorOptions: Record<string, unknown>,
     _i18nextOptions: InitOptions,
   ) => {
     // use services of options
