@@ -73,7 +73,7 @@ const NavBar: React.FC<HeaderProps & Props> = ({
           ? (title && { text: title, style: titleStyle }) || undefined
           : {
               type: 'feather',
-              icon: type === 'stack' ? 'arrow-left' : 'x',
+              icon: type === 'stack' ? 'chevron-left' : 'x',
               onPress: () => {
                 if (navigation.canGoBack()) {
                   if (backToTop) {

@@ -22,6 +22,7 @@ const Colors = {
   PlaceholderImg: '#ACCFC0',
   BlueSky: '#54BDDB',
   TextPrimary: '#202731',
+  Yellow: '#FFC12E',
 };
 
 export default Colors;

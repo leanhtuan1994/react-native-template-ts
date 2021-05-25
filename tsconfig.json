@@ -18,6 +18,7 @@
       "navigation/*": ["app/navigation/*"],
       "screens/*": ["app/screens/*"],
       "utils/*": ["app/utils/*"],
+      "utils": ["app/utils"],
       "translations/*": ["app/utils/translations/*"],
       "languages/*": ["languages/*"],
       "styles": ["app/styles"],

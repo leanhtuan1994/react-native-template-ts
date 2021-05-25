@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -55,6 +55,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>iCielGalanoGrotesque-Bold.otf</string>
+		<string>iCielGalanoGrotesque-Medium.otf</string>
+		<string>iCielGalanoGrotesque-Regular.otf</string>
+		<string>iCielGalanoGrotesque-SemiBold.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>

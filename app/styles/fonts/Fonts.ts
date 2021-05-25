@@ -19,6 +19,14 @@ enum FontWeight {
   Light = '300',
 }
 
+export function getSuperScriptFontSize(fontSize: number) {
+  return Math.floor(fontSize * 0.6);
+}
+
+export function getSuperScriptLineHeight(fontSize: number) {
+  return fontSize * 1.1;
+}
+
 const AndroidFontFamily: {
   [key in FontWeight]?: {
     fontFamily?: string;

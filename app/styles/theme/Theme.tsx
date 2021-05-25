@@ -96,6 +96,9 @@ const GlobalStyles = {
 
     elevation: 3,
   },
+  flexOne: {
+    flex: 1,
+  },
 };
 
 type Theme = Partial<FullTheme>;
@@ -109,10 +112,13 @@ const theme: Theme = {
     style: { borderBottomWidth: 0 },
     containerStyle: {
       backgroundColor: Colors.White,
-      paddingHorizontal: LayoutPadding.horizontal,
+      paddingHorizontal: 16,
       borderBottomWidth: 0,
     },
     placement: 'left',
+    leftContainerStyle: {
+      alignSelf: 'center',
+    },
   },
   Icon: {
     type: 'feather',
