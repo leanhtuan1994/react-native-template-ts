@@ -10,7 +10,14 @@ export type ChartsParam = {
 };
 
 const Charts: ScreenComponent<ChartsParam, 'Charts'> = () => {
-  return <View style={GlobalStyles.container()} />;
+  return (
+    <View
+      style={GlobalStyles.container({
+        justifyContent: 'center',
+        alignItems: 'center',
+      })}
+    />
+  );
 };
 
 export default registerScreen<ChartsParam, 'Charts'>('Charts', Charts);
