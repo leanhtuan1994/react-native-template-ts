@@ -5,12 +5,6 @@ import AppNavigator from 'navigation/navigator/AppNavigator';
 import 'translations/initi18next';
 import AppTheme, { Colors } from 'styles';
 
-//* check init intl
-if (!global.Intl) {
-  require('intl');
-  require('intl/locale-data/jsonp/vi-VN.js');
-}
-
 const App = () => {
   return (
     <SafeAreaProvider>
