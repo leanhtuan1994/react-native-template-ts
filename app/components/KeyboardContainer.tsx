@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  KeyboardAvoidingView,
-  KeyboardAvoidingViewProps,
-  StyleSheet,
-} from 'react-native';
+import type { KeyboardAvoidingViewProps } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isIOS13, isIOS } from 'utils/platform';
 

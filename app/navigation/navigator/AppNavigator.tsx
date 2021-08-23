@@ -3,8 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from 'context/AuthContext';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { navigatorRef } from '../utils';
-
 import MainScreen from './Main';
 
 const App = () => {
@@ -13,7 +11,7 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer ref={navigatorRef} onReady={hideSplash}>
+    <NavigationContainer onReady={hideSplash}>
       <AuthProvider>
         <MainScreen />
       </AuthProvider>

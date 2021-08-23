@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Header, HeaderProps } from 'react-native-elements';
+import type { HeaderProps } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import { Colors, FontSize, FontWeight, GlobalStyles } from 'styles';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { useBackHandler } from '@react-native-community/hooks';

@@ -1,4 +1,4 @@
-import { isAndroid, isIOS, isIOS13, notch } from './platform';
+import { isAndroid, isIOS } from './platform';
 import * as ScreenHelper from './helper';
 
-export { isAndroid, isIOS, ScreenHelper, isIOS13, notch };
+export { isAndroid, isIOS, ScreenHelper };
