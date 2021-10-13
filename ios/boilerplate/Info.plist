@@ -55,10 +55,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>iCielGalanoGrotesque-Bold.otf</string>
-		<string>iCielGalanoGrotesque-Medium.otf</string>
-		<string>iCielGalanoGrotesque-Regular.otf</string>
-		<string>iCielGalanoGrotesque-SemiBold.otf</string>
+		<string>GoogleSans-Bold.ttf</string>
+		<string>GoogleSans-Light.ttf</string>
+		<string>GoogleSans-Medium.ttf</string>
+		<string>GoogleSans-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>

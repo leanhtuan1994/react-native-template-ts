@@ -45,24 +45,21 @@ const AndroidFontFamily: {
   };
 } = {
   [FontWeight.Light]: {
-    fontFamily: 'iCielGalanoGrotesque-Light',
+    fontFamily: 'GoogleSans-Light',
   },
   [FontWeight.Regular]: {
-    fontFamily: 'iCielGalanoGrotesque-Regular',
+    fontFamily: 'GoogleSans-Regular',
   },
   [FontWeight.Medium]: {
-    fontFamily: 'iCielGalanoGrotesque-Medium',
-  },
-  [FontWeight.SemiBold]: {
-    fontFamily: 'iCielGalanoGrotesque-SemiBold',
+    fontFamily: 'GoogleSans-Medium',
   },
   [FontWeight.Bold]: {
-    fontFamily: 'iCielGalanoGrotesque-Bold',
+    fontFamily: 'GoogleSans-Bold',
   },
 };
 
 enum FontFamily {
-  normal = 'iCiel Galano Grotesque',
+  normal = 'GoogleSans-Regular',
 }
 
 export { FontSize, FontWeight, AndroidFontFamily, FontFamily };
