@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthProvider } from 'context/AuthContext';
+import { AuthProvider } from '@context/AuthContext';
 import RNBootSplash from 'react-native-bootsplash';
 
 import MainScreen from './Main';

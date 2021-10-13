@@ -14,18 +14,19 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "app/*": ["app/*"],
-      "images": ["assets/images"],
-      "navigation/*": ["app/navigation/*"],
-      "screens/*": ["app/screens/*"],
-      "utils/*": ["app/utils/*"],
-      "utils": ["app/utils"],
-      "translations/*": ["app/utils/translations/*"],
-      "languages/*": ["languages/*"],
-      "styles": ["app/styles"],
-      "components/*": ["app/components/*"],
-      "constant/*": ["app/constant/*"],
-      "context/*": ["app/context/*"]
+      "@app/*": ["app/*"],
+      "@images": ["assets/images"],
+      "@navigation/*": ["app/navigation/*"],
+      "@screens/*": ["app/screens/*"],
+      "@utils/*": ["app/utils/*"],
+      "@utils": ["app/utils"],
+      "@translations/*": ["app/utils/translations/*"],
+      "@languages/*": ["languages/*"],
+      "@languages": ["languages"],
+      "@styles": ["app/styles"],
+      "@components/*": ["app/components/*"],
+      "@constant/*": ["app/constant/*"],
+      "@context/*": ["app/context/*"]
     }
   },
   "exclude": [
