@@ -1,8 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import Home from 'screens/home';
+import type { HomeScreenParam } from '@screens/home';
+import Home from '@screens/home';
 
-const MainStack = createNativeStackNavigator();
+type MainParam = HomeScreenParam;
+
+const MainStack = createNativeStackNavigator<MainParam>();
 
 const MainScreen = () => {
   return (
@@ -10,7 +13,7 @@ const MainScreen = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <MainStack.Screen component={Home} name="Home" />
+      <MainStack.Screen {...Home.screen} />
     </MainStack.Navigator>
   );
 };

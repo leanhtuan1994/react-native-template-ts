@@ -1,4 +1,4 @@
-import { vi as common } from 'languages';
+import { vi as common } from '@languages';
 
 const vi = {
   common,

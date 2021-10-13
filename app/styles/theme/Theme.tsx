@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  ViewStyle,
-  Platform,
-  TextStyle,
-  ImageStyle,
-  TouchableOpacity as TouchableComponent,
-} from 'react-native';
-import { ThemeProvider, FullTheme } from 'react-native-elements';
+import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { Platform, TouchableOpacity as TouchableComponent } from 'react-native';
+import type { FullTheme } from 'react-native-elements';
+import { ThemeProvider } from 'react-native-elements';
 
 import { Colors } from '../colors';
 import { AndroidFontFamily, FontSize, FontWeight, FontFamily } from '../fonts';

@@ -6,5 +6,12 @@
     "source.organizeImports": false
   },
   "eslint.packageManager": "yarn",
-  "cSpell.words": ["bootsplash", "bandcamp", "Entypo", "gorhom", "gradlew"]
+  "cSpell.words": [
+    "bootsplash",
+    "bandcamp",
+    "Entypo",
+    "gorhom",
+    "gradlew",
+    "initi18next"
+  ]
 }

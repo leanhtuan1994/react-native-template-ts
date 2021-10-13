@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthProvider } from 'context/AuthContext';
+import { AuthProvider } from '@context/AuthContext';
 import RNBootSplash from 'react-native-bootsplash';
+import { navigateRef } from '@navigation/utils';
 
 import MainScreen from './Main';
 
 const App = () => {
-  const hideSplash = React.useCallback(() => {
+  const hideSplash = useCallback(() => {
     RNBootSplash.hide({ fade: true });
   }, []);
 
   return (
-    <NavigationContainer onReady={hideSplash}>
+    <NavigationContainer ref={navigateRef} onReady={hideSplash}>
       <AuthProvider>
         <MainScreen />
       </AuthProvider>

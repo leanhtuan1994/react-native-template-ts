@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`NotificationContainer notification match to snapshoot 1`] = `
-<NotificationItem
-  onRemove={[Function]}
-/>
-`;
