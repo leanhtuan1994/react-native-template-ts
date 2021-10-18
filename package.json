@@ -3,13 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "postinstall": "husky install",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "clear": "cd android && ./gradlew clean",
     "pod": "cd ios && pod install",
-    "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "test": "jest -u",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx ./app",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx ./app --fix",
+    "ci": "yarn lint && yarn test"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.2",
@@ -55,6 +58,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^7.14.0",
     "eslint-config-react-native-wcandillon": "^3.6.3",
+    "husky": "^7.0.2",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.0",
     "react-native-codegen": "^0.0.7",
@@ -66,14 +70,18 @@
     "@types/react": "^17"
   },
   "jest": {
+    "setupFiles": [
+      "<rootDir>/testSetup.js"
+    ],
     "preset": "react-native",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
-      "jsx",
-      "json",
-      "node"
+      "jsx"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|react-native-elements|react-native-size-matters|react-native-ratings|react-native-vector-icons)/)"
     ]
   }
 }

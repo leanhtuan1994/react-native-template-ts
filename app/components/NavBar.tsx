@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import type { HeaderProps } from 'react-native-elements';
 import { Header } from 'react-native-elements';
 import { Colors, FontSize, FontWeight, GlobalStyles } from '@styles';
@@ -29,8 +28,6 @@ const NavBar: React.FC<HeaderProps & Props> = ({
 }) => {
   const navigation = useNavigation();
 
-  const isSpecialHeader = false;
-
   const popToTop = () => {
     navigation.dispatch(StackActions.popToTop());
   };
@@ -49,25 +46,13 @@ const NavBar: React.FC<HeaderProps & Props> = ({
 
   return (
     <Header
-      statusBarProps={
-        isSpecialHeader
-          ? { barStyle: 'light-content' }
-          : {
-              barStyle: 'dark-content',
-              translucent: true,
-              backgroundColor: Colors.White,
-              networkActivityIndicatorVisible: true,
-            }
-      }
-      containerStyle={StyleSheet.flatten([
-        isSpecialHeader
-          ? {
-              paddingTop: 0,
-              height: 64,
-            }
-          : {},
-        containerStyle,
-      ])}
+      statusBarProps={{
+        barStyle: 'dark-content',
+        translucent: true,
+        backgroundColor: Colors.White,
+        networkActivityIndicatorVisible: true,
+      }}
+      containerStyle={containerStyle}
       leftComponent={
         type === 'none'
           ? (title && { text: title, style: titleStyle }) || undefined

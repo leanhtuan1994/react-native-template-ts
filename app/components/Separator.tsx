@@ -1,7 +1,7 @@
-import { Colors } from 'app/styles';
 import React from 'react';
 import type { ViewProps } from 'react-native';
 import { View } from 'react-native';
+import { Colors } from '@app/styles';
 
 type Props = {
   size?: number;
