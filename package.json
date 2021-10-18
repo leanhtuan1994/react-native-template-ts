@@ -8,10 +8,10 @@
     "start": "react-native start",
     "clear": "cd android && ./gradlew clean",
     "pod": "cd ios && pod install",
-    "test": "jest",
+    "test": "jest -u",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx ./app",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx ./app --fix",
-    "ci": "yarn lint"
+    "ci": "yarn lint && yarn test"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.2",
@@ -74,14 +74,18 @@
     }
   },
   "jest": {
+    "setupFiles": [
+      "<rootDir>/testSetup.js"
+    ],
     "preset": "react-native",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
-      "jsx",
-      "json",
-      "node"
+      "jsx"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|react-native-elements|react-native-size-matters|react-native-ratings|react-native-vector-icons)/)"
     ]
   }
 }

@@ -1,3 +1,8 @@
+import React from 'react';
+import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import type { TextProps } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import {
   GlobalStyles,
   Colors,
@@ -5,12 +10,7 @@ import {
   getSuperScriptFontSize,
   getSuperScriptLineHeight,
   FontSize,
-} from 'app/styles';
-import React from 'react';
-import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { StyleSheet, View } from 'react-native';
-import type { TextProps } from 'react-native-elements';
-import { Text } from 'react-native-elements';
+} from '@app/styles';
 
 type Props = {
   superscriptText?: string;
