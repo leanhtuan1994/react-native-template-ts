@@ -68,11 +68,6 @@
   "resolutions": {
     "@types/react": "^17"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn ci"
-    }
-  },
   "jest": {
     "setupFiles": [
       "<rootDir>/testSetup.js"
