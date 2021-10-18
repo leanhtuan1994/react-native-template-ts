@@ -1,8 +1,0 @@
-{
-  "extends": "react-native-wcandillon",
-  "rules": {
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "quotes": [2, "single", { "avoidEscape": true }]
-  }
-}
