@@ -10,6 +10,10 @@ module.exports = {
   projectName: 'react-native-template-ts',
   favicon: 'img/favicon.ico',
   themeConfig: {
+    algolia: {
+      apiKey: 'af8f656eb644c1e24a01c55770184613',
+      indexName: 'react-native-template',
+    },
     image: 'img/icon.png',
     navbar: {
       title: 'React Native Template TS',
