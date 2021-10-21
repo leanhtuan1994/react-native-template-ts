@@ -339,7 +339,7 @@ PODS:
     - React-perflogger (= 0.65.1)
   - RNBootSplash (3.2.4):
     - React-Core
-  - RNCAsyncStorage (1.15.6):
+  - RNCAsyncStorage (1.15.9):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -599,7 +599,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 85187f19dd9c47a7c102f9994f9d14e4dc2110de
   ReactCommon: eafed38eec7b591c31751bfa7494801618460459
   RNBootSplash: 4844706cbb56a3270556c9b94e59dedadccd47e4
-  RNCAsyncStorage: b7c6564ce662366dd44d0189456183ef7eda2d4d
+  RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: 8a06046616c6b5c03787b04f265fa3b52b37c80b
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211

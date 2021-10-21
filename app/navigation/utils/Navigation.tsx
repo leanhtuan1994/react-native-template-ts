@@ -14,7 +14,7 @@ export type ScreenComponent<
   N extends keyof P = string,
 > = React.ComponentType<{
   route: RouteProp<P, N>;
-  navigation: NavigationProp<P>;
+  navigation: NavigationProp<any>;
 }>;
 
 type ScreenType<
