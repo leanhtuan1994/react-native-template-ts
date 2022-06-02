@@ -57,6 +57,7 @@ i18n
   .use(languageDetector)
   .use(initReactI18next)
   .init({
+    compatibilityJSON: 'v3',
     resources: AVAILABLE_LANGUAGES,
     react: {
       useSuspense: false,

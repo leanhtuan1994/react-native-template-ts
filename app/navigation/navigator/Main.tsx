@@ -1,9 +1,9 @@
 import React from 'react';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { HomeScreenParam } from '@screens/home';
 import Home from '@screens/home';
 
-type MainParam = HomeScreenParam;
+export type MainParam = HomeScreenParam;
 
 const MainStack = createNativeStackNavigator<MainParam>();
 

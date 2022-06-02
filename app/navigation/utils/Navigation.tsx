@@ -7,7 +7,12 @@ import type {
   RouteProp,
 } from '@react-navigation/core';
 
-export const navigateRef = createRef<NavigationContainerRef>();
+import type { MainParam } from '../navigator/Main';
+
+type RootStackParamList = MainParam;
+
+export const navigateRef =
+  createRef<NavigationContainerRef<RootStackParamList>>();
 
 export type ScreenComponent<
   P extends ParamListBase = ParamListBase,

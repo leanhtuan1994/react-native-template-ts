@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from '@context/AuthContext';
 import RNBootSplash from 'react-native-bootsplash';
-import { navigateRef } from '@navigation/utils';
+
+import { navigateRef } from '../utils';
 
 import MainScreen from './Main';
 
