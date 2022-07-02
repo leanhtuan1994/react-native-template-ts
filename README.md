@@ -104,13 +104,3 @@ export function MyComponent() {
 ### Firebase
 
 If you wanna use firebase in this project, please check branch `features/firebase` with fully setup firebase & notification.
-
-### Visual Studio Extensions Recommendation
-
-- Auto Close Tag
-- Bracket Pair Colorizer
-- Code Spell Checker
-- Color Highlight
-- GitLens
-- Svg Preview
-- Version Lens
