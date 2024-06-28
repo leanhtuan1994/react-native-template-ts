@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/SVN-Circular-Bold.ttf",
+      "sha1": "249e0be8297f1f44083cd90264198adfc0868534"
+    },
+    {
+      "path": "assets/fonts/SVN-Circular-Medium.ttf",
+      "sha1": "8b54d2c380f8f614b5394b14f6732ad788d8d3e2"
+    },
+    {
+      "path": "assets/fonts/SVN-Circular-Regular.ttf",
+      "sha1": "b323a89a181cf08597c0ac1b18203b81f026ccd9"
+    }
+  ]
+}
