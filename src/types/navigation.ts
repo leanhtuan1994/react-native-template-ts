@@ -1,13 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export type RootStackParamList = {
+export type AppStackParamList = {
 	Startup: undefined;
 };
 
-export type RootScreenProps<S extends keyof RootStackParamList = keyof RootStackParamList> =
-	NativeStackScreenProps<RootStackParamList, S>;
+export type AppScreenProps<S extends keyof AppStackParamList = keyof AppStackParamList> =
+	NativeStackScreenProps<AppStackParamList, S>;
 
-export type RootNavigationProp<T extends keyof RootStackParamList> =
-	RootScreenProps<T>['navigation'];
+export type AppNavigationProp<T extends keyof AppStackParamList> = AppScreenProps<T>['navigation'];
 
-export type RootRouteProp<T extends keyof RootStackParamList> = RootScreenProps<T>['route'];
+export type AppRouteProp<T extends keyof AppStackParamList> = AppScreenProps<T>['route'];

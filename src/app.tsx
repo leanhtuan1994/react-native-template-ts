@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
-import React from 'react';
+import 'react-native-gesture-handler';
+import './translations';
 
 import { ThemeProvider } from '@rneui/themed';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import 'react-native-gesture-handler';
+import React from 'react';
+import { MMKV } from 'react-native-mmkv';
 
 import AppNavigator from './navigators/application';
 import theme from './theme';
-import './translations';
 
 if (!__DEV__) {
 	console.log = () => {};
@@ -16,6 +17,8 @@ if (!__DEV__) {
 }
 
 export const queryClient = new QueryClient();
+
+export const storage = new MMKV();
 
 const App: React.FC = () => {
 	return (

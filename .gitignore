@@ -76,3 +76,8 @@ yarn-error.log
 .env
 
 ios/tmp.xcconfig
+
+# Expo
+.expo
+dist/
+web-build/

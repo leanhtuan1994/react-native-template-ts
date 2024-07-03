@@ -1,6 +1,7 @@
 // import 'whatwg-fetch';
 import 'react-native-gesture-handler/jestSetup';
 import '@testing-library/jest-native/extend-expect';
+
 import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock';
 
 jest.mock('react-native-reanimated', () =>

@@ -2,8 +2,8 @@ import Reactotron, { ReactotronReactNative } from 'reactotron-react-native';
 import mmkvPlugin from 'reactotron-react-native-mmkv';
 import { QueryClientManager, reactotronReactQuery } from 'reactotron-react-query';
 
-import { queryClient, storage } from './app';
 import config from '../app.json';
+import { queryClient, storage } from './App';
 
 const queryClientManager = new QueryClientManager({
 	queryClient,

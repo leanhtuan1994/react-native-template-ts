@@ -16,9 +16,9 @@ module.exports = {
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
 	],
-	plugins: ['unicorn'],
 	parser: '@typescript-eslint/parser',
 	ignorePatterns: ['plugins/**/*', 'metro.config.js', 'react-native.config.js'],
+	plugins: ['simple-import-sort'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
@@ -41,6 +41,8 @@ module.exports = {
 	},
 	rules: {
 		'@typescript-eslint/no-unused-vars': 1,
+		'no-use-before-define': 'off',
+		'@typescript-eslint/no-use-before-define': 'off',
 		'react/prop-types': 'off',
 		'global-require': 0,
 		'@typescript-eslint/no-floating-promises': 'off',
@@ -79,38 +81,7 @@ module.exports = {
 				trailingComma: 'all',
 			},
 		],
-		'import/order': [
-			'error',
-			{
-				groups: [['external', 'builtin'], 'internal', ['sibling', 'parent'], 'index'],
-				pathGroups: [
-					{
-						pattern: '@(react|react-native)',
-						group: 'external',
-						position: 'before',
-					},
-					{
-						pattern: '@/**',
-						group: 'internal',
-					},
-				],
-				pathGroupsExcludedImportTypes: ['internal', 'react'],
-				'newlines-between': 'always',
-				alphabetize: {
-					order: 'asc',
-					caseInsensitive: true,
-				},
-			},
-		],
-		'unicorn/filename-case': [
-			'error',
-			{
-				case: {
-					kebabCase: true,
-					camelCase: true,
-				},
-				ignore: ['/android', '/ios'],
-			},
-		],
+		'simple-import-sort/imports': 'error', // Import configuration for `eslint-plugin-simple-import-sort`
+		'simple-import-sort/exports': 'error', // Export configuration for `eslint-plugin-simple-import-sort`
 	},
 };
