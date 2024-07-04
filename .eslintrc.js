@@ -50,12 +50,7 @@ module.exports = {
 		quotes: ['error', 'single'],
 		'object-curly-spacing': ['error', 'always'],
 		'array-bracket-spacing': ['error', 'never'],
-		'react/require-default-props': [
-			'error',
-			{
-				functions: 'defaultArguments',
-			},
-		],
+		'react/require-default-props': ['off'],
 		'react/default-props-match-prop-types': ['error'],
 		'react/sort-prop-types': ['error'],
 		'react/no-array-index-key': 'off',
