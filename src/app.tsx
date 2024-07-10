@@ -1,10 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-console */
-import 'react-native-gesture-handler';
 import './translations';
 
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider } from '@rneui/themed';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MMKV } from 'react-native-mmkv';
 
 import AppNavigator from './navigators/application';
@@ -22,11 +24,15 @@ export const storage = new MMKV();
 
 const App: React.FC = () => {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<ThemeProvider theme={theme}>
-				<AppNavigator />
-			</ThemeProvider>
-		</QueryClientProvider>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<QueryClientProvider client={queryClient}>
+				<ThemeProvider theme={theme}>
+					<BottomSheetModalProvider>
+						<AppNavigator />
+					</BottomSheetModalProvider>
+				</ThemeProvider>
+			</QueryClientProvider>
+		</GestureHandlerRootView>
 	);
 };
 

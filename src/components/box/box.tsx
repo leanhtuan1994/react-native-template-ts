@@ -1,5 +1,12 @@
 import React from 'react';
-import { ColorValue, DimensionValue, FlexStyle, View, ViewProps } from 'react-native';
+import {
+	AnimatableNumericValue,
+	ColorValue,
+	DimensionValue,
+	FlexStyle,
+	View,
+	ViewProps,
+} from 'react-native';
 
 export type BoxProps = ViewProps &
 	Omit<
@@ -39,6 +46,7 @@ export type BoxProps = ViewProps &
 		pr?: DimensionValue | undefined;
 	} & {
 		backgroundColor?: ColorValue | undefined;
+		borderRadius?: AnimatableNumericValue | undefined;
 	};
 
 const Box: React.FC<BoxProps> = ({
@@ -92,6 +100,7 @@ const Box: React.FC<BoxProps> = ({
 	children,
 	style,
 	backgroundColor,
+	borderRadius,
 	...props
 }) => {
 	return (
@@ -134,6 +143,7 @@ const Box: React.FC<BoxProps> = ({
 
 					//*
 					backgroundColor,
+					borderRadius,
 				},
 				m ? { margin: m } : {},
 				mt ? { marginTop: mt } : {},

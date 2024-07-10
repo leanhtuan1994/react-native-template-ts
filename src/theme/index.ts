@@ -106,7 +106,7 @@ const theme = createTheme({
 			h4Style: {
 				color: theme.colors.black,
 				fontFamily: fontBold,
-				fontSize: theme.size.xxl,
+				fontSize: theme.size.xl,
 				fontWeight: 'bold',
 			},
 		}),
