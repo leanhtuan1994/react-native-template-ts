@@ -46,7 +46,7 @@ module.exports = {
 		'react/prop-types': 'off',
 		'global-require': 0,
 		'@typescript-eslint/no-floating-promises': 'off',
-		'react-hooks/exhaustive-deps': 'off',
+		'react-hooks/exhaustive-deps': 1,
 		quotes: ['error', 'single'],
 		'object-curly-spacing': ['error', 'always'],
 		'array-bracket-spacing': ['error', 'never'],
