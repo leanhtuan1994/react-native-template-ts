@@ -32,6 +32,7 @@
 		"react-hook-form": "^7.52.0",
 		"react-i18next": "^14.1.0",
 		"react-native": "0.74.1",
+		"react-native-avoid-softinput": "^5.0.0",
 		"react-native-bootsplash": "^5.5.3",
 		"react-native-config": "^1.5.2",
 		"react-native-gesture-handler": "^2.16.0",

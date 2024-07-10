@@ -10615,6 +10615,7 @@ __metadata:
     react-hook-form: ^7.52.0
     react-i18next: ^14.1.0
     react-native: 0.74.1
+    react-native-avoid-softinput: ^5.0.0
     react-native-bootsplash: ^5.5.3
     react-native-config: ^1.5.2
     react-native-gesture-handler: ^2.16.0
@@ -11820,6 +11821,16 @@ __metadata:
   dependencies:
     prop-types: ^15.7.2
   checksum: eb35821de36ae4eb00f97d99fc22ed79bd017248092ff1299f9d46a7ab946de16d2e6d6bfbf4cab5ef77d0d3bf47684aec761a7670ec7d36aae8d77ab8ddd171
+  languageName: node
+  linkType: hard
+
+"react-native-avoid-softinput@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "react-native-avoid-softinput@npm:5.0.0"
+  peerDependencies:
+    react: ">=18.2.0"
+    react-native: ">=0.71.0"
+  checksum: 2bc798d27d94f1864dce7ef521c9a5233f64f3172691261ac5a4a3176a0b36741d2e30708048c9cbbf4197e884bec080820d2c7a2b7943cdf11c2aa6769efaf8
   languageName: node
   linkType: hard
 
