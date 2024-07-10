@@ -2,6 +2,8 @@
 import { createTheme } from '@rneui/themed';
 
 import colors from './colors';
+import size from './size';
+import spacing from './spacing';
 
 const font = 'SVN-Circular-Regular';
 const fontBold = 'SVN-Circular-Bold';
@@ -58,26 +60,8 @@ const theme = createTheme({
 		primary600: colors.primary[600],
 		primary700: colors.primary[700],
 	},
-	spacing: {
-		xs: 2,
-		sm: 4,
-		md: 8,
-		lg: 12,
-		xl: 16,
-		xxl: 20,
-		xxxl: 24,
-		xxxxl: 32,
-	},
-	size: {
-		xs: 10,
-		sm: 12,
-		md: 14,
-		lg: 16,
-		xl: 18,
-		xxl: 20,
-		xxxl: 24,
-		xxxxl: 32,
-	},
+	spacing,
+	size,
 	components: {
 		Text: (_, theme) => ({
 			style: {
