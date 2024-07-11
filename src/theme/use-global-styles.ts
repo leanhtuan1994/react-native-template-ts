@@ -1,12 +1,15 @@
 import { makeStyles } from '@rneui/themed';
 
-const useGlobalStyles = makeStyles(theme => ({
+const useGlobalStyles = makeStyles(({ colors, spacing }) => ({
 	container: {
 		flex: 1,
-		backgroundColor: theme.colors.background,
+		backgroundColor: colors.background,
 	},
 	content: {
-		paddingHorizontal: theme.spacing.lg,
+		paddingHorizontal: spacing.lg,
+	},
+	flex: {
+		flex: 1,
 	},
 	icon: {
 		width: 24,

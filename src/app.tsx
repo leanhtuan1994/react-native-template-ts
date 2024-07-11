@@ -7,6 +7,7 @@ import { ThemeProvider } from '@rneui/themed';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AppNavigator from './navigators/application';
 import theme from './theme';
@@ -22,13 +23,15 @@ export const queryClient = new QueryClient();
 const App: React.FC = () => {
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider theme={theme}>
-					<BottomSheetModalProvider>
-						<AppNavigator />
-					</BottomSheetModalProvider>
-				</ThemeProvider>
-			</QueryClientProvider>
+			<SafeAreaProvider>
+				<QueryClientProvider client={queryClient}>
+					<ThemeProvider theme={theme}>
+						<BottomSheetModalProvider>
+							<AppNavigator />
+						</BottomSheetModalProvider>
+					</ThemeProvider>
+				</QueryClientProvider>
+			</SafeAreaProvider>
 		</GestureHandlerRootView>
 	);
 };

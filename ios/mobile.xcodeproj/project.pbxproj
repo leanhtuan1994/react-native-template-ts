@@ -15,7 +15,6 @@
 		4D7E8A9195C3DE520F6643C4 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC99F815F0D1710736C0AD86 /* ExpoModulesProvider.swift */; };
 		7699B88040F8A987B510C191 /* libPods-mobile-mobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-mobile-mobileTests.a */; };
 		7C5C8D4BA38E4F02A930F745 /* SVN-Circular-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE57A3F0DD514EB59A2FE948 /* SVN-Circular-Medium.ttf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83DA434E0398C5814F1C49AB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCBF991A9F808F90955011C /* ExpoModulesProvider.swift */; };
 		8B5104B9CD9F4AF9B0282EFF /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5405E3481ADB4757A4703DA3 /* BootSplash.storyboard */; };
 		90A2C2F72C2C28EB00965943 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90A2C2E42C2C28EB00965943 /* Fontisto.ttf */; };
@@ -70,7 +69,6 @@
 		5709B34CF0A7D63546082F79 /* Pods-mobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile.release.xcconfig"; path = "Target Support Files/Pods-mobile/Pods-mobile.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-mobile-mobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile-mobileTests.debug.xcconfig"; path = "Target Support Files/Pods-mobile-mobileTests/Pods-mobile-mobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-mobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-mobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = mobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-mobile-mobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile-mobileTests.release.xcconfig"; path = "Target Support Files/Pods-mobile-mobileTests/Pods-mobile-mobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		90A2C2E42C2C28EB00965943 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
 		90A2C2E52C2C28EB00965943 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
@@ -153,7 +151,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				5405E3481ADB4757A4703DA3 /* BootSplash.storyboard */,
 			);
@@ -376,7 +373,6 @@
 				90A2C3092C2C28EB00965943 /* MaterialIcons.ttf in Resources */,
 				90A2C2FA2C2C28EB00965943 /* FontAwesome6_Regular.ttf in Resources */,
 				90A2C3052C2C28EB00965943 /* EvilIcons.ttf in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				90A2C3012C2C28EB00965943 /* FontAwesome5_Solid.ttf in Resources */,
 				90A2C3082C2C28EB00965943 /* FontAwesome6_Brands.ttf in Resources */,
 				90A2C2FD2C2C28EB00965943 /* MaterialCommunityIcons.ttf in Resources */,
