@@ -1,7 +1,7 @@
-const { getDefaultConfig } = require('expo/metro-config');
-const { mergeConfig } = require('@react-native/metro-config');
+const { getDefaultConfig: getExpoDefaultConfig } = require('expo/metro-config');
+const { mergeConfig, getDefaultConfig } = require('@react-native/metro-config');
 
-const defaultConfig = getDefaultConfig(__dirname);
+const defaultConfig = mergeConfig(getDefaultConfig(__dirname), getExpoDefaultConfig(__dirname));
 const { assetExts, sourceExts } = defaultConfig.resolver;
 
 /**
