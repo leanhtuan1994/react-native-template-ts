@@ -28,6 +28,7 @@
 		"expo": "^51.0.0",
 		"expo-image": "~1.12.12",
 		"i18next": "^23.11.2",
+		"immer": "^10.1.1",
 		"ky": "^1.2.4",
 		"react": "18.2.0",
 		"react-hook-form": "^7.52.0",
@@ -50,7 +51,8 @@
 		"react-native-vector-icons": "^10.1.0",
 		"react-query-kit": "^3.3.0",
 		"zeego": "^1.10.0",
-		"zod": "^3.23.0"
+		"zod": "^3.23.0",
+		"zustand": "^4.5.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.0",
