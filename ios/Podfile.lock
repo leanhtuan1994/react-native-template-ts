@@ -2,6 +2,11 @@ PODS:
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
     - React-Core
+  - ComputableLayout (0.7.0):
+    - DGSwiftUtilities (~> 0.11)
+  - ContextMenuAuxiliaryPreview (0.5.0):
+    - DGSwiftUtilities (~> 0.18.1)
+  - DGSwiftUtilities (0.18.1)
   - DoubleConversion (1.1.6)
   - EXConstants (16.0.2):
     - ExpoModulesCore
@@ -1003,6 +1008,8 @@ PODS:
     - react-native-config/App (= 1.5.2)
   - react-native-config/App (1.5.2):
     - React-Core
+  - react-native-menu (1.1.2):
+    - React
   - react-native-mmkv (2.12.2):
     - DoubleConversion
     - glog
@@ -1277,6 +1284,15 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - ReactNativeIosContextMenu (2.5.1):
+    - ContextMenuAuxiliaryPreview (~> 0.3)
+    - DGSwiftUtilities
+    - ExpoModulesCore
+    - ReactNativeIosUtilities
+  - ReactNativeIosUtilities (4.4.5):
+    - ComputableLayout (~> 0.7)
+    - DGSwiftUtilities (~> 0.17)
+    - ExpoModulesCore
   - RNBootSplash (5.5.3):
     - React-Core
   - RNCMaskedView (0.3.1):
@@ -1406,6 +1422,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-config (from `../node_modules/react-native-config`)
+  - "react-native-menu (from `../node_modules/@react-native-menu/menu`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1432,6 +1449,8 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeAvoidSoftinput (from `../node_modules/react-native-avoid-softinput`)
+  - ReactNativeIosContextMenu (from `../node_modules/react-native-ios-context-menu`)
+  - ReactNativeIosUtilities (from `../node_modules/react-native-ios-utilities`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
@@ -1443,6 +1462,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - ComputableLayout
+    - ContextMenuAuxiliaryPreview
+    - DGSwiftUtilities
     - libavif
     - libdav1d
     - libwebp
@@ -1536,6 +1558,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-menu:
+    :path: "../node_modules/@react-native-menu/menu"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-safe-area-context:
@@ -1588,6 +1612,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeAvoidSoftinput:
     :path: "../node_modules/react-native-avoid-softinput"
+  ReactNativeIosContextMenu:
+    :path: "../node_modules/react-native-ios-context-menu"
+  ReactNativeIosUtilities:
+    :path: "../node_modules/react-native-ios-utilities"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCMaskedView:
@@ -1608,6 +1636,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
+  ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
+  ContextMenuAuxiliaryPreview: 1c73742ff3100dac1e0fb70bbe30284a6e711071
+  DGSwiftUtilities: 9be88816a2057f125bc8fac3da6aca3ae89c1eec
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
   Expo: 675a5642b5860771507237259da50b921c03a9f3
@@ -1651,6 +1682,7 @@ SPEC CHECKSUMS:
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
   react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
+  react-native-menu: d32728a357dfb360cf01cd5979cf7713c5acbb95
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
@@ -1677,6 +1709,8 @@ SPEC CHECKSUMS:
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
   ReactNativeAvoidSoftinput: 681c06aa418705e95fa1d29913401f14dbdb9fad
+  ReactNativeIosContextMenu: e5f972174bd78ab3a552bd6ee4745762ffaa42b3
+  ReactNativeIosUtilities: 638290fbfaa093c1b50d1f926715d77cabcae759
   RNBootSplash: e025d4ee98d942ee6c8b495a6fe66339a6b5f6dd
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b

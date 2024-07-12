@@ -13,7 +13,8 @@ module.exports = {
 			},
 		],
 		'inline-dotenv',
-		'react-native-reanimated/plugin', // needs to be last
+		'@babel/plugin-transform-export-namespace-from',
+		'react-native-reanimated/plugin',
 	],
 	env: {
 		production: {
