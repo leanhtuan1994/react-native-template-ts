@@ -5,7 +5,8 @@ import BootSplash from 'react-native-bootsplash';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Startup } from '@/screens';
-import type { AppStackParamList } from '@/types/navigation';
+
+import { AppStackParamList } from './navigation';
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 

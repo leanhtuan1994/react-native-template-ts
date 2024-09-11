@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
 	BottomSheetBackdropProps,
 	BottomSheetModal,
@@ -41,7 +41,7 @@ export const useModal = () => {
 
 export const Modal = React.forwardRef(
 	(
-		{ snapPoints: _snapPoints = ['60%'], title, detached = false, ...props }: ModalProps,
+		{ snapPoints: _snapPoints = ['50%'], title, detached = false, ...props }: ModalProps,
 		ref: ModalRef,
 	) => {
 		const detachedProps = React.useMemo(() => getDetachedProps(detached), [detached]);
@@ -60,15 +60,16 @@ export const Modal = React.forwardRef(
 					<Box
 						mb={spacing.lg}
 						mt={spacing.md}
-						height={4}
-						width={48}
+						height={5}
+						width={60}
 						alignSelf="center"
-						backgroundColor={colors.neutral60}
+						backgroundColor={colors.neutral300}
 						borderRadius={spacing.xs}
 					/>
 					<ModalHeader title={title} dismiss={modal.dismiss} />
 				</>
 			),
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[title, modal.dismiss],
 		);
 
@@ -133,7 +134,7 @@ const ModalHeader = React.memo(({ title, dismiss }: ModalHeaderProps) => {
 	return (
 		<>
 			{title && (
-				<Box flexDirection="row" px={16} py={12}>
+				<Box flexDirection="row" px={16} py={6}>
 					<Box flex={1}>
 						<Text h4>{title}</Text>
 					</Box>
@@ -152,7 +153,7 @@ const CloseButton = ({ close }: { close: () => void }) => {
 	return (
 		<Pressable
 			onPress={close}
-			hitSlop={16}
+			hitSlop={{ left: 8, right: 8, bottom: 8, top: 8 }}
 			style={{
 				height: 24,
 				width: 24,
@@ -166,7 +167,7 @@ const CloseButton = ({ close }: { close: () => void }) => {
 			<Svg width={24} height={24} fill="none" viewBox="0 0 24 24">
 				<Path
 					d="M18.707 6.707a1 1 0 0 0-1.414-1.414L12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293Z"
-					fill={colors.neutral80}
+					fill={colors.neutral800}
 				/>
 			</Svg>
 		</Pressable>

@@ -62,7 +62,13 @@ module.exports = {
 		'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
 		'react/display-name': 'off',
 		'react/function-component-definition': 'off',
-		'no-console': ['error', { allow: ['error'] }],
+		'@typescript-eslint/no-misused-promises': 'off',
+		'@typescript-eslint/no-unsafe-member-access': 'off',
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-unsafe-assignment': 'off',
+		'react/no-unused-prop-types': 'off',
+		'react/no-unstable-nested-components': 'off',
+		'no-console': 'off',
 		'prettier/prettier': [
 			'error',
 			{

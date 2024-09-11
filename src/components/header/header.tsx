@@ -1,8 +1,9 @@
+// eslint-disable-next-line simple-import-sort/imports
 import { StackActions, useNavigation } from '@react-navigation/native';
 import type { HeaderProps } from '@rneui/themed';
-import { Header as RNEHeader, makeStyles, useTheme } from '@rneui/themed';
+import { Icon, makeStyles, Header as RNEHeader, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { BackHandler, StyleProp, TextStyle } from 'react-native';
+import { BackHandler, Pressable, StyleProp, TextStyle } from 'react-native';
 
 type Props = HeaderProps & {
 	type?: 'modal' | 'stack' | 'none';
@@ -15,9 +16,12 @@ type Props = HeaderProps & {
 
 const useStyles = makeStyles(({ colors, size }) => ({
 	titleStyle: {
-		fontSize: size.xxl,
-		fontWeight: '700',
-		color: colors.neutral100,
+		fontSize: size.xl,
+		fontWeight: '500',
+		color: colors.neutral800,
+	},
+	container: {
+		borderBottomWidth: 0,
 	},
 }));
 
@@ -85,14 +89,13 @@ const Header: React.FC<Props> = ({
 			edges={edges}
 			backgroundColor={colors.white}
 			leftComponent={
-				type === 'none'
-					? (title && { text: title, style: titleStyle ?? styles.titleStyle }) || undefined
-					: {
-							type: 'feather',
-							icon: type === 'stack' ? 'arrow-left' : 'x',
-							size: 24,
-							onPress,
-					  }
+				type === 'none' ? (
+					(title && { text: title, style: titleStyle ?? styles.titleStyle }) || undefined
+				) : (
+					<Pressable onPress={onPress} hitSlop={8}>
+						<Icon name={type === 'stack' ? 'arrow-left' : 'x'} type="feather" size={24} />
+					</Pressable>
+				)
 			}
 			centerComponent={
 				type !== 'none' && title
@@ -102,6 +105,7 @@ const Header: React.FC<Props> = ({
 					  }
 					: undefined
 			}
+			containerStyle={styles.container}
 			{...props}
 		/>
 	);

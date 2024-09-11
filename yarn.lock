@@ -4798,6 +4798,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ramda@npm:^0.30.2":
+  version: 0.30.2
+  resolution: "@types/ramda@npm:0.30.2"
+  dependencies:
+    types-ramda: ^0.30.1
+  checksum: 528e62da967adb38b7b6be3314ee11009f4e7312e4fbb9670f4556bb2f640754f08ae68ede87822ae255aba747e67296f40b37d53bfb427c58ab82f5b7a4989e
+  languageName: node
+  linkType: hard
+
 "@types/react-native-vector-icons@npm:^6.4.10":
   version: 6.4.18
   resolution: "@types/react-native-vector-icons@npm:6.4.18"
@@ -5599,6 +5608,17 @@ __metadata:
   version: 4.7.0
   resolution: "axe-core@npm:4.7.0"
   checksum: f086bcab42be1761ba2b0b127dec350087f4c3a853bba8dd58f69d898cefaac31a1561da23146f6f3c07954c76171d1f2ce460e555e052d2b02cd79af628fa4a
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.7":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
+  dependencies:
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 882d4fe0ec694a07c7f5c1f68205eb6dc5a62aecdb632cc7a4a3d0985188ce3030e0b277e1a8260ac3f194d314ae342117660a151fabffdc5081ca0b5a8b47fe
   languageName: node
   linkType: hard
 
@@ -6740,6 +6760,22 @@ __metadata:
     es-errors: ^1.3.0
     is-data-view: ^1.0.1
   checksum: 7f0bf8720b7414ca719eedf1846aeec392f2054d7af707c5dc9a753cc77eb8625f067fa901e0b5127e831f9da9056138d894b9c2be79c27a21f6db5824f009c2
+  languageName: node
+  linkType: hard
+
+"date-fns-tz@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "date-fns-tz@npm:3.1.3"
+  peerDependencies:
+    date-fns: ^3.0.0
+  checksum: b184841dddf825adcfecbe0812546e4c7332d79eb2e898ca746cb9081e6efdbfd1af4804caafb64d90da02e57025f8042e2fc521bdf86bffbae4a4e5b5040acc
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0daa1e9a436cf99f9f2ae9232b55e11f3dd46132bee10987164f3eebd29f245b2e066d7d7db40782627411ecf18551d8f4c9fcdf2226e48bb66545407d448ab7
   languageName: node
   linkType: hard
 
@@ -8267,6 +8303,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.9
+  resolution: "follow-redirects@npm:1.15.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 859e2bacc7a54506f2bf9aacb10d165df78c8c1b0ceb8023f966621b233717dab56e8d08baadc3ad3b9db58af290413d585c999694b7c146aaf2616340c3d2a6
+  languageName: node
+  linkType: hard
+
 "fontfaceobserver@npm:^2.1.0":
   version: 2.3.0
   resolution: "fontfaceobserver@npm:2.3.0"
@@ -8301,6 +8347,17 @@ __metadata:
     combined-stream: ^1.0.8
     mime-types: ^2.1.12
   checksum: b019e8d35c8afc14a2bd8a7a92fa4f525a4726b6d5a9740e8d2623c30e308fbb58dc8469f90415a856698933c8479b01646a9dff33c87cc4e76d72aedbbf860d
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "form-data@npm:4.0.0"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
 
@@ -10276,13 +10333,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ky@npm:^1.2.4":
-  version: 1.2.4
-  resolution: "ky@npm:1.2.4"
-  checksum: 2e0a10edb4018a958f40ee2468ffb713b4357f1e48456ba621e615d58242ef1dfe0b9a6fbdbd6ae2a57548853f4ff71c55cd32c0e9aefd9d2c5bf11cfd913242
-  languageName: node
-  linkType: hard
-
 "language-subtag-registry@npm:^0.3.20":
   version: 0.3.22
   resolution: "language-subtag-registry@npm:0.3.22"
@@ -11209,14 +11259,18 @@ __metadata:
     "@testing-library/react-native": ^12.1.2
     "@types/jest": ^29.4.0
     "@types/node": ^18.14.1
+    "@types/ramda": ^0.30.2
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
     "@typescript-eslint/parser": ^6.13.1
+    axios: ^1.7.7
     babel-jest: ^29.6.3
     babel-plugin-inline-dotenv: ^1.7.0
     babel-plugin-module-resolver: ^5.0.0
     babel-plugin-root-import: ^6.6.0
     babel-plugin-transform-remove-console: ^6.9.4
+    date-fns: ^3.6.0
+    date-fns-tz: ^3.1.3
     dotenv: ^16.3.1
     eslint: ^8.19.0
     eslint-config-airbnb: ^19.0.4
@@ -11230,18 +11284,18 @@ __metadata:
     i18next: ^23.11.2
     immer: ^10.1.1
     jest: ^29.6.3
-    ky: ^1.2.4
     prettier: 2.8.8
+    ramda: ^0.30.1
     react: 18.2.0
     react-hook-form: ^7.52.0
     react-i18next: ^14.1.0
     react-native: 0.74.3
-    react-native-avoid-softinput: ^5.0.0
     react-native-bootsplash: ^5.5.3
     react-native-config: ^1.5.2
     react-native-gesture-handler: ^2.16.0
     react-native-ios-context-menu: ^2.5.1
     react-native-ios-utilities: ^4.4.5
+    react-native-keyboard-controller: ^1.13.4
     react-native-linear-gradient: ^2.8.3
     react-native-mmkv: ^2.12.2
     react-native-modal: ^13.0.1
@@ -11254,6 +11308,7 @@ __metadata:
     react-native-vector-icons: ^10.1.0
     react-query-kit: ^3.3.0
     react-test-renderer: 18.2.0
+    reactotron-plugin-zustand: ^2.0.3
     reactotron-react-native: ^5.1.6
     reactotron-react-native-mmkv: ^0.2.6
     reactotron-react-query: ^1.0.4
@@ -12277,6 +12332,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -12349,6 +12411,13 @@ __metadata:
   dependencies:
     inherits: ~2.0.3
   checksum: ebc23639248e4fe40a789f713c20548e513e053b3dc4924b6cb0ad741e3f264dcff948225c8737834dd4f9ec286dbc06a1a7c13858ea382d9379f4303bcc0916
+  languageName: node
+  linkType: hard
+
+"ramda@npm:^0.30.1":
+  version: 0.30.1
+  resolution: "ramda@npm:0.30.1"
+  checksum: ce6f4b6b967a84a4e65c01ab1b1cdd73d46b8efe71aeccf5d1443c56c4e31a0ea82ece7df6510453dd3d83b92cabf8a6b4d50d189a1b35c08a6f44b281bebf79
   languageName: node
   linkType: hard
 
@@ -12449,16 +12518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-avoid-softinput@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "react-native-avoid-softinput@npm:5.0.0"
-  peerDependencies:
-    react: ">=18.2.0"
-    react-native: ">=0.71.0"
-  checksum: 2bc798d27d94f1864dce7ef521c9a5233f64f3172691261ac5a4a3176a0b36741d2e30708048c9cbbf4197e884bec080820d2c7a2b7943cdf11c2aa6769efaf8
-  languageName: node
-  linkType: hard
-
 "react-native-bootsplash@npm:^5.5.3":
   version: 5.5.3
   resolution: "react-native-bootsplash@npm:5.5.3"
@@ -12539,6 +12598,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b4f4c0941997a5880749b1f79d1452311dcedd735922c5f6a7d117c5ab6ee18422f8bacdbdb4058ed489e7b820c5e461ee7c184404e93d27a86004550a7e7dc2
+  languageName: node
+  linkType: hard
+
+"react-native-keyboard-controller@npm:^1.13.4":
+  version: 1.13.4
+  resolution: "react-native-keyboard-controller@npm:1.13.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 8be4baec9375425612c7ec4d79c0ed17316221faa119311278738b69d713cf74fd31709f14a05bba4c71c7b223247e69a7a4c87e315d3ac896829f9fc31367f0
   languageName: node
   linkType: hard
 
@@ -12870,6 +12940,15 @@ __metadata:
   version: 0.2.3
   resolution: "reactotron-core-contract@npm:0.2.3"
   checksum: 956a6bf3cf845ac52ff90533da9714f2766e84570a391069601ed7ec8795ec6051c40ba6788f91ef1c34da808f98415e06a1cbd47a755fb7d4e821c6eb0d2377
+  languageName: node
+  linkType: hard
+
+"reactotron-plugin-zustand@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "reactotron-plugin-zustand@npm:2.0.3"
+  dependencies:
+    deepmerge: ^4.3.1
+  checksum: 4b8658c51b4c80e9f89207202a67097ceb6d1e35b5ffa9a8825de14820e61a855fdba0d0146d9bc4f53cc46f968932a95dfa01a5561e6dfd75e7283b4d0d4c1a
   languageName: node
   linkType: hard
 
@@ -14499,6 +14578,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 9f35fd95d895a5d32ea9fd2e532a695b0bae6cbff6832b77292efa188a0ed1ed6e54f63f74a8920390f3d909a7a3adb20a144686372a8e78b420246a9bd3d58a
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths@npm:^3.15.0":
   version: 3.15.0
   resolution: "tsconfig-paths@npm:3.15.0"
@@ -14673,6 +14759,15 @@ __metadata:
     typed-array-buffer: ^1.0.2
     typed-array-byte-offset: ^1.0.2
   checksum: 07bfebdfb7a67b2a80557bf4f1061d8a68ee847d7f04c91c7aa327aa90681f97e1ea3efef17b3b8f336a7f2da1d2ff95dd92de59a4788b4e6373318b27fca2c1
+  languageName: node
+  linkType: hard
+
+"types-ramda@npm:^0.30.1":
+  version: 0.30.1
+  resolution: "types-ramda@npm:0.30.1"
+  dependencies:
+    ts-toolbelt: ^9.6.0
+  checksum: 7af1b5b6dbb5878e5104013f7eca7feff999b538d98d59c91ce82e69908b31223b44a163271b0c13c9828c27f6cff39f78cff0f83d82b73ac47f74ffb3fe7ded
   languageName: node
   linkType: hard
 
