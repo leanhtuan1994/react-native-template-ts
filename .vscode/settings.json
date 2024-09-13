@@ -5,12 +5,5 @@
 		"source.fixAll": "explicit"
 	},
 	"files.eol": "\n",
-	"i18n-ally.localesPaths": [
-		"ios/Pods/RCT-Folly/folly/lang",
-		"ios/Pods/boost/boost/locale",
-		"ios/Pods/boost/boost/predef/language",
-		"ios/Pods/Headers/Private/RCT-Folly/folly/lang",
-		"ios/Pods/Headers/Public/RCT-Folly/folly/lang"
-	],
-	"cSpell.words": ["bootsplash", "immer", "rneui", "softinput", "zeego", "zustand"]
+	"cSpell.words": ["bootsplash", "hookform", "immer", "rneui", "softinput", "zeego", "zustand"]
 }

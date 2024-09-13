@@ -12,7 +12,7 @@
 		"./src/**/*",
 		"index.d.ts",
 		".eslintrc.js",
-		"jest.setup.js",
+		"jest-setup.ts",
 		"jest.config.js",
 		"babel.config.js",
 		"index.js"

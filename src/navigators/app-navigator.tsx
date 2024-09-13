@@ -2,9 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
 import BootSplash from 'react-native-bootsplash';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Startup } from '@/screens';
+import { SignIn, Startup } from '@/screens';
 
 import { AppStackParamList } from './navigation';
 
@@ -16,13 +15,12 @@ const AppNavigator = () => {
 	}, []);
 
 	return (
-		<SafeAreaProvider>
-			<NavigationContainer onReady={onReady}>
-				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					<Stack.Screen name="Startup" component={Startup} />
-				</Stack.Navigator>
-			</NavigationContainer>
-		</SafeAreaProvider>
+		<NavigationContainer onReady={onReady}>
+			<Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
+				<Stack.Screen name="Startup" component={Startup} />
+				<Stack.Screen name="SignIn" component={SignIn} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 };
 
