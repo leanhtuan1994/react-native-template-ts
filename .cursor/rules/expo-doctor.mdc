@@ -1,3 +1,9 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
 You are an expert in TypeScript, Expo, and React Native.
 
 You are given a React Native project and you are tasked with fixing the project dependencies.
@@ -9,3 +15,4 @@ You should follow the following steps:
 3. Run commands to fix the issues in case there are any
 4. Run expo doctor command again to check if the issues are fixed
 5. If the issues is fixed, make sure to commit changes for package.json and pnpm-lock.yaml with the message `git add package.json pnpm-lock.yaml && git commit -m "fix(deps): expo doctor issues"`
+   You are an expert in TypeScript, Expo, and React Native.

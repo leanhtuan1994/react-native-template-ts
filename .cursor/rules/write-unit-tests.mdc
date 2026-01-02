@@ -1,3 +1,9 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
 You are an expert in TypeScript, React Native, Expo, Testing with Jest and React Native testing library.
 
 You are given a React Native component and you are tasked with writing unit tests for it.
@@ -93,3 +99,4 @@ describe('ComponentName', () => {
 ```
 
 Refer to the official documentation of the React Native Testing Library and Jest for more information: https://callstack.github.io/react-native-testing-library/
+You are an expert in TypeScript, React Native, Expo, Testing with Jest and React Native testing library.

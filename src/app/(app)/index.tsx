@@ -21,14 +21,13 @@ export default function Feed() {
     );
   }
   return (
-    <View className="flex-1 ">
+    <View className="flex-1">
       <FocusAwareStatusBar />
       <FlashList
         data={data}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isPending} />}
-        estimatedItemSize={300}
       />
     </View>
   );

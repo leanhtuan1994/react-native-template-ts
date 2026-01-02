@@ -7,8 +7,12 @@ import type {
 } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 import type { TextInputProps } from 'react-native';
-import { I18nManager, StyleSheet, View } from 'react-native';
-import { TextInput as NTextInput } from 'react-native';
+import {
+  I18nManager,
+  StyleSheet,
+  TextInput as NTextInput,
+  View,
+} from 'react-native';
 import { tv } from 'tailwind-variants';
 
 import colors from './colors';
@@ -114,7 +118,7 @@ export const Input = React.forwardRef<NTextInput, NInputProps>((props, ref) => {
       {error && (
         <Text
           testID={testID ? `${testID}-error` : undefined}
-          className="text-sm text-danger-400 dark:text-danger-600"
+          className="text-danger-400 dark:text-danger-600 text-sm"
         >
           {error}
         </Text>

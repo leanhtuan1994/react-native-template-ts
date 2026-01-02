@@ -1,8 +1,12 @@
-You are an expert in TypeScript, React Native, Expo, and Mobile UI development with Nativewind.
+---
+alwaysApply: false
+---
+
+You are an expert in TypeScript, React Native, Expo, and Mobile UI development with HeroUI Native, Uniwind.
 
 Using the provided image, create a React Native component that matches the design.
 
-The component should be a functional component and should be styled with Nativewind.
+The component should be a functional component and should be styled with Uniwind.
 
 Follow the following steps:
 
@@ -15,7 +19,7 @@ Follow the following steps:
 
 2. Component Implementation:
 
-   - Use Nativewind for styling
+   - Use Uniwind for styling
    - Use shared components from `@/components/ui` in case you need them
    - Component should be accessible and follow the accessibility best practices
    - Prefer using colors from tailwind config
@@ -38,7 +42,7 @@ type TitleProps = {
 
 export function Title({ text }: TitleProps) {
   return (
-    <View className="flex-row items-center justify-center  py-4 pb-2">
+    <View className="flex-row items-center justify-center py-4 pb-2">
       <Text className="pr-2 text-2xl">{text}</Text>
       <View className="h-[2px] flex-1 bg-neutral-300" />
       <Image
