@@ -40,7 +40,7 @@ Still hesitating? Check out this [article](https://reactnative.dev/blog/2024/06/
 
 ### Who is behind the starter kit?
 
-This starter kit has been maintained by the [Obytes mobile tribe team](https://www.obytes.com/team) since 2021. We actively use it for our internal projects and are excited to share it with the amazing React Native / Expo community. The project is open-source, released under the MIT license, ensuring flexibility for users. Our commitment to this starter kit is ongoing; we will continue to maintain and improve it as long as it remains a core part of our internal development process. We welcome contributions and feedback from the community to help make this starter kit even better.
+This starter kit is maintained by [Tuan Anh Le](https://leanhtuan1994.github.io/team). I actively use it for my projects and am excited to share it with the amazing React Native / Expo community. The project is open-source, released under the MIT license, ensuring flexibility for users. My commitment to this starter kit is ongoing; I will continue to maintain and improve it as long as it remains a core part of my development process. I welcome contributions and feedback from the community to help make this starter kit even better.
 
 ### Can you include X feature or library?
 

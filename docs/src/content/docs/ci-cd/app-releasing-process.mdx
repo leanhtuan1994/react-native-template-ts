@@ -145,11 +145,11 @@ This action will create a new env file `.env.production` with the `DEBUG` and `S
 
 For QA release, Go to your GitHub repo actions tab and run `new-app-version` workflow with the your desired release type.
 
-![new-app-version](https://github.com/obytes/react-native-template-obytes/assets/11137944/efc62eda-a465-44ab-a185-860cfd2e9099)
+![new-app-version](https://github.com/leanhtuan1994/react-native-template-atlas/assets/11137944/efc62eda-a465-44ab-a185-860cfd2e9099)
 
 After successful execution, a new tag will be pushed to master and then `new-github-release` workflow will be triggered automatically and create a github release based on the tag name with the correct changelog.
 
-![new-github-release](https://github.com/obytes/react-native-template-obytes/assets/11137944/d3b9d8ff-37f8-4551-97c1-4c9fbc8860d3)
+![new-github-release](https://github.com/leanhtuan1994/react-native-template-atlas/assets/11137944/d3b9d8ff-37f8-4551-97c1-4c9fbc8860d3)
 
 After that, `eas-build-qa` workflow will be triggered automatically and build the app using EAS and distribute it to the QA team.
 

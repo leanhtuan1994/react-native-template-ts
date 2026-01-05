@@ -14,11 +14,11 @@
 
 ## 🚀 Motivation
 
-Our goal with this starter kit was to streamline the process of building React Native apps, both for our own team and for our clients. We wanted to create a resource that would allow us to create high-quality apps faster and with less effort, while ensuring that all of our projects adhere to the same code standards and architectural principles.
+The goal of this starter kit is to streamline the process of building React Native apps. It provides a resource for creating high-quality apps faster and with less effort, while ensuring projects adhere to consistent code standards and architectural principles.
 
-The benefits of using this starter kit are numerous. It helps our team easily switch between projects, as we can rely on a consistent foundation of code. It also allows us to focus on the business logic of each project rather than getting bogged down in boilerplate code. And, because it promotes consistency across projects, it makes it easier to maintain and scale our apps, as well as share code between teams.
+The benefits of using this starter kit are numerous. It provides a consistent foundation that makes it easy to switch between projects and focus on business logic rather than boilerplate code. Because it promotes consistency, it makes apps easier to maintain and scale.
 
-Overall, our starter kit is designed to facilitate efficient and effective app development, helping us to bring the best possible products to our clients
+Overall, this starter kit is designed to facilitate efficient and effective app development, helping you bring the best possible products to your users.
 
 ## ✍️ Philosophy
 
@@ -80,11 +80,11 @@ Still hesitating? Check out this [article](https://reactnative.dev/blog/2024/06/
 
 ## 🧑‍💻 Stay up to date
 
-We are committed to continually improving our starter kit and providing the best possible resources for building React Native apps. To that end, we regularly add new features and fix any bugs that are discovered.
+This starter kit is continually improved with new features and bug fixes.
 
-If you want to stay up to date with the latest developments in our starter kit, you can either watch the repository or hit the "star" button. This will allow you to receive notifications whenever new updates are available.
+If you want to stay up to date with the latest developments, you can either watch the repository or hit the "star" button. This will allow you to receive notifications whenever new updates are available.
 
-We value the feedback and contributions of our users, and we encourage you to let us know if you have any suggestions for improving our starter kit. We are always looking for ways to make it even more effective and useful for our community. So, please do not hesitate to reach out and share your thoughts with us.
+Feedback and suggestions are always welcome. Feel free to open an issue or discussion to share your thoughts.
 
 <!-- add a gif image here  -->
 
@@ -117,22 +117,15 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 This repository includes a root `llms.txt` file that defines canonical documentation for AI tools.
 
-## Contributors
+## 📚 Documentation
 
-This starter is maintained by [Atlas mobile tribe team](https://leanhtuan1994.github.io/team) and we welcome new contributors to join us in improving it. If you are interested in getting involved in the project, please don't hesitate to open an issue or submit a pull request.
+Full documentation is available at [leanhtuan1994.github.io/react-native-template-atlas](https://leanhtuan1994.github.io/react-native-template-atlas/)
 
-In addition to maintaining this starter kit, we are also available to work on custom projects and help you build your dream app. If you are looking for experienced and reliable developers to bring your app vision to life, please visit our website at [leanhtuan1994.github.io](https://leanhtuan1994.github.io/contact) to get in touch with us. We would be happy to discuss your project in more detail and explore how we can help you achieve your goals.
+## 👤 Maintainer
 
-## 🔥 How to contribute?
+This starter is maintained by [Tuan Anh Le](https://leanhtuan1994.github.io/team).
 
-Thank you for your interest in contributing to our project. Your involvement is greatly appreciated and we welcome your contributions. Here are some ways you can help us improve this project:
-
-1. Show your support for the project by giving it a 🌟 on Github. This helps us increase visibility and attract more contributors.
-2. Share your thoughts and ideas with us by opening an issue. If you have any suggestions or feedback about any aspect of the project, we are always eager to hear from you and have a discussion.
-3. If you have any questions about the project, please don't hesitate to ask. Simply open an issue and our team will do our best to provide a helpful and informative response.
-4. If you encounter a bug or typo while using the starter kit or reading the documentation, we would be grateful if you could bring it to our attention. You can open an issue to report the issue, or even better, submit a pull request with a fix.
-
-We value the input and contributions of our community and look forward to working with you to improve this project.
+For custom projects and consulting, visit [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact).
 
 ## ❓ FAQ
 

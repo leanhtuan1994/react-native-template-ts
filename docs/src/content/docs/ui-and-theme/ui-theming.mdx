@@ -10,31 +10,31 @@ import CodeBlock from '../../../components/code.astro';
 
 How we manage the UI and theming of the application.
 
-## Why [Tailwind CSS](https://tailwindcss.com/) ?
+## Why [Uniwind](https://docs.uniwind.dev/) ?
 
-For the past few years, we have tried multiple approaches to style our React Native apps: Stylesheet API, styled-components, restyle, and more.
+For the past few years, we have tried multiple approaches to style React Native apps: Stylesheet API, styled-components, restyle, and more.
 
-Right now, we are confident that using Tailwind CSS with React Native is the right solution, especially after trying [Nativewind](https://www.nativewind.dev/v4/overview).
+Right now, we are confident that using [Uniwind](https://docs.uniwind.dev/) with React Native is the right solution. Uniwind provides a TailwindCSS-like experience specifically optimized for React Native.
 
-If you are familiar with Tailwind CSS on the web you will find it very easy to use and you can even copy past your styling from a web application and should work without issues with react native too with some minor adjustments of course.
+If you are familiar with TailwindCSS on the web, you'll find Uniwind very easy to use, with a similar utility-first approach adapted for React Native's constraints.
 
-Last but not least, Tailwind CSS was a natural choice for us, considering that most of our team members come from a web background and have had the opportunity to work with Tailwind CSS before.
+Uniwind was a natural choice, considering that many developers come from a web background and have experience with TailwindCSS.
 
 :::tip
 
-If you are not familiar with Tailwind CSS, we recommend you read the [Tailwind CSS documentation](https://tailwindcss.com/docs) first.
+If you are not familiar with TailwindCSS, we recommend you read the [TailwindCSS documentation](https://tailwindcss.com/docs) first to understand the utility-first CSS approach.
 
-We would also recommend playing with the [Tailwind CSS playground](https://play.tailwindcss.com/) to get a better understanding of how it works as well as practicing by building a simple web app with it before jumping into react native.
+You may also want to play with the [TailwindCSS playground](https://play.tailwindcss.com/) to get a better understanding of how utility classes work before using them in React Native.
 
 :::
 
-## About Nativewind
+## About Uniwind
 
-Nativewind is a library that allows you to use Tailwind CSS with react native. Nativewind achieves this by pre-compiling the Tailwind CSS classes into react native stylesheets with a minimal runtime to selectively apply the styles.
+Uniwind is a utility-first styling library for React Native that provides a TailwindCSS-like experience. It uses the `className` prop to apply styles directly to React Native components, making it intuitive for developers familiar with TailwindCSS on the web.
 
-NativeWind version 4 introduces several improvements and enhancements and provides a more efficient development experience. The transition to version 4 introduces a different approach that eliminates the need for creating and wrapping our own components with the `styled` component. Thereby, this utility-first approach simplifies the styling process by using classes and applying styles directly within JSX elements.
+Uniwind is designed specifically for React Native and works seamlessly with modern React Native architecture, including the new architecture and Expo.
 
-For more details about Nativewind you can check their [documentation](https://www.nativewind.dev/v4/overview/).
+For more details about Uniwind, check the [official documentation](https://docs.uniwind.dev/).
 
 Here is an example of how your component should look like:
 
@@ -42,9 +42,9 @@ Here is an example of how your component should look like:
 
 ## Configuration
 
-Nativewind is the same as Tailwind CSS, it comes with a default theme and colors that you can override by creating your own theme and colors.
+Uniwind follows TailwindCSS configuration patterns, allowing you to customize themes and colors to match your design system.
 
-You need to understand that Nativewind is a library that is built on top of Tailwind CSS. Feel free to add any Tailwind CSS config that you want to use in your application such as updating colors, spacing, typography, etc.
+Like TailwindCSS, you can configure Uniwind through your tailwind.config.js file, customizing colors, spacing, typography, and more.
 
 We have created a `ui/theme` folder where you can find our custom colors that have been imported into `tailwind.config.js` and used as a theme for our demo application. You can add your own color palette and use them in your components with Tailwind class names.
 
@@ -65,11 +65,11 @@ You can read more about how to [configure your project with Tailwind CSS](https:
 Dark mode has gained significant traction in recent years and has become an expected feature to have.
 By applying dark mode, it makes it easier on the eyes in low-light environments and reduces eye strain, which means more time spent on your app.
 
-This template comes with dark mode support out of the box, and it's very easy to customize the color scheme of your app. Thanks to [tailwindcss](https://tailwindcss.com/docs/dark-mode)
+This template comes with dark mode support out of the box, and it's very easy to customize the color scheme of your app. Thanks to [TailwindCSS dark mode](https://tailwindcss.com/docs/dark-mode)
 
 ### Implementation
 
-Since we're using [nativewind](https://www.nativewind.dev/) (which uses Tailwind CSS under the hood) and expo-router we let them handle the application of theme, and we just take care of the colors we want.
+Since we're using Uniwind (which follows TailwindCSS patterns) and expo-router, we let them handle the application of theme, and we just take care of the colors we want.
 We set the colors in `ui/theme/colors.js` and we use them in our hook `useThemeConfig.tsx` to get the theme object that we pass to ThemeProvider directly. For more information check out [expo-router](https://docs.expo.dev/router/appearance/)
 
 <CodeBlock file="src/lib/contexts/app-theme-context.tsx" />
@@ -78,7 +78,7 @@ We set the colors in `ui/theme/colors.js` and we use them in our hook `useThemeC
 
 ### How do we handle theme changes?
 
-We use the `loadSelectedTheme` function to load the theme from the storage if there's a theme saved in the storage, otherwise, we let nativwind use the default theme (system).
+We use the `loadSelectedTheme` function to load the theme from the storage if there's a theme saved in the storage, otherwise, we let Uniwind use the default theme (system).
 To set the selected theme, we use the `useSelectedTheme` hook, which sets the theme in the storage and updates the color scheme of the app.
 
 <CodeBlock file="src/lib/hooks/use-selected-theme.tsx" />
@@ -94,7 +94,7 @@ To add the values for the light mode, you can simply write them directly in your
 If you want to use the style prop, you can use the `useColorScheme` hook to get the current color scheme and use it to apply the desired style. However, **in most cases, you won't need it** as the dark: variant will do the job.
 
 ```tsx
-import { useColorScheme } from 'nativewind';
+import { useColorScheme } from 'react-native';
 
 const colorScheme = useColorScheme();
 const style =
@@ -103,4 +103,4 @@ const style =
     : { backgroundColor: 'white' };
 ```
 
-For more details about dark mode, you can check [tailwind](https://tailwindcss.com/docs/dark-mode) and [nativewind](https://www.nativewind.dev/core-concepts/dark-mode)
+For more details about dark mode, you can check the [TailwindCSS dark mode documentation](https://tailwindcss.com/docs/dark-mode) and [Uniwind documentation](https://docs.uniwind.dev/)

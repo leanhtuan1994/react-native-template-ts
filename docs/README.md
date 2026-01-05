@@ -1,51 +1,57 @@
-# Starlight Starter Kit: Basics
+# Atlas Starter Documentation
+
+Official documentation site for the React Native Atlas Starter Kit.
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+```
+
+## 📁 Project Structure
 
 ```
-npm create astro@latest -- --template starlight
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
+docs/
+├── public/          # Static assets
 ├── src/
-│   ├── assets/
-│   ├── content/
-│   │   ├── docs/
-│   │   └── config.ts
-│   └── env.d.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   ├── assets/      # Images and media
+│   ├── components/  # Custom Astro components
+│   └── content/
+│       └── docs/    # Documentation pages (MDX/MD)
+├── astro.config.mjs # Astro configuration
+└── package.json
 ```
-
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
-
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
-
-Static assets, like favicons, can be placed in the `public/` directory.
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command        | Action                                          |
+| :------------- | :---------------------------------------------- |
+| `pnpm install` | Installs dependencies                           |
+| `pnpm dev`     | Starts local dev server at `localhost:4321`     |
+| `pnpm build`   | Build production site to `./dist/`              |
+| `pnpm preview` | Preview your build locally before deploying     |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 🛠️ Built With
 
-## 👀 Want to learn more?
+- [Astro](https://astro.build/) - Static site framework
+- [Starlight](https://starlight.astro.build/) - Documentation theme
+- [TailwindCSS](https://tailwindcss.com/) - Styling
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+## 📝 Writing Documentation
+
+Documentation files are located in `src/content/docs/` and use MDX or Markdown format. Each file is automatically converted to a route based on its file name.
+
+Example:
+- `src/content/docs/getting-started/create-new-app.md` → `/getting-started/create-new-app`
+
+## 🔗 Links
+
+- [Live Documentation](https://leanhtuan1994.github.io/react-native-template-atlas/)
+- [Main Repository](https://github.com/leanhtuan1994/react-native-template-atlas)

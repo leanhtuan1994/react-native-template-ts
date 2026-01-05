@@ -6,15 +6,15 @@ head:
     content: Overview | React Native / Expo Starter
 ---
 
-Welcome to the Obytes Mobile Tribe's Expo / React Native Starter Kit!
+Welcome to the Atlas Expo / React Native Starter Kit!
 
 ## 🚀 Motivation
 
-Our goal with this starter kit was to streamline the process of building React Native apps, both for our own team and for our clients. We wanted to create a resource that would allow us to create high-quality apps faster and with less effort, while ensuring that all of our projects adhere to the same code standards and architectural principles.
+The goal of this starter kit is to streamline the process of building React Native apps. It provides a resource for creating high-quality apps faster and with less effort, while ensuring projects adhere to consistent code standards and architectural principles.
 
-The benefits of using this starter kit are numerous. It helps our team easily switch between projects, as we can rely on a consistent foundation of code. It also allows us to focus on the business logic of each project rather than getting bogged down in boilerplate code. And, because it promotes consistency across projects, it makes it easier to maintain and scale our apps, as well as share code between teams.
+The benefits of using this starter kit are numerous. It provides a consistent foundation that makes it easy to switch between projects and focus on business logic rather than boilerplate code. Because it promotes consistency, it makes apps easier to maintain and scale.
 
-Overall, our starter kit is designed to facilitate efficient and effective app development, helping us to bring the best possible products to our clients
+Overall, this starter kit is designed to facilitate efficient and effective app development, helping you bring the best possible products to your users.
 
 ## ✍️ Philosophy
 
@@ -29,7 +29,7 @@ When creating this starter kit, we had several guiding principles in mind::
 
 - ✅ Latest Expo SDK with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
 - 🎉 [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
-- 💅 Minimal UI kit built with [TailwindCSS](https://www.nativewind.dev/), featuring common components essential for your app.
+- 💅 Minimal UI kit built with [Uniwind](https://docs.uniwind.dev/) and [HeroUI Native](https://v3.heroui.com/docs/native/getting-started), featuring common components essential for your app.
 - ⚙️ Multi-environment build support (Production, Staging, Development) using Expo configuration.
 - 🦊 Husky for Git Hooks: Automate your git hooks and enforce code standards.
 - 💡 Clean project structure with Absolute Imports for easier code navigation and management.
@@ -88,7 +88,8 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 - [Expo](https://docs.expo.io/)
 - [Expo Router](https://docs.expo.dev/router/introduction/)
-- [Nativewind](https://www.nativewind.dev/v4/overview)
+- [Uniwind](https://docs.uniwind.dev/)
+- [HeroUI Native](https://v3.heroui.com/docs/native/getting-started)
 - [Flash list](https://github.com/Shopify/flash-list)
 - [React Query](https://tanstack.com/query/v4)
 - [Axios](https://axios-http.com/docs/intro)
@@ -110,10 +111,10 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 ## Contributors
 
-This starter is maintained by [Obytes mobile tribe team](https://www.obytes.com/team) and we welcome new contributors to join us in improving it. If you are interested in getting involved in the project, please don't hesitate to open an issue or submit a pull request.
+This starter is maintained by [Tuan Anh Le](https://leanhtuan1994.github.io/team) and I welcome new contributors to join in improving it. If you're interested in getting involved, please don't hesitate to open an issue or submit a pull request.
 
-In addition to maintaining this starter kit, we are also available to work on custom projects and help you build your dream app. If you are looking for experienced and reliable developers to bring your app vision to life, please visit our website at [obytes.com/contact](https://www.obytes.com/contact) to get in touch with us. We would be happy to discuss your project in more detail and explore how we can help you achieve your goals.
+In addition to maintaining this starter kit, I'm available for custom projects and consulting. If you're looking for an experienced React Native developer to bring your app vision to life, please visit [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact) to get in touch. I'd be happy to discuss your project and explore how I can help you achieve your goals.
 
 ## ❓ FAQ
 
-If you have any questions about the starter and want answers, please check out the [Discussions](https://github.com/obytes/react-native-template-obytes/discussions) page.
+If you have any questions about the starter and want answers, please check out the [Discussions](https://github.com/leanhtuan1994/react-native-template-atlas/discussions) page.
