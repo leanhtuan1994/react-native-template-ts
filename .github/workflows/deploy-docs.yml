@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
     paths:
-      - 'docs/**'
+      - "docs/**"
   workflow_dispatch:
 
 permissions:
@@ -13,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
@@ -25,15 +25,13 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
-          cache-dependency-path: 'docs/pnpm-lock.yaml'
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: "docs/pnpm-lock.yaml"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
