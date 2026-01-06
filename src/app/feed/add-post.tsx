@@ -1,17 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Stack } from 'expo-router';
+import { Button, Spinner } from 'heroui-native';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
 import { useAddPost } from '@/api';
-import {
-  Button,
-  ControlledInput,
-  showErrorMessage,
-  View,
-} from '@/components/ui';
+import { ControlledInput, showErrorMessage, View } from '@/components/ui';
 
 const schema = z.object({
   title: z.string().min(10),
@@ -67,12 +63,9 @@ export default function AddPost() {
           multiline
           testID="body-input"
         />
-        <Button
-          label="Add Post"
-          loading={isPending}
-          onPress={handleSubmit(onSubmit)}
-          testID="add-post-button"
-        />
+        <Button onPress={handleSubmit(onSubmit)} testID="add-post-button">
+          {isPending ? <Spinner /> : <Button.Label>Add Post</Button.Label>}
+        </Button>
       </View>
     </>
   );

@@ -1,24 +1,18 @@
 import { useRouter } from 'expo-router';
+import { Button } from 'heroui-native';
 import React from 'react';
 
-import { Cover } from '@/components/cover';
-import {
-  Button,
-  FocusAwareStatusBar,
-  SafeAreaView,
-  Text,
-  View,
-} from '@/components/ui';
+import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
 import { useIsFirstTime } from '@/lib/hooks';
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
+
   const router = useRouter();
+
   return (
     <View className="flex h-full items-center justify-center">
       <FocusAwareStatusBar />
-      <View className="w-full flex-1">
-        <Cover />
-      </View>
+      <View className="w-full flex-1">{/* <Cover /> */}</View>
       <View className="justify-end">
         <Text className="my-3 text-center text-5xl font-bold">
           Atlas Starter
@@ -42,12 +36,13 @@ export default function Onboarding() {
       </View>
       <SafeAreaView className="mt-6">
         <Button
-          label="Let's Get Started "
           onPress={() => {
             setIsFirstTime(false);
             router.replace('/login');
           }}
-        />
+        >
+          <Button.Label>Let&apos;s Get Started </Button.Label>
+        </Button>
       </SafeAreaView>
     </View>
   );

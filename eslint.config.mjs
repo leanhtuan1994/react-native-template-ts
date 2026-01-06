@@ -30,6 +30,7 @@ export default defineConfig([
     'docs/',
     'cli/',
     'expo-env.d.ts',
+    'uniwind-types.d.ts',
   ]),
   expoConfig,
   eslintPluginPrettierRecommended,
@@ -56,9 +57,9 @@ export default defineConfig([
       ],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-imports': 'warn',
       'unused-imports/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',

@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from 'heroui-native';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import * as z from 'zod';
 
-import { Button, ControlledInput, Text, View } from '@/components/ui';
+import { ControlledInput, Text, View } from '@/components/ui';
 
 const schema = z.object({
   name: z.string().optional(),
@@ -28,16 +29,21 @@ export type LoginFormProps = {
 };
 
 export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
-  const { handleSubmit, control } = useForm<FormType>({
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
       keyboardVerticalOffset={10}
     >
-      <View className="flex-1 justify-center p-4">
+      <View className="flex-1 justify-center gap-2 p-4">
         <View className="items-center justify-center">
           <Text
             testID="form-title"
@@ -75,9 +81,12 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
         />
         <Button
           testID="login-button"
-          label="Login"
           onPress={handleSubmit(onSubmit)}
-        />
+          pressableFeedbackVariant="highlight"
+          isDisabled={!isValid}
+        >
+          <Button.Label>Login</Button.Label>
+        </Button>
       </View>
     </KeyboardAvoidingView>
   );
