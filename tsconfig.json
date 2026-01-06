@@ -18,7 +18,8 @@
     "cli",
     "android",
     "ios",
-    "lint-staged.config.js"
+    "lint-staged.config.js",
+    "__mocks__"
   ],
   "include": [
     "**/*.ts",

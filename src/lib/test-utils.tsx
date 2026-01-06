@@ -4,14 +4,21 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import type { RenderOptions } from '@testing-library/react-native';
 import { render, userEvent } from '@testing-library/react-native';
+import { HeroUINativeProvider } from 'heroui-native';
 import type { ReactElement } from 'react';
 import React from 'react';
 
+import { AppThemeProvider } from '@/lib/contexts/app-theme-context';
+
 const createAppWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
-    <BottomSheetModalProvider>
-      <NavigationContainer>{children}</NavigationContainer>
-    </BottomSheetModalProvider>
+    <AppThemeProvider>
+      <HeroUINativeProvider>
+        <BottomSheetModalProvider>
+          <NavigationContainer>{children}</NavigationContainer>
+        </BottomSheetModalProvider>
+      </HeroUINativeProvider>
+    </AppThemeProvider>
   );
 };
 

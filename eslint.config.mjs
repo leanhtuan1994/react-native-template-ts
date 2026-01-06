@@ -20,6 +20,7 @@ export default defineConfig([
     'dist/*',
     'node_modules',
     '__tests__/',
+    '__mocks__/',
     'coverage',
     '.expo',
     '.expo-shared',
