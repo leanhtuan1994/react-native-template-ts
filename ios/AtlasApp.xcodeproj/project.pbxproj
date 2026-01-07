@@ -8,25 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1D9E10B5332313389A36B004 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2F9AE1E4FC265A96636D73 /* ExpoModulesProvider.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		53394322F08233CA693D69EF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DE6B4A13D18F308B4932E99B /* PrivacyInfo.xcprivacy */; };
-		543CCDE0E8F984A3AD228586 /* libPods-AtlasApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D13D7F23542AF2C00B9822A8 /* libPods-AtlasApp.a */; };
-		7F0A6F9DAD12864784C62BD4 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9EA8FBFEA6B77F8112F274 /* ExpoModulesProvider.swift */; };
+		B3F2823462BA19E3D133F73E /* libPods-AtlasApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A90D7BA0D9BBEBB83BEB245 /* libPods-AtlasApp.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		BC4F6313D0961A7B722600FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B90260F1A7D57F0768AC3959 /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D2F9AE1E4FC265A96636D73 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AtlasApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AtlasApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AtlasApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AtlasApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AtlasApp/Info.plist; sourceTree = "<group>"; };
-		9D9EA8FBFEA6B77F8112F274 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AtlasApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		1A90D7BA0D9BBEBB83BEB245 /* libPods-AtlasApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AtlasApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E535B695CB61FBBA2C8BEC7 /* Pods-AtlasApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AtlasApp.release.xcconfig"; path = "Target Support Files/Pods-AtlasApp/Pods-AtlasApp.release.xcconfig"; sourceTree = "<group>"; };
+		8692970F17ACFC6487A20CA6 /* Pods-AtlasApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AtlasApp.debug.xcconfig"; path = "Target Support Files/Pods-AtlasApp/Pods-AtlasApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = AtlasApp/SplashScreen.storyboard; sourceTree = "<group>"; };
-		AB6C45682E4AA4FEEFB3813A /* Pods-AtlasApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AtlasApp.release.xcconfig"; path = "Target Support Files/Pods-AtlasApp/Pods-AtlasApp.release.xcconfig"; sourceTree = "<group>"; };
-		B6C8264A64CAF228C5180B82 /* Pods-AtlasApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AtlasApp.debug.xcconfig"; path = "Target Support Files/Pods-AtlasApp/Pods-AtlasApp.debug.xcconfig"; sourceTree = "<group>"; };
+		B90260F1A7D57F0768AC3959 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = AtlasApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		D13D7F23542AF2C00B9822A8 /* libPods-AtlasApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AtlasApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE6B4A13D18F308B4932E99B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = AtlasApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AtlasApp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* AtlasApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AtlasApp-Bridging-Header.h"; path = "AtlasApp/AtlasApp-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,13 +37,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				543CCDE0E8F984A3AD228586 /* libPods-AtlasApp.a in Frameworks */,
+				B3F2823462BA19E3D133F73E /* libPods-AtlasApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B50359C406231F9402D0607 /* AtlasApp */ = {
+			isa = PBXGroup;
+			children = (
+				0D2F9AE1E4FC265A96636D73 /* ExpoModulesProvider.swift */,
+			);
+			name = AtlasApp;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* AtlasApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -53,36 +61,36 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				DE6B4A13D18F308B4932E99B /* PrivacyInfo.xcprivacy */,
+				B90260F1A7D57F0768AC3959 /* PrivacyInfo.xcprivacy */,
 			);
 			name = AtlasApp;
-			sourceTree = "<group>";
-		};
-		1F964C3B9A2A89BC1F22C11A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B6C8264A64CAF228C5180B82 /* Pods-AtlasApp.debug.xcconfig */,
-				AB6C45682E4AA4FEEFB3813A /* Pods-AtlasApp.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D13D7F23542AF2C00B9822A8 /* libPods-AtlasApp.a */,
+				1A90D7BA0D9BBEBB83BEB245 /* libPods-AtlasApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3CF8976F6693AA8654757B14 /* AtlasApp */ = {
+		5504547ADC6F5A9966C2D635 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9D9EA8FBFEA6B77F8112F274 /* ExpoModulesProvider.swift */,
+				8692970F17ACFC6487A20CA6 /* Pods-AtlasApp.debug.xcconfig */,
+				6E535B695CB61FBBA2C8BEC7 /* Pods-AtlasApp.release.xcconfig */,
 			);
-			name = AtlasApp;
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		7B6C91092549C1976740EB69 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				0B50359C406231F9402D0607 /* AtlasApp */,
+			);
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -99,8 +107,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				1F964C3B9A2A89BC1F22C11A /* Pods */,
-				FFC2038224F1FAB3B82E6F9A /* ExpoModulesProviders */,
+				5504547ADC6F5A9966C2D635 /* Pods */,
+				7B6C91092549C1976740EB69 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -124,14 +132,6 @@
 			path = AtlasApp/Supporting;
 			sourceTree = "<group>";
 		};
-		FFC2038224F1FAB3B82E6F9A /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				3CF8976F6693AA8654757B14 /* AtlasApp */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AtlasApp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				A516E91067415B7B43BA51C2 /* [Expo] Configure project */,
+				CD65080EE8C2726E6C17570E /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				646BB65A016A7459A5E6ED4A /* [CP] Embed Pods Frameworks */,
+				C10DF298EB13132BAD4750F8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				53394322F08233CA693D69EF /* PrivacyInfo.xcprivacy in Resources */,
+				BC4F6313D0961A7B722600FC /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,28 +242,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		646BB65A016A7459A5E6ED4A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AtlasApp/Pods-AtlasApp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AtlasApp/Pods-AtlasApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,7 +280,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AtlasApp/Pods-AtlasApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A516E91067415B7B43BA51C2 /* [Expo] Configure project */ = {
+		C10DF298EB13132BAD4750F8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AtlasApp/Pods-AtlasApp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AtlasApp/Pods-AtlasApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD65080EE8C2726E6C17570E /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -334,7 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				7F0A6F9DAD12864784C62BD4 /* ExpoModulesProvider.swift in Sources */,
+				1D9E10B5332313389A36B004 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,7 +343,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6C8264A64CAF228C5180B82 /* Pods-AtlasApp.debug.xcconfig */;
+			baseConfigurationReference = 8692970F17ACFC6487A20CA6 /* Pods-AtlasApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -379,7 +379,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB6C45682E4AA4FEEFB3813A /* Pods-AtlasApp.release.xcconfig */;
+			baseConfigurationReference = 6E535B695CB61FBBA2C8BEC7 /* Pods-AtlasApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

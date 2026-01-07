@@ -25,12 +25,16 @@
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },
   "cSpell.words": [
+    "Entypo",
     "Flashlist",
+    "flatlist",
     "heroui",
     "Lato",
     "moti",
     "nativewind",
+    "springify",
     "Uniwind",
+    "viewability",
     "worklets"
   ],
   "i18n-ally.localesPaths": ["src/translations/"],
