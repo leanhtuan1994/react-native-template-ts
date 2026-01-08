@@ -13,7 +13,6 @@ import { Stack } from 'expo-router';
 import { HeroUINativeProvider } from 'heroui-native';
 import React, { useCallback } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
-import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import {
@@ -94,10 +93,7 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             }}
           >
             <APIProvider>
-              <BottomSheetModalProvider>
-                {children}
-                <FlashMessage position="top" />
-              </BottomSheetModalProvider>
+              <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
             </APIProvider>
           </HeroUINativeProvider>
         </AppThemeProvider>

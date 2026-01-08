@@ -10,7 +10,8 @@ This is a production-ready React Native starter kit built with Expo, TypeScript,
 
 - Expo SDK 54 with Custom Dev Client and New Architecture enabled
 - React Native 0.81.5 with React 19
-- Expo Router (file-based routing with typed routes)
+- Expo Router (file-based routing with typed routes enabled)
+- React Compiler (experimental) - enabled in app.config.ts
 - Uniwind (TailwindCSS for React Native)
 - HeroUI Native (UI component library)
 - React Query (react-query-kit) for data fetching
@@ -106,20 +107,29 @@ The project supports three environments (development, staging, production) throu
    - Build-time variables are only available during build process in `app.config.ts`
 4. **Environment Validation:** Uses Zod schemas to validate required variables at build time
 
+**Environment-specific app identifiers:**
+
+- The `withEnvSuffix()` function in `env.js` appends environment suffix to bundle IDs
+- Example: `com.atlas` becomes `com.atlas.staging` for staging
+- Production builds use the base identifier without suffix
+- This allows installing different environment builds side-by-side on the same device
+
 When adding new environment variables:
 
 - Add to the appropriate schema in `env.js` (client or buildTime)
 - Add the variable to the corresponding object (\_clientEnv or \_buildTimeEnv)
-- Create/update the variable in all `.env.*` files
+- Create/update the variable in all `.env.*` files (`.env.development`, `.env.staging`, `.env.production`)
 
 ### File-Based Routing with Expo Router
 
 The app uses Expo Router with typed routes (enabled in app.config.ts):
 
 - **Routes are defined in `src/app/`** directory using file-system conventions
-- `(app)` folder contains authenticated routes
+- `(home)` folder contains main app routes
+- `(components)` folder contains component showcase/documentation routes
 - `_layout.tsx` files define layout hierarchies
 - Route parameters are type-safe via generated types
+- Use typed navigation: `import { router } from 'expo-router'` and `router.push('/(home)/settings')`
 
 ### State Management Architecture
 
@@ -130,12 +140,29 @@ The app uses Expo Router with typed routes (enabled in app.config.ts):
 - Token persistence via MMKV storage
 - Hydration happens on app launch
 
+**Zustand selectors pattern:**
+
+```tsx
+// Creating a store with selectors
+const _useStore = create<StoreState>((set) => ({
+  // your store implementation
+}));
+
+export const useStore = createSelectors(_useStore);
+
+// Usage in components - select only what you need
+const token = useStore.use.token();
+const signIn = useStore.use.signIn();
+```
+
+This pattern auto-generates selector hooks for each state property, improving performance by preventing unnecessary re-renders.
+
 **Server State (React Query):**
 
 - API calls in `src/api/` directory
 - Uses `react-query-kit` for strongly typed queries and mutations
-- Example pattern in `src/api/posts/use-posts.ts`
 - Axios client configured in `src/api/common/client.tsx` with baseURL from env
+- API Provider wraps the app in `src/api/common/api-provider.tsx`
 
 ### Storage Layer
 
@@ -161,9 +188,20 @@ The app wraps components in this provider order (see `src/app/_layout.tsx`):
 Forms use react-hook-form + zod + react-native-keyboard-controller:
 
 ```tsx
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import * as z from 'zod';
+
+import { ControlledInput, View } from '@/components/ui';
+import { Button } from 'heroui-native';
+
 const schema = z.object({
-  /* validation */
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
+
 type FormType = z.infer<typeof schema>;
 
 export const MyForm = ({ onSubmit }: { onSubmit: SubmitHandler<FormType> }) => {
@@ -172,13 +210,34 @@ export const MyForm = ({ onSubmit }: { onSubmit: SubmitHandler<FormType> }) => {
   });
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <ControlledInput control={control} name="fieldName" label="Label" />
-      <Button onPress={handleSubmit(onSubmit)} />
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={10}>
+      <View className="flex-1 p-4">
+        <ControlledInput
+          control={control}
+          name="email"
+          label="Email"
+          testID="email-input"
+        />
+        <ControlledInput
+          control={control}
+          name="password"
+          label="Password"
+          secureTextEntry
+          testID="password-input"
+        />
+        <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 ```
+
+**Key points:**
+
+- `ControlledInput` is a wrapper around HeroUI Native's TextField component
+- Always add `testID` props for testing
+- Use `KeyboardAvoidingView` from react-native-keyboard-controller (not React Native)
+- Error messages are automatically displayed from validation
 
 ### Internationalization (i18n)
 
@@ -186,6 +245,56 @@ export const MyForm = ({ onSubmit }: { onSubmit: SubmitHandler<FormType> }) => {
 - i18next with react-i18next integration
 - ESLint validates translation files (identical keys, sorted keys, valid syntax)
 - Translations are type-safe via custom TypeScript definitions
+
+### Accessing Environment Variables
+
+Client-side environment variables are accessed via `@env`:
+
+```tsx
+import { Env } from '@env';
+
+// Access variables
+const apiUrl = Env.API_URL;
+const appName = Env.NAME;
+```
+
+**Important:**
+
+- `@env` resolves to `src/lib/env.js` which re-exports client env from root `env.js`
+- Only client-side env vars defined in the `client` schema are accessible
+- Build-time variables are only available in `app.config.ts`
+
+### SVG Icon Pattern
+
+When creating SVG icon components, follow this pattern:
+
+```tsx
+import * as React from 'react';
+import Svg, { Path, type SvgProps } from 'react-native-svg';
+
+export function IconName({
+  color = 'currentColor',
+  size = 24,
+  ...props
+}: SvgProps & { size?: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        d="..."
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+```
+
+- Place icon components in `src/components/ui/icons/`
+- Export from `src/components/ui/icons/index.ts`
+- Default size should be 24
+- Support color customization via prop
 
 ## Code Standards (from .cursor/rules)
 
@@ -249,7 +358,24 @@ Key enforced rules (see eslint.config.mjs):
 - Jest + React Native Testing Library
 - Test files: `component-name.test.tsx` (same location as component)
 - Only test utilities and complex components (skip simple presentational components)
-- Test patterns in `src/lib/test-utils.tsx`
+- Test patterns and setup utilities in `src/lib/test-utils.tsx`
+
+**Running tests:**
+
+```bash
+pnpm test                              # Run all tests
+pnpm test:watch                        # Watch mode
+pnpm test <file-pattern>               # Run specific test file(s)
+pnpm test component-name -- --coverage # Run with coverage for specific file
+```
+
+**Test structure:**
+
+- Use `setup()` from test-utils for rendering with providers
+- Use `cleanup()` after each test
+- Group tests by functionality (Rendering, Interactions, State Management)
+- Always add `testID` props to components for reliable selection
+- Avoid testing implementation details
 
 ### Git Commit Messages
 
@@ -265,6 +391,64 @@ Use conventional commit format with lowercase:
 - `chore:` - maintenance tasks
 
 Maximum 100 characters for summary line.
+
+## Common Patterns and Best Practices
+
+### Creating Components from Designs
+
+When implementing UI from designs or images:
+
+1. **Layout Analysis:**
+
+   - Identify main layout structure
+   - List key UI components needed
+   - Check if components from `@/components/ui` or HeroUI Native can be reused
+   - Note spacing, alignment patterns
+
+2. **Implementation:**
+
+   - Use Uniwind for styling with `className` prop
+   - Reuse components from `@/components/ui`
+   - Use placeholder images from `@assets/images/placeholder.png`
+   - Remember: `Animated.View` doesn't support `className`, use `style` prop
+
+3. **Example component structure:**
+
+```tsx
+import * as React from 'react';
+import { Text, View, Image } from '@/components/ui';
+
+type ComponentProps = {
+  title: string;
+};
+
+export function Component({ title }: ComponentProps) {
+  return (
+    <View className="flex-row items-center p-4">
+      <Image
+        source={require('@assets/images/placeholder.png')}
+        style={{ width: 24, height: 24 }}
+        contentFit="contain"
+      />
+      <Text className="ml-2 text-lg">{title}</Text>
+    </View>
+  );
+}
+```
+
+### Using UI Components
+
+**Built-in components from `@/components/ui`:**
+
+- `View`, `Text`, `Image` - Basic building blocks with Uniwind support
+- `ControlledInput` - Form input with react-hook-form integration
+- `FocusAwareStatusBar` - Status bar that updates based on screen focus
+
+**HeroUI Native components** (import from `heroui-native`):
+
+- `Button`, `TextField`, `Card`, `Checkbox`, `Switch`, `Tabs`, `Dialog`, `Popover`, `Select`, etc.
+- Always check HeroUI Native documentation for available props
+- These components already have built-in styling and accessibility
 
 ## Important Implementation Notes
 
@@ -283,3 +467,9 @@ Maximum 100 characters for summary line.
 7. **React Compiler enabled:** The project uses React Compiler (experimental), so avoid manual memoization unless profiling shows it's needed.
 
 8. **New Architecture:** The project has `newArchEnabled: true` in app.config.ts. Be aware of New Architecture compatibility when adding libraries.
+
+9. **Import from correct packages:**
+   - Use `@/components/ui` for basic components (View, Text, Image, ControlledInput)
+   - Use `heroui-native` for UI components (Button, TextField, Card, etc.)
+   - Use `react-native-keyboard-controller` for KeyboardAvoidingView (NOT react-native)
+   - Environment variables: `import { Env } from '@env'`
