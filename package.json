@@ -1,6 +1,6 @@
 {
   "name": "atlasapp",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
