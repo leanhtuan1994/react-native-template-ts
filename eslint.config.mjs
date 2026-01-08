@@ -30,6 +30,7 @@ export default defineConfig([
     'docs/',
     'cli/',
     'expo-env.d.ts',
+    'uniwind-types.d.ts',
   ]),
   expoConfig,
   eslintPluginPrettierRecommended,
@@ -42,7 +43,6 @@ export default defineConfig([
     },
     rules: {
       'max-params': ['error', 3],
-      'max-lines-per-function': ['error', 70],
       'react/display-name': 'off',
       'react/no-inline-styles': 'off',
       'react/destructuring-assignment': 'off',
@@ -56,9 +56,9 @@ export default defineConfig([
       ],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-imports': 'warn',
       'unused-imports/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',

@@ -1,45 +1,13 @@
+import { cn } from 'heroui-native';
 import React from 'react';
-import type { TextProps, TextStyle } from 'react-native';
-import { I18nManager, StyleSheet, Text as NNText } from 'react-native';
-import { twMerge } from 'tailwind-merge';
+import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
-import type { TxKeyPath } from '@/lib/i18n';
-import { translate } from '@/lib/i18n';
+export const Text = React.forwardRef<RNText, RNTextProps>((props, ref) => {
+  const { className, ...restProps } = props;
 
-interface Props extends TextProps {
-  className?: string;
-  tx?: TxKeyPath;
-}
-
-export const Text = ({
-  className = '',
-  style,
-  tx,
-  children,
-  ...props
-}: Props) => {
-  const textStyle = React.useMemo(
-    () =>
-      twMerge(
-        'text-base text-black  dark:text-white  font-inter font-normal',
-        className
-      ),
-    [className]
-  );
-
-  const nStyle = React.useMemo(
-    () =>
-      StyleSheet.flatten([
-        {
-          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
-        },
-        style,
-      ]) as TextStyle,
-    [style]
-  );
   return (
-    <NNText className={textStyle} style={nStyle} {...props}>
-      {tx ? translate(tx) : children}
-    </NNText>
+    <RNText ref={ref} className={cn('font-normal', className)} {...restProps} />
   );
-};
+});
+
+Text.displayName = 'Text';
