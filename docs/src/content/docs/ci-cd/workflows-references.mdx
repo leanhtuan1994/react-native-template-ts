@@ -1,85 +1,811 @@
 ---
-title: Github Action workflows
-description: A list of all the Github Action workflows that come with the starter and how to use them.
+title: GitHub Actions Workflows Reference
+description: Complete reference for all 14 GitHub Actions workflows and 3 custom actions included in Atlas.
 head:
   - tag: title
-    content: Github Action workflows | A list of all the Github Action workflows that come with the starter and how to use them.
+    content: GitHub Actions Workflows | React Native / Expo Starter
 ---
 
 import CodeBlock from '../../../components/code.astro';
 
-The starter comes with over 10 GitHub Actions workflows that help you automate the process of checking, testing, releasing, and much more.
+Atlas comes with **14 production-ready GitHub Actions workflows** and **3 reusable custom actions** that automate quality checks, testing, building, releasing, and maintenance tasks.
 
-All those workflows are self-documented and contain all details directly inside the workflow file as comments. This approach makes it easier to understand what each workflow does and how to use it without having to go back and forth between the documentation and the workflow file.
+## Overview
 
-This page lists all workflows and actions we use and adds more details on the approach we are using to make those workflows as simple as possible.
+All workflows are **self-documented** with detailed comments inside each YAML file, making them easy to understand and customize without switching between files.
 
-All files related to GitHub Actions are located in the `.github/workflows` and `.github/actions` folders.
+**Location:**
+- Workflows: `.github/workflows/`
+- Custom actions: `.github/actions/`
 
-## Actions
+:::tip[Self-Documenting Workflows]
+Each workflow file includes:
+- **Links**: Source file URL and related documentation
+- **Description**: What the workflow does and when it runs
+- **Secrets Required**: GitHub secrets needed (if any)
+- **Usage Examples**: How to trigger or use the workflow
+:::
 
-You can think of actions as functions that are used by workflows to perform a specific task and allow you to reuse the same task in multiple workflows without duplicating the code which made them easier to maintain.
+## Workflow Categories
 
-All actions are located in the `.github/actions` folder, and here is the complete list:
+| Category | Workflows | Total |
+|----------|-----------|-------|
+| **Quality Checks** | Lint, Type Check, Expo Doctor | 3 |
+| **Testing** | Unit Tests, E2E Tests (3 variants) | 4 |
+| **Building** | EAS Build QA, EAS Build Prod | 2 |
+| **Releasing** | New App Version, New GitHub Release | 2 |
+| **Maintenance** | Compress Images, Stale Issues/PRs | 2 |
+| **Documentation** | Deploy Docs to GitHub Pages | 1 |
+| **TOTAL** | | **14** |
 
-### ⚙️ Node setup and PNM install
+## Custom Actions (Reusable)
+
+Custom actions are like functions - they encapsulate common tasks and can be reused across multiple workflows, reducing duplication and improving maintainability.
+
+### 1. Setup Node + pnpm + Install Dependencies
+
+**Purpose:** Sets up Node.js, pnpm package manager, and installs project dependencies with caching.
+
+**Location:** `.github/actions/setup-node-pnpm-install/action.yml`
 
 <CodeBlock file=".github/actions/setup-node-pnpm-install/action.yml" />
 
-### ⚙️ Setup JDK && Generate APK
+**Used in:** Almost every workflow (lint, type-check, test, build, etc.)
+
+**Benefits:**
+- Centralized Node.js and pnpm version management
+- Automatic dependency caching for faster runs
+- Single place to update package manager across all workflows
+
+**Usage:**
+```yaml
+- name: 📦 Setup Node + PNPM + install deps
+  uses: ./.github/actions/setup-node-pnpm-install
+```
+
+---
+
+### 2. Setup JDK & Generate APK
+
+**Purpose:** Sets up Java Development Kit and generates Android APK for testing.
+
+**Location:** `.github/actions/setup-jdk-generate-apk/action.yml`
 
 <CodeBlock file=".github/actions/setup-jdk-generate-apk/action.yml" />
 
-### ⚙️ EAS Build
+**Used in:** E2E Android testing workflows
+
+**What it does:**
+1. Sets up JDK (Java 17)
+2. Configures Gradle caching
+3. Runs prebuild for Android
+4. Generates debug APK
+5. Outputs APK path for testing
+
+**Usage:**
+```yaml
+- name: 📦 Setup JDK & Generate APK
+  uses: ./.github/actions/setup-jdk-generate-apk
+  id: apk
+
+- name: Use APK path
+  run: echo "APK at ${{ steps.apk.outputs.apk-path }}"
+```
+
+---
+
+### 3. EAS Build
+
+**Purpose:** Triggers Expo Application Services (EAS) build for iOS or Android.
+
+**Location:** `.github/actions/eas-build/action.yml`
 
 <CodeBlock file=".github/actions/eas-build/action.yml" />
 
-## Workflows
+**Used in:** EAS Build workflows (QA, Production)
 
-### ⚙️ Linting and formatting
+**Inputs:**
+- `platform`: iOS or Android
+- `profile`: Build profile from `eas.json` (e.g., `qa`, `production`)
+
+**Secrets Required:**
+- `EXPO_TOKEN`: EAS authentication token
+
+**Usage:**
+```yaml
+- name: 📦 EAS Build Android
+  uses: ./.github/actions/eas-build
+  with:
+    platform: android
+    profile: qa
+  env:
+    EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+```
+
+---
+
+## Quality Check Workflows
+
+These workflows ensure code quality, type safety, and Expo compatibility.
+
+### Lint TS (ESLint + Prettier)
+
+**File:** `.github/workflows/lint-ts.yml`
+
+**Triggers:**
+- Push to `main`/`master` branches
+- Pull requests targeting `main`/`master`
+
+**What it does:**
+- Runs ESLint and Prettier checks
+- On PR: Annotates code with errors/warnings via Reviewdog
+- On push: Fails if linting errors exist
+
+**Secrets:** None required
 
 <CodeBlock file=".github/workflows/lint-ts.yml" />
 
-### ⚙️ Type checking
+**Fix linting issues:**
+```bash
+pnpm lint:fix
+```
+
+---
+
+### Type Check (TypeScript)
+
+**File:** `.github/workflows/type-check.yml`
+
+**Triggers:**
+- Push to `main`/`master` branches
+- Pull requests targeting `main`/`master`
+
+**What it does:**
+- Runs TypeScript compiler in check mode
+- Verifies type safety across entire codebase
+- Fails on type errors
+
+**Secrets:** None required
 
 <CodeBlock file=".github/workflows/type-check.yml" />
 
-### ⚙️ Expo Doctor
+**Run type check locally:**
+```bash
+pnpm type-check
+```
+
+---
+
+### Expo Doctor
+
+**File:** `.github/workflows/expo-doctor.yml`
+
+**Triggers:**
+- Push to `main`/`master` branches
+- Pull requests targeting `main`/`master`
+
+**What it does:**
+- Runs `expo-doctor` to check project health
+- Validates Expo configuration
+- Checks for common setup issues
+- Verifies dependency compatibility
+
+**Secrets:** None required
 
 <CodeBlock file=".github/workflows/expo-doctor.yml" />
 
-### ⚙️ Compress Images
+**Run doctor locally:**
+```bash
+pnpm doctor
+```
 
-<CodeBlock file=".github/workflows/compress-images.yml" />
+---
 
-### ⚙️ Running Tests + Coverage Reports
+## Testing Workflows
+
+### Unit Tests + Coverage
+
+**File:** `.github/workflows/test.yml`
+
+**Triggers:**
+- Push to `main`/`master` branches
+- Pull requests targeting `main`/`master`
+
+**What it does:**
+- Runs Jest unit tests
+- Generates coverage report
+- Uploads coverage to Codecov (optional)
+- Fails if tests fail or coverage drops below threshold
+
+**Secrets:**
+- `CODECOV_TOKEN` (optional): For coverage reporting
 
 <CodeBlock file=".github/workflows/test.yml" />
 
-### ⚙️ New App Version
+**Run tests locally:**
+```bash
+pnpm test              # Run all tests
+pnpm test:watch        # Watch mode
+pnpm test:coverage     # With coverage report
+```
 
-<CodeBlock file=".github/workflows/new-app-version.yml" />
+---
 
-### ⚙️ New Github Release
+### E2E Testing (3 Variants)
 
-<CodeBlock file=".github/workflows/new-github-release.yml" />
+Atlas includes **3 different E2E testing workflows** to support various testing strategies.
 
-### ⚙️ EAS Build QA
+#### Variant 1: E2E Android (Local Emulator)
 
-<CodeBlock file=".github/workflows/eas-build-qa.yml" />
+**File:** `.github/workflows/e2e-android.yml`
 
-### ⚙️ EAS Build Prod
+**Triggers:** Manual via workflow_dispatch
 
-<CodeBlock file=".github/workflows/eas-build-prod.yml" />
+**What it does:**
+1. Sets up Android emulator on GitHub runner
+2. Generates debug APK
+3. Installs Maestro
+4. Runs Maestro tests locally
+5. Uploads test results as artifacts
 
-### ⚙️ E2E Test for Android
+**Best for:** CI/CD pipelines with self-hosted runners
+
+**Secrets:** None required
 
 <CodeBlock file=".github/workflows/e2e-android.yml" />
 
-### ⚙️ E2E Test for Android using Maestro Cloud
+---
+
+#### Variant 2: E2E Android Maestro Cloud
+
+**File:** `.github/workflows/e2e-android-maestro.yml`
+
+**Triggers:** Manual via workflow_dispatch
+
+**What it does:**
+1. Generates debug APK
+2. Uploads APK to Maestro Cloud
+3. Runs tests on Maestro Cloud infrastructure
+4. Returns test results
+
+**Best for:** Teams using Maestro Cloud (faster, no emulator setup)
+
+**Secrets:**
+- `MAESTRO_CLOUD_API_KEY`: Maestro Cloud authentication
 
 <CodeBlock file=".github/workflows/e2e-android-maestro.yml" />
 
-### ⚙️ E2E Test for Android using EAS Build
+---
+
+#### Variant 3: E2E Android with EAS Build
+
+**File:** `.github/workflows/e2e-android-eas-build.yml`
+
+**Triggers:** Manual via workflow_dispatch
+
+**What it does:**
+1. Triggers EAS build for Android
+2. Waits for build to complete
+3. Downloads APK from EAS
+4. Uploads to Maestro Cloud
+5. Runs tests on cloud infrastructure
+
+**Best for:** Testing production-like builds on Maestro Cloud
+
+**Secrets:**
+- `EXPO_TOKEN`: EAS authentication
+- `MAESTRO_CLOUD_API_KEY`: Maestro Cloud authentication
 
 <CodeBlock file=".github/workflows/e2e-android-eas-build.yml" />
+
+**Choose the right variant:**
+
+| Variant | Use Case | Pros | Cons |
+|---------|----------|------|------|
+| **Local Emulator** | Self-hosted runners | Free, full control | Slow, requires powerful runners |
+| **Maestro Cloud** | Fast feedback | Very fast, no emulator setup | Requires Maestro Cloud subscription |
+| **EAS + Maestro** | Production testing | Tests real builds | Slowest (build + upload time) |
+
+---
+
+## Building Workflows
+
+### EAS Build QA
+
+**File:** `.github/workflows/eas-build-qa.yml`
+
+**Triggers:** Manual via workflow_dispatch
+
+**Inputs:**
+- `platform`: Choose iOS, Android, or both
+
+**What it does:**
+- Triggers EAS build using `qa` profile from `eas.json`
+- Builds development/staging version of the app
+- Suitable for internal testing
+
+**Secrets:**
+- `EXPO_TOKEN`: EAS authentication token
+
+<CodeBlock file=".github/workflows/eas-build-qa.yml" />
+
+**Trigger manually:**
+1. Go to Actions tab in GitHub
+2. Select "EAS Build QA"
+3. Click "Run workflow"
+4. Choose platform (iOS, Android, or both)
+
+---
+
+### EAS Build Production
+
+**File:** `.github/workflows/eas-build-prod.yml`
+
+**Triggers:** Manual via workflow_dispatch
+
+**Inputs:**
+- `platform`: Choose iOS, Android, or both
+
+**What it does:**
+- Triggers EAS build using `production` profile
+- Builds release/store version of the app
+- Optimized for App Store and Google Play submission
+
+**Secrets:**
+- `EXPO_TOKEN`: EAS authentication token
+
+<CodeBlock file=".github/workflows/eas-build-prod.yml" />
+
+**Trigger manually:**
+1. Go to Actions tab in GitHub
+2. Select "EAS Build Prod"
+3. Click "Run workflow"
+4. Choose platform (iOS, Android, or both)
+
+:::caution[Production Builds]
+Production builds use release configuration and may require additional setup:
+- iOS: Apple Developer account and certificates
+- Android: Play Store signing keys
+- Configure secrets in EAS: `eas secret:create`
+:::
+
+---
+
+## Releasing Workflows
+
+### New App Version
+
+**File:** `.github/workflows/new-app-version.yml`
+
+**Triggers:** Manual via workflow_dispatch
+
+**Inputs:**
+- `release-type`: Choose patch, minor, or major
+
+**What it does:**
+1. Bumps version in `package.json` based on release type
+2. Runs `pnpm prebuild` to sync version with native code
+3. Creates Git tag with new version
+4. Pushes tag to repository
+5. Triggers other workflows (like builds)
+
+**Secrets:**
+- `GH_TOKEN`: GitHub Personal Access Token with write access
+
+**Versioning:**
+- **Patch** (1.0.0 → 1.0.1): Bug fixes
+- **Minor** (1.0.0 → 1.1.0): New features, backward compatible
+- **Major** (1.0.0 → 2.0.0): Breaking changes
+
+<CodeBlock file=".github/workflows/new-app-version.yml" />
+
+**How to use:**
+1. Go to Actions → New App Version
+2. Click "Run workflow"
+3. Select release type (patch/minor/major)
+4. Workflow creates version bump and tag
+5. Check releases page for new tag
+
+---
+
+### New GitHub Release
+
+**File:** `.github/workflows/new-github-release.yml`
+
+**Triggers:** When a new tag is pushed (usually by New App Version workflow)
+
+**What it does:**
+1. Detects new version tag
+2. Extracts changelog from `CHANGELOG.md`
+3. Creates GitHub Release with notes
+4. Marks as pre-release if version contains `-beta`, `-alpha`, etc.
+
+**Secrets:** None required (uses `GITHUB_TOKEN`)
+
+<CodeBlock file=".github/workflows/new-github-release.yml" />
+
+**Workflow:**
+1. Run "New App Version" workflow
+2. This workflow automatically triggers on tag push
+3. GitHub Release created with changelog
+4. Download builds from EAS and attach to release manually
+
+---
+
+## Maintenance Workflows
+
+### Compress Images
+
+**File:** `.github/workflows/compress-images.yml`
+
+**Triggers:**
+- Pull requests that modify image files (`.png`, `.jpg`, `.jpeg`, `.gif`)
+
+**What it does:**
+1. Detects image changes in PR
+2. Compresses images using calibreapp/image-actions
+3. Commits optimized images back to PR
+4. Reduces bundle size automatically
+
+**Secrets:** None required
+
+<CodeBlock file=".github/workflows/compress-images.yml" />
+
+**How it works:**
+1. Add/modify images in a PR
+2. Workflow automatically compresses them
+3. Compressed images are committed to your branch
+4. Review and merge as usual
+
+**Compression settings:**
+- PNG: Lossless compression
+- JPEG: Quality 80%
+- GIF: Optimized without losing animation
+
+---
+
+### Stale Issues and PRs
+
+**File:** `.github/workflows/stale.yml`
+
+**Triggers:** Daily at midnight (cron: `0 0 * * *`)
+
+**What it does:**
+- Marks issues/PRs stale after 60 days of inactivity
+- Adds label: `no-issue-activity` or `no-pr-activity`
+- Posts comment warning about closure
+- Closes stale items after 14 more days
+
+**Secrets:** None required (uses `GITHUB_TOKEN`)
+
+<CodeBlock file=".github/workflows/stale.yml" />
+
+**Prevent closure:**
+- Comment on the issue/PR
+- Remove the stale label
+- Push new commits (for PRs)
+
+**Customize:**
+Edit `.github/workflows/stale.yml` to change:
+- `days-before-stale`: Days before marking stale (default: 60)
+- `days-before-close`: Days before closing after stale (default: 14)
+- Stale messages
+
+---
+
+## Documentation Workflow
+
+### Deploy Docs to GitHub Pages
+
+**File:** `.github/workflows/deploy-docs.yml`
+
+**Triggers:**
+- Push to `master` branch with changes in `docs/**`
+- Manual via workflow_dispatch
+
+**What it does:**
+1. Builds Astro documentation site
+2. Uploads to GitHub Pages
+3. Deploys to configured URL
+4. Automatically updates live docs
+
+**Secrets:** None required (uses built-in `GITHUB_TOKEN`)
+
+<CodeBlock file=".github/workflows/deploy-docs.yml" />
+
+**Setup GitHub Pages:**
+1. Go to Settings → Pages
+2. Source: GitHub Actions
+3. Push to `docs/` folder
+4. Docs deploy automatically
+
+**Local development:**
+```bash
+cd docs
+pnpm install
+pnpm dev        # Start dev server
+pnpm build      # Build for production
+```
+
+---
+
+## Workflow Triggers Reference
+
+| Trigger | Description | Example Workflows |
+|---------|-------------|-------------------|
+| **push** | On push to specific branches | lint-ts, type-check, test, deploy-docs |
+| **pull_request** | On PR to specific branches | lint-ts, type-check, test, expo-doctor |
+| **workflow_dispatch** | Manual trigger from Actions tab | eas-build-qa, eas-build-prod, new-app-version |
+| **schedule** | Cron-based schedule | stale (daily) |
+| **push (tags)** | On new tag creation | new-github-release |
+
+## Required GitHub Secrets
+
+Configure these secrets in **Settings → Secrets and variables → Actions**:
+
+### Required for EAS Builds
+
+**`EXPO_TOKEN`**
+- **Used in:** eas-build-qa, eas-build-prod, e2e-android-eas-build
+- **How to get:**
+  ```bash
+  npx eas login
+  npx eas whoami  # Verify login
+  # Create token at: https://expo.dev/accounts/[account]/settings/access-tokens
+  ```
+- **Permissions:** Build and submit apps
+
+### Required for Versioning
+
+**`GH_TOKEN`**
+- **Used in:** new-app-version
+- **How to get:** GitHub Settings → Developer settings → Personal access tokens → Generate new token (classic)
+- **Permissions:** `repo` (Full control of private repositories)
+
+### Optional for E2E Testing
+
+**`MAESTRO_CLOUD_API_KEY`**
+- **Used in:** e2e-android-maestro, e2e-android-eas-build
+- **How to get:** Maestro Cloud dashboard → API Keys
+- **Required:** Only if using Maestro Cloud
+
+### Optional for Coverage
+
+**`CODECOV_TOKEN`**
+- **Used in:** test (optional)
+- **How to get:** Codecov.io dashboard
+- **Required:** Only if uploading coverage reports
+
+---
+
+## Best Practices
+
+### 1. Enable Required Workflows
+
+Mark critical workflows as required in branch protection:
+
+**Settings → Branches → Branch protection rules → Add rule**
+
+Required checks:
+- ✅ Lint TS
+- ✅ Type Check
+- ✅ Unit Tests
+- ✅ Expo Doctor
+
+This prevents merging PRs with failing checks.
+
+### 2. Customize Workflow Triggers
+
+Adjust when workflows run by editing trigger conditions:
+
+```yaml
+# Run only on specific branches
+on:
+  push:
+    branches: [main, develop]
+
+# Run only on specific file changes
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'package.json'
+
+# Exclude documentation changes
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+```
+
+### 3. Use Concurrency Controls
+
+Prevent multiple runs of the same workflow:
+
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+```
+
+### 4. Cache Dependencies
+
+All workflows use pnpm caching via the custom action. If adding new workflows:
+
+```yaml
+- name: Setup Node + pnpm + install
+  uses: ./.github/actions/setup-node-pnpm-install
+```
+
+This is faster than manually setting up caching.
+
+### 5. Monitor Workflow Usage
+
+**Actions tab → Workflow name → View runs**
+
+- Check run duration trends
+- Identify slow workflows
+- Review failure patterns
+- Optimize bottlenecks
+
+### 6. Keep Workflows Up to Date
+
+Update GitHub Actions versions regularly:
+
+```bash
+# Check for outdated actions
+gh api repos/:owner/:repo/actions/workflows | jq '.workflows[].path'
+
+# Update actions to latest
+# actions/checkout@v3 → actions/checkout@v4
+```
+
+### 7. Test Workflow Changes in Forks
+
+Before modifying workflows in main repo:
+1. Fork the repository
+2. Modify workflow in fork
+3. Test by triggering manually
+4. Once working, PR to main repo
+
+---
+
+## Troubleshooting
+
+### Workflow Fails: "Resource not accessible by integration"
+
+**Problem:** Workflow lacks required permissions.
+
+**Solution:** Add permissions to workflow:
+```yaml
+permissions:
+  contents: write
+  pull-requests: write
+```
+
+### EAS Build Fails: "Invalid Expo token"
+
+**Problem:** `EXPO_TOKEN` secret not configured or expired.
+
+**Solution:**
+1. Generate new token: https://expo.dev/accounts/[account]/settings/access-tokens
+2. Add to GitHub secrets: Settings → Secrets → New repository secret
+3. Name: `EXPO_TOKEN`, Value: token from Expo
+
+### New App Version Fails: "Permission denied"
+
+**Problem:** `GH_TOKEN` lacks write permissions.
+
+**Solution:**
+1. Generate new GitHub PAT with `repo` scope
+2. Update secret in Settings → Secrets → Update `GH_TOKEN`
+
+### Maestro E2E Fails: "APK not found"
+
+**Problem:** APK path incorrect or build failed.
+
+**Solution:**
+1. Check "Setup JDK & Generate APK" step succeeded
+2. Verify APK path: `android/app/build/outputs/apk/debug/app-debug.apk`
+3. Check Android build logs for errors
+
+### Type Check Fails Locally but Passes in CI
+
+**Problem:** Different TypeScript versions or cache issues.
+
+**Solution:**
+```bash
+# Clear TypeScript cache
+rm -rf node_modules/.cache
+
+# Reinstall dependencies
+pnpm install --frozen-lockfile
+
+# Run type check
+pnpm type-check
+```
+
+### Stale Bot Closing Active Issues
+
+**Problem:** Issues marked stale despite activity.
+
+**Solution:** Edit `.github/workflows/stale.yml`:
+```yaml
+days-before-stale: 90  # Increase from 60
+days-before-close: 30  # Increase from 14
+```
+
+---
+
+## Workflow Execution Order
+
+For a typical release process:
+
+```
+1. Development
+   ├─ [On every commit/PR]
+   │  ├─ Lint TS ✓
+   │  ├─ Type Check ✓
+   │  ├─ Unit Tests ✓
+   │  └─ Expo Doctor ✓
+   │
+2. Ready to Release
+   ├─ [Manual] New App Version
+   │  ├─ Bumps version
+   │  └─ Creates git tag
+   │
+3. Automatic on Tag
+   ├─ New GitHub Release
+   │  └─ Creates release with changelog
+   │
+4. Build for Distribution
+   ├─ [Manual] EAS Build Prod
+   │  ├─ iOS Build
+   │  └─ Android Build
+   │
+5. E2E Testing (Optional)
+   └─ [Manual] E2E Android Maestro
+      └─ Validates build quality
+```
+
+---
+
+## Additional Resources
+
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [EAS Build Documentation](https://docs.expo.dev/build/introduction/)
+- [Maestro Documentation](https://maestro.mobile.dev/)
+- [Expo Application Services](https://expo.dev/eas)
+- [App Releasing Process](/ci-cd/app-releasing-process/) (Atlas guide)
+- [CI/CD Overview](/ci-cd/overview/) (Atlas guide)
+
+---
+
+## Summary
+
+**14 Workflows Included:**
+
+| # | Workflow | Trigger | Purpose |
+|---|----------|---------|---------|
+| 1 | Lint TS | PR/Push | Code quality (ESLint + Prettier) |
+| 2 | Type Check | PR/Push | TypeScript type safety |
+| 3 | Expo Doctor | PR/Push | Expo configuration health |
+| 4 | Unit Tests | PR/Push | Jest tests + coverage |
+| 5 | E2E Android | Manual | E2E tests (local emulator) |
+| 6 | E2E Maestro Cloud | Manual | E2E tests (Maestro Cloud) |
+| 7 | E2E EAS + Maestro | Manual | E2E tests (production build) |
+| 8 | EAS Build QA | Manual | QA/staging builds |
+| 9 | EAS Build Prod | Manual | Production builds |
+| 10 | New App Version | Manual | Version bumps + tags |
+| 11 | New GitHub Release | Tag push | GitHub releases |
+| 12 | Compress Images | PR | Image optimization |
+| 13 | Stale Issues/PRs | Daily | Housekeeping |
+| 14 | Deploy Docs | Push | Documentation site |
+
+**3 Custom Actions:**
+1. Setup Node + pnpm + Install
+2. Setup JDK & Generate APK
+3. EAS Build
+
+All workflows are **production-ready**, **self-documented**, and **customizable** for your specific needs.

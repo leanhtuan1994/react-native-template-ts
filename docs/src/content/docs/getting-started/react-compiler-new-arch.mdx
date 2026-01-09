@@ -1,0 +1,766 @@
+---
+title: React Compiler & New Architecture
+description: Understanding the experimental features enabled in Atlas starter v9.0.0 - React Compiler and New Architecture.
+head:
+  - tag: title
+    content: React Compiler & New Architecture | React Native / Expo Starter
+---
+
+Atlas starter v9.0.0 enables two **experimental features** that represent the future of React Native development. This guide explains what they are, how they affect your development, and when you might need to disable them.
+
+## Overview
+
+Both features are enabled in `app.config.ts`:
+
+```typescript
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  // ...
+  newArchEnabled: true,              // Line 33
+  experiments: {
+    typedRoutes: true,                // Type-safe navigation
+    reactCompiler: true,              // Automatic optimization
+  },
+  // ...
+});
+```
+
+:::caution
+**Experimental Status**: While both features are stable enough for production use in Expo SDK 54, they're still marked as experimental. The React Native and React teams are actively developing them, and APIs may evolve.
+:::
+
+---
+
+## React Compiler
+
+### What is React Compiler?
+
+React Compiler (formerly "React Forget") is an **automatic optimization tool** that compiles your React components to eliminate the need for manual memoization.
+
+**Traditional React (without compiler):**
+```tsx
+import { useMemo, useCallback } from 'react';
+
+function ExpensiveComponent({ data, onUpdate }) {
+  // Manual memoization required
+  const processedData = useMemo(() => {
+    return data.map(item => transformItem(item));
+  }, [data]);
+
+  const handleUpdate = useCallback((id) => {
+    onUpdate(id);
+  }, [onUpdate]);
+
+  return <View>{/* render */}</View>;
+}
+
+// Manual component memoization
+export default React.memo(ExpensiveComponent);
+```
+
+**With React Compiler (enabled in Atlas):**
+```tsx
+// No manual memoization needed!
+function ExpensiveComponent({ data, onUpdate }) {
+  // Compiler automatically optimizes this
+  const processedData = data.map(item => transformItem(item));
+
+  const handleUpdate = (id) => {
+    onUpdate(id);
+  };
+
+  return <View>{/* render */}</View>;
+}
+
+// No React.memo needed - compiler handles it
+export default ExpensiveComponent;
+```
+
+### How It Works
+
+The React Compiler analyzes your components during the build process and automatically:
+
+1. **Memoizes expensive computations** - Caches results of heavy calculations
+2. **Prevents unnecessary re-renders** - Skips rendering when props/state haven't changed
+3. **Optimizes callbacks** - Stabilizes function references automatically
+4. **Eliminates manual optimization** - No need for `useMemo`, `useCallback`, `React.memo`
+
+**The result:** Simpler code that's automatically optimized for performance.
+
+### What Changes for You
+
+#### Write Simpler Code
+
+```tsx
+// ✅ BEFORE React Compiler - Manual optimization
+function UserProfile({ user, onSave }) {
+  const fullName = useMemo(() => {
+    return `${user.firstName} ${user.lastName}`;
+  }, [user.firstName, user.lastName]);
+
+  const handleSave = useCallback(() => {
+    onSave(user.id);
+  }, [onSave, user.id]);
+
+  return (
+    <View>
+      <Text>{fullName}</Text>
+      <Button onPress={handleSave}>Save</Button>
+    </View>
+  );
+}
+
+export default React.memo(UserProfile);
+```
+
+```tsx
+// ✅ WITH React Compiler - Automatic optimization
+function UserProfile({ user, onSave }) {
+  const fullName = `${user.firstName} ${user.lastName}`;
+
+  const handleSave = () => {
+    onSave(user.id);
+  };
+
+  return (
+    <View>
+      <Text>{fullName}</Text>
+      <Button onPress={handleSave}>Save</Button>
+    </View>
+  );
+}
+
+export default UserProfile;
+```
+
+#### Trust the Compiler
+
+- **Don't pre-optimize:** Write straightforward code, let the compiler optimize
+- **Remove manual memoization:** No need for `useMemo`/`useCallback`/`React.memo` in most cases
+- **Keep code readable:** Prioritize clarity over manual performance tricks
+
+### Performance Benefits
+
+**Measured improvements in production apps:**
+- 30-50% reduction in re-renders
+- Faster component mount times
+- Reduced memory usage from fewer function recreations
+- Better scroll performance in lists
+
+### Limitations & Edge Cases
+
+While React Compiler handles most cases, there are scenarios where it doesn't apply:
+
+#### 1. Dynamic Dependencies
+
+```tsx
+// ❌ Compiler can't optimize this
+function DynamicComponent({ fields }) {
+  // deps array is dynamic - compiler can't determine dependencies
+  const result = useMemo(() => {
+    return fields.reduce((acc, field) => acc + field, 0);
+  }, fields); // Array spread - compiler skips optimization
+
+  return <Text>{result}</Text>;
+}
+```
+
+**Solution:** Keep dependencies explicit and static when possible.
+
+#### 2. External Libraries
+
+Third-party libraries not compiled with React Compiler won't benefit:
+
+```tsx
+// ❌ External library might not be optimized
+import SomeLibraryComponent from 'some-library';
+
+// You still benefit from compiler in your code
+function YourComponent() {
+  // This is optimized by compiler
+  const data = computeData();
+
+  // But SomeLibraryComponent isn't
+  return <SomeLibraryComponent data={data} />;
+}
+```
+
+#### 3. Code with Side Effects
+
+```tsx
+// ⚠️ Compiler is cautious with side effects
+function ComponentWithSideEffects() {
+  // Compiler won't optimize this aggressively
+  // because of the console.log side effect
+  const value = (() => {
+    console.log('Computing...');
+    return computeExpensiveValue();
+  })();
+
+  return <Text>{value}</Text>;
+}
+```
+
+### When to Still Use Manual Memoization
+
+Keep `useMemo`/`useCallback` in these specific cases:
+
+#### 1. Extremely Expensive Operations
+
+```tsx
+function DataProcessor({ dataset }) {
+  // Keep useMemo for operations taking >100ms
+  const processedData = useMemo(() => {
+    return dataset.map(item => {
+      // Complex processing taking 200ms+
+      return expensiveTransform(item);
+    });
+  }, [dataset]);
+
+  return <DataView data={processedData} />;
+}
+```
+
+#### 2. Referential Equality Requirements
+
+```tsx
+function FormWithDeepComparison({ initialValues }) {
+  // Some libraries do deep equality checks
+  // and need stable references
+  const config = useMemo(() => ({
+    fields: initialValues,
+    validators: [...]
+  }), [initialValues]);
+
+  return <DeepComparisonForm config={config} />;
+}
+```
+
+#### 3. After Profiling Shows Issues
+
+```tsx
+// Profile first, then optimize if needed
+function OptimizedAfterProfiling({ data }) {
+  // Added useMemo after React DevTools Profiler
+  // showed this was causing performance issues
+  const sortedData = useMemo(() => {
+    return [...data].sort(customSort);
+  }, [data]);
+
+  return <List data={sortedData} />;
+}
+```
+
+### Debugging React Compiler
+
+#### Check if Compiler is Active
+
+```tsx
+// In development, check console for compilation warnings
+// You'll see messages like:
+// "Component 'MyComponent' was optimized by React Compiler"
+```
+
+#### Disable for Specific Files
+
+If a component has issues, opt-out with a directive:
+
+```tsx
+// @react-compiler-disable
+
+// Compiler will skip this file
+function ProblematicComponent() {
+  // Your code here
+}
+```
+
+#### Common Issues
+
+**Problem:** Component not updating when it should
+
+**Cause:** Compiler over-optimized based on incorrect assumptions
+
+**Solution:**
+```tsx
+// Force re-render with key prop
+<ComponentNotUpdating key={forceUpdateKey} />
+
+// Or disable compiler for that component
+```
+
+---
+
+## New Architecture
+
+### What is New Architecture?
+
+React Native's **New Architecture** (also called "Fabric" + "TurboModules") is a complete rewrite of React Native's core rendering and native module systems.
+
+**Key Changes:**
+- **Fabric:** New rendering engine replacing the old "Bridge"
+- **TurboModules:** Faster native module system with lazy loading
+- **JSI (JavaScript Interface):** Direct JavaScript-to-native communication
+- **Codegen:** Automatic type-safe bindings between JS and native code
+
+### Why It Matters
+
+#### Old Architecture (Bridge-Based)
+
+```
+JavaScript                 Bridge (Async)              Native
+   |                            |                         |
+   |--- Send JSON message ----->|                         |
+   |                            |--- Parse & forward ---->|
+   |                            |                         |
+   |<--- Send JSON response ----|<--- Process & return ---|
+   |                            |                         |
+```
+
+**Problems:**
+- Everything async (even simple getters)
+- JSON serialization overhead
+- No direct memory access
+- Performance bottlenecks
+
+#### New Architecture (JSI-Based)
+
+```
+JavaScript                 JSI (Sync)                  Native
+   |                            |                         |
+   |--- Direct function call -->|--- Immediate access --->|
+   |<--- Return value ----------|<--- Return directly ----|
+   |                            |                         |
+```
+
+**Benefits:**
+- Synchronous access to native modules
+- No JSON serialization
+- Direct memory sharing (ArrayBuffers)
+- Better performance
+
+### Performance Improvements
+
+**Measured in production apps with New Architecture:**
+
+| Metric | Improvement |
+|--------|-------------|
+| **App Launch Time** | 20-30% faster |
+| **Frame Rate** | More consistent 60fps |
+| **Memory Usage** | 10-15% reduction |
+| **Native Module Calls** | 2-3x faster |
+| **Large List Scrolling** | Smoother, fewer drops |
+
+### What Changes for You
+
+#### 1. Synchronous Native Access
+
+```tsx
+// OLD: Async bridge
+const value = await NativeModules.Settings.getValue('key');
+
+// NEW: Synchronous JSI
+const value = NativeModules.Settings.getValue('key'); // No await!
+```
+
+**In practice:** Most libraries handle this for you, but it means better performance.
+
+#### 2. Better Thread Management
+
+```tsx
+// New Architecture automatically manages threads better
+// You don't need to worry about main thread blocking as much
+
+function HeavyComponent() {
+  // This is more performant on New Architecture
+  const data = processLargeDataset();
+  return <View>{data}</View>;
+}
+```
+
+#### 3. Improved Reanimated Support
+
+```tsx
+import Animated, { useSharedValue } from 'react-native-reanimated';
+
+// Reanimated + New Architecture = Smoother animations
+function AnimatedComponent() {
+  const offset = useSharedValue(0);
+
+  // 60fps animations even with complex transforms
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
+
+  return <Animated.View style={animatedStyle} />;
+}
+```
+
+### Library Compatibility
+
+Most popular libraries support New Architecture:
+
+**✅ Fully Compatible:**
+- React Navigation
+- React Native Reanimated
+- React Native Gesture Handler
+- React Native Screens
+- React Native Safe Area Context
+- React Native MMKV
+- Expo SDK (all modules)
+- HeroUI Native
+- Uniwind
+
+**⚠️ Partial Support:**
+- Some older native modules may need updates
+- Check [React Native Directory](https://reactnative.directory/) for library status
+
+**❌ Not Compatible:**
+- Very old libraries (pre-2020) without updates
+- Libraries using old native module system without migration
+
+### Checking Library Compatibility
+
+Before adding a new library:
+
+```bash
+# Check React Native Directory
+open https://reactnative.directory/
+
+# Search for the library and check "New Architecture" badge
+```
+
+### Troubleshooting New Architecture
+
+#### Issue: App crashes on startup
+
+**Possible cause:** Incompatible native module
+
+**Solution:**
+1. Check all dependencies for New Architecture support
+2. Update libraries to latest versions
+3. Remove incompatible libraries temporarily
+
+#### Issue: Native module not found
+
+**Possible cause:** Module needs rebuilding
+
+**Solution:**
+```bash
+# iOS
+cd ios && pod deintegrate && pod install && cd ..
+
+# Android
+cd android && ./gradlew clean && cd ..
+
+# Rebuild
+pnpm prebuild
+```
+
+#### Issue: Performance regression
+
+**Possible cause:** Library not optimized for New Architecture
+
+**Solution:**
+- Check library issues/discussions
+- Update to latest version
+- Contact library maintainer
+
+---
+
+## When to Disable These Features
+
+### Disable React Compiler If:
+
+1. **Debugging optimization issues**
+   ```typescript
+   // app.config.ts
+   experiments: {
+     reactCompiler: false, // Temporarily disable
+   }
+   ```
+
+2. **Specific components have problems**
+   ```tsx
+   // Add to top of file
+   // @react-compiler-disable
+   ```
+
+3. **Working with very old codebases**
+   - Large legacy codebases might need gradual migration
+
+### Disable New Architecture If:
+
+1. **Critical library doesn't support it**
+   ```typescript
+   // app.config.ts
+   newArchEnabled: false,
+   ```
+
+2. **Debugging native module issues**
+   - Easier to debug with old architecture initially
+
+3. **Third-party SDK requires old architecture**
+   - Some enterprise SDKs may lag behind
+
+### Disabling Steps
+
+**1. Update `app.config.ts`:**
+```typescript
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  // ...
+  newArchEnabled: false,     // Disable New Architecture
+  experiments: {
+    typedRoutes: true,
+    reactCompiler: false,    // Disable React Compiler
+  },
+  // ...
+});
+```
+
+**2. Clear build caches:**
+```bash
+# Clear all caches
+rm -rf node_modules
+rm -rf ios/build android/app/build
+rm -rf .expo
+
+# Reinstall
+pnpm install
+
+# Rebuild native projects
+pnpm prebuild
+
+# Clear Metro cache
+pnpm start --clear
+```
+
+**3. Rebuild app:**
+```bash
+# iOS
+pnpm ios
+
+# Android
+pnpm android
+```
+
+---
+
+## Best Practices
+
+### With React Compiler
+
+**DO ✅**
+- Write simple, readable code
+- Trust the compiler to optimize
+- Profile before manually optimizing
+- Remove unnecessary memoization
+- Keep dependencies explicit
+
+**DON'T ❌**
+- Don't over-optimize prematurely
+- Don't assume manual memoization is always better
+- Don't skip testing after removing memoization
+- Don't forget to profile in production mode
+
+### With New Architecture
+
+**DO ✅**
+- Check library compatibility before installing
+- Update libraries regularly
+- Test thoroughly on both platforms
+- Use Expo modules when possible (built for New Architecture)
+- Monitor crash reports for native issues
+
+**DON'T ❌**
+- Don't assume all libraries work immediately
+- Don't skip testing after library updates
+- Don't ignore deprecation warnings
+- Don't mix old and new native module patterns
+
+---
+
+## Testing Your App
+
+### Verify React Compiler is Active
+
+```bash
+# Build in production mode
+pnpm prebuild:production
+
+# Check build output for compiler messages
+# Look for: "Compiled N components with React Compiler"
+```
+
+### Verify New Architecture is Active
+
+```tsx
+// Add to a screen temporarily
+import { LogBox, Text, View } from 'react-native';
+
+export default function DebugScreen() {
+  const isFabric = global.nativeFabricUIManager != null;
+
+  return (
+    <View>
+      <Text>New Architecture: {isFabric ? 'Enabled ✅' : 'Disabled ❌'}</Text>
+    </View>
+  );
+}
+```
+
+Or check native logs:
+
+```bash
+# iOS logs
+# Look for: "Fabric enabled: true"
+
+# Android logs
+adb logcat | grep -i fabric
+# Look for: "Fabric is enabled"
+```
+
+---
+
+## Performance Monitoring
+
+### Profile React Compiler Impact
+
+Use React DevTools Profiler:
+
+```bash
+# Install React DevTools
+npm install -g react-devtools
+
+# Run app with profiler
+react-devtools
+pnpm start
+```
+
+**What to look for:**
+- Reduced component render counts
+- Fewer "Memo" indicators needed
+- Faster "Commit" times
+
+### Monitor New Architecture Performance
+
+```tsx
+// Add performance markers
+import { performance } from 'react-native';
+
+function measurePerformance() {
+  performance.mark('operation-start');
+  // ... do something
+  performance.mark('operation-end');
+
+  performance.measure(
+    'operation',
+    'operation-start',
+    'operation-end'
+  );
+}
+```
+
+---
+
+## Migration Path
+
+If you're upgrading from an older starter version without these features:
+
+### Phase 1: Enable New Architecture First
+
+1. Update `app.config.ts`: `newArchEnabled: true`
+2. Update all dependencies to latest versions
+3. Test thoroughly on both platforms
+4. Fix any compatibility issues
+
+### Phase 2: Enable React Compiler
+
+1. Update `app.config.ts`: `reactCompiler: true`
+2. Remove unnecessary `useMemo`/`useCallback`/`React.memo` gradually
+3. Test each change
+4. Profile to verify improvements
+
+### Phase 3: Optimize
+
+1. Profile app with both features enabled
+2. Identify remaining bottlenecks
+3. Add manual optimizations only where profiling shows need
+4. Monitor production performance
+
+---
+
+## Resources
+
+### Official Documentation
+
+- **React Compiler:** [https://react.dev/learn/react-compiler](https://react.dev/learn/react-compiler)
+- **New Architecture:** [https://reactnative.dev/docs/new-architecture-intro](https://reactnative.dev/docs/new-architecture-intro)
+- **Expo New Architecture:** [https://docs.expo.dev/guides/new-architecture/](https://docs.expo.dev/guides/new-architecture/)
+
+### Tools & Libraries
+
+- **React Native Directory:** [https://reactnative.directory/](https://reactnative.directory/) - Check library compatibility
+- **React DevTools:** Profile React Compiler optimizations
+- **Flipper:** Debug native modules on New Architecture
+
+### Community Resources
+
+- React Native New Architecture Working Group
+- Expo Discord #new-architecture channel
+- React Compiler RFC discussions
+
+---
+
+## FAQ
+
+### Q: Should I remove all useMemo/useCallback from my code?
+
+**A:** No, not immediately. Remove them gradually:
+1. Profile first to understand current performance
+2. Remove memoization from simple components
+3. Keep memoization for extremely expensive operations (>100ms)
+4. Test and profile after each change
+
+### Q: Will React Compiler make my app slower?
+
+**A:** No. React Compiler only adds optimizations, never removes them. If it can't optimize safely, it leaves code unchanged.
+
+### Q: Can I use New Architecture with Expo Go?
+
+**A:** Partially. Expo Go in Expo SDK 54+ has New Architecture enabled, but you need a custom dev client for full support with native modules. Use `pnpm prebuild` and `pnpm ios`/`pnpm android`.
+
+### Q: What if a critical library doesn't support New Architecture?
+
+**A:** You have options:
+1. Disable New Architecture temporarily: `newArchEnabled: false`
+2. Find an alternative library that supports it
+3. Wait for library to update (check GitHub issues)
+4. Contribute a PR to add support
+
+### Q: How do I know if React Compiler optimized my component?
+
+**A:** Check build logs or use React DevTools Profiler. Optimized components will have fewer re-renders and faster commit times.
+
+### Q: Can I gradually adopt React Compiler per-file?
+
+**A:** The compiler is enabled globally, but you can opt-out specific files with `// @react-compiler-disable` directive at the top of the file.
+
+---
+
+## Summary
+
+Atlas starter v9.0.0 enables **React Compiler** and **New Architecture** to provide:
+
+✅ **Automatic performance optimization** without manual memoization
+✅ **Faster native module access** and better threading
+✅ **Improved app startup time** and frame rates
+✅ **Simpler code** that's easier to maintain
+✅ **Future-proof architecture** aligned with React Native's direction
+
+**Bottom line:** These features make your app faster and your code simpler. Start building with confidence, and only disable them if you encounter specific compatibility issues with third-party libraries.
+
+---
+
+**Next Steps:**
+- [Project Structure](./project-structure/) - Understand the codebase organization
+- [Rules and Conventions](./rules-and-conventions/) - Code standards for React Compiler era
+- [Performance Optimization](../../advanced-topics/performance-optimization/) - Advanced optimization techniques (coming soon)

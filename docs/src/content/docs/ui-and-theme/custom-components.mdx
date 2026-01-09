@@ -1,0 +1,649 @@
+---
+title: Custom Components
+description: Documentation for custom UI components built specifically for Atlas starter.
+head:
+  - tag: title
+    content: Custom Components | React Native / Expo Starter
+---
+
+import CodeBlock from '../../../components/code.astro';
+
+While most UI components come from [HeroUI Native](./heroui-native/), the Atlas starter includes a small set of custom components designed for specific needs that aren't covered by the UI library.
+
+:::note
+**Design Philosophy:** We keep custom components minimal and focused. For general UI needs (buttons, inputs, cards, etc.), use [HeroUI Native components](./heroui-native/). Only use these custom components for their specific purposes.
+:::
+
+## Custom Components Overview
+
+Located in `src/components/ui/`, the starter provides **6 custom components**:
+
+1. **Image** - Expo Image wrapper with Uniwind support
+2. **Text** - i18n-enabled text component with RTL support
+3. **ControlledInput** - Form input with react-hook-form integration
+4. **List** - FlashList wrapper with empty state support
+5. **Modal** - Bottom sheet modal wrapper
+6. **FocusAwareStatusBar** - Status bar that updates on screen focus
+
+## Image Component
+
+A wrapper around `expo-image` with Uniwind (TailwindCSS) styling support via the `className` prop.
+
+### Why a custom Image?
+
+- **Uniwind Integration:** Native `expo-image` doesn't support `className`, this wrapper adds it
+- **Performance:** Uses expo-image which is faster and more efficient than React Native's Image
+- **Consistent API:** Provides the same styling approach as other components
+
+### Usage
+
+<CodeBlock file="src/components/ui/image.tsx" />
+
+**Props:**
+- All `expo-image` props are supported
+- `className` - Uniwind (TailwindCSS) class names for styling
+
+**Example:**
+
+```tsx
+import { Image } from '@/components/ui';
+
+export function ProfilePicture() {
+  return (
+    <Image
+      className="h-24 w-24 rounded-full"
+      source={{ uri: 'https://example.com/avatar.jpg' }}
+      contentFit="cover"
+      placeholder={require('@assets/images/placeholder.png')}
+    />
+  );
+}
+```
+
+**Common Use Cases:**
+```tsx
+// Avatar image
+<Image className="h-16 w-16 rounded-full" source={avatarUri} />
+
+// Full width banner
+<Image className="h-48 w-full" source={bannerUri} contentFit="cover" />
+
+// Card thumbnail
+<Image className="h-32 w-32 rounded-lg" source={thumbUri} />
+
+// Icon image
+<Image className="h-6 w-6" source={iconUri} contentFit="contain" />
+```
+
+---
+
+## Text Component
+
+A custom Text component with built-in internationalization (i18n) support and right-to-left (RTL) language handling.
+
+### Why a custom Text?
+
+- **i18n Integration:** Use translation keys directly with the `tx` prop
+- **RTL Support:** Automatically handles text direction for Arabic, Hebrew, etc.
+- **Consistent Styling:** Supports Uniwind `className` prop
+
+### Usage
+
+<CodeBlock file="src/components/ui/text.tsx" />
+
+**Props:**
+- All React Native `Text` props are supported
+- `className` - Uniwind (TailwindCSS) class names
+- `tx` - Translation key for i18next
+
+**Example with Translation:**
+
+```tsx
+import { Text, View } from '@/components/ui';
+
+export function WelcomeScreen() {
+  return (
+    <View className="flex-1 items-center justify-center">
+      <Text className="text-2xl font-bold" tx="welcome.title" />
+      <Text className="text-base text-gray-600" tx="welcome.subtitle" />
+    </View>
+  );
+}
+```
+
+**Example with Regular Text:**
+
+```tsx
+import { Text } from '@/components/ui';
+
+export function Greeting({ name }: { name: string }) {
+  return (
+    <Text className="text-lg">
+      Hello, {name}!
+    </Text>
+  );
+}
+```
+
+**RTL Support:**
+
+The component automatically detects the current locale and applies proper text direction:
+
+```tsx
+// English: left-to-right
+<Text tx="welcome" /> // "Welcome" →
+
+// Arabic: right-to-left
+<Text tx="welcome" /> // ← "مرحبا"
+```
+
+:::tip
+Use the `t` snippet in VSCode to quickly create a Text component with default className.
+:::
+
+---
+
+## ControlledInput Component
+
+A wrapper around HeroUI Native's `TextField` integrated with `react-hook-form` for seamless form handling.
+
+### Why a custom ControlledInput?
+
+- **Form Integration:** Pre-wired with react-hook-form's `useController`
+- **Validation Support:** Automatically displays validation errors
+- **Type Safety:** Full TypeScript support with form schemas
+- **Consistent API:** Same props as TextField but controlled
+
+### Usage
+
+<CodeBlock file="src/components/ui/input.tsx" />
+
+**Props:**
+- All HeroUI Native `TextField` props
+- `control` - react-hook-form control object (required)
+- `name` - Field name in form (required)
+- Additional react-hook-form controller props
+
+**Example:**
+
+```tsx
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import * as z from 'zod';
+import { Button } from 'heroui-native';
+import { ControlledInput, View } from '@/components/ui';
+
+const schema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export function LoginForm() {
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
+
+  return (
+    <KeyboardAvoidingView behavior="padding" className="flex-1 p-4">
+      <View className="gap-4">
+        <ControlledInput
+          control={control}
+          name="email"
+          label="Email"
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        <ControlledInput
+          control={control}
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          secureTextEntry
+        />
+
+        <Button onPress={handleSubmit(onSubmit)}>
+          Sign In
+        </Button>
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+```
+
+**See Also:** [Forms documentation](./forms/) for complete form handling patterns.
+
+---
+
+## List Component
+
+A wrapper around `@shopify/flash-list` with an integrated empty state component.
+
+### Why a custom List?
+
+- **Performance:** FlashList is significantly faster than FlatList for large lists
+- **Empty State:** Built-in EmptyList component for better UX
+- **Consistent API:** Familiar FlatList-like API
+
+### Usage
+
+<CodeBlock file="src/components/ui/list.tsx" />
+
+**Props:**
+- All `@shopify/flash-list` props are supported
+
+**Example:**
+
+```tsx
+import { List, EmptyList, Text, View } from '@/components/ui';
+
+type Post = {
+  id: string;
+  title: string;
+  body: string;
+};
+
+export function PostsList({ posts }: { posts: Post[] }) {
+  return (
+    <List
+      data={posts}
+      renderItem={({ item }) => (
+        <View className="border-b border-gray-200 p-4">
+          <Text className="text-lg font-bold">{item.title}</Text>
+          <Text className="text-gray-600">{item.body}</Text>
+        </View>
+      )}
+      estimatedItemSize={100}
+      ListEmptyComponent={<EmptyList message="No posts yet" />}
+    />
+  );
+}
+```
+
+**EmptyList Component:**
+
+```tsx
+import { EmptyList } from '@/components/ui';
+
+<EmptyList
+  message="No items found"
+  // Optionally customize:
+  // className="py-20"
+/>
+```
+
+**Performance Tips:**
+- Always provide `estimatedItemSize` for best performance
+- Use `keyExtractor` for stable item keys
+- Memoize `renderItem` if items contain complex components
+
+---
+
+## Modal Component
+
+A bottom sheet modal implementation using `@gorhom/bottom-sheet`.
+
+### Why a custom Modal?
+
+- **Mobile-First:** Bottom sheets provide better mobile UX than center modals
+- **Flexible:** Supports dynamic content height with snap points
+- **Gesture-Driven:** Swipe to dismiss with smooth animations
+- **Full Control:** Complete control over UI and behavior
+
+### Usage
+
+<CodeBlock file="src/components/ui/modal.tsx" />
+
+**Props:**
+- All `@gorhom/bottom-sheet` props are supported
+- `title` (string) - Modal title displayed at the top
+- `children` - Modal content
+
+**Example:**
+
+```tsx
+import { useState } from 'react';
+import { Button } from 'heroui-native';
+import { Modal, useModal, View, Text } from '@/components/ui';
+
+export function SettingsScreen() {
+  const modal = useModal();
+
+  return (
+    <View className="flex-1 p-4">
+      <Button onPress={modal.present}>
+        Open Settings
+      </Button>
+
+      <Modal
+        ref={modal.ref}
+        title="Settings"
+        snapPoints={['60%', '90%']}
+      >
+        <View className="p-4">
+          <Text className="text-lg">Settings content here</Text>
+          <Button onPress={modal.dismiss}>
+            Close
+          </Button>
+        </View>
+      </Modal>
+    </View>
+  );
+}
+```
+
+**useModal Hook:**
+
+The `useModal` hook provides convenient methods:
+
+```tsx
+const modal = useModal();
+
+modal.present();  // Open the modal
+modal.dismiss();  // Close the modal
+modal.ref;        // Ref for the Modal component
+```
+
+**Snap Points:**
+
+```tsx
+// Percentage-based
+<Modal snapPoints={['25%', '50%', '90%']} />
+
+// Pixel-based
+<Modal snapPoints={[200, 400, 600]} />
+```
+
+---
+
+## FocusAwareStatusBar Component
+
+A StatusBar wrapper that updates based on the currently focused screen in Expo Router.
+
+### Why FocusAwareStatusBar?
+
+- **Route-Aware:** Different screens can have different status bar styles
+- **Automatic:** Updates when navigating between screens
+- **Expo Router Integration:** Works seamlessly with file-based routing
+
+### Usage
+
+<CodeBlock file="src/components/ui/focus-aware-status-bar.tsx" />
+
+**Props:**
+- All React Native `StatusBar` props are supported
+
+**Example:**
+
+```tsx
+import { FocusAwareStatusBar, View, Text } from '@/components/ui';
+
+export default function HomeScreen() {
+  return (
+    <View className="flex-1 bg-white">
+      <FocusAwareStatusBar barStyle="dark-content" />
+      <Text className="text-2xl">Home Screen</Text>
+    </View>
+  );
+}
+```
+
+**Different Styles per Screen:**
+
+```tsx
+// Light content on dark background
+export default function DarkScreen() {
+  return (
+    <View className="flex-1 bg-black">
+      <FocusAwareStatusBar barStyle="light-content" />
+      <Text className="text-white">Dark Screen</Text>
+    </View>
+  );
+}
+
+// Dark content on light background
+export default function LightScreen() {
+  return (
+    <View className="flex-1 bg-white">
+      <FocusAwareStatusBar barStyle="dark-content" />
+      <Text className="text-black">Light Screen</Text>
+    </View>
+  );
+}
+```
+
+---
+
+## Re-exported React Native Components
+
+The `src/components/ui/index.tsx` also re-exports common React Native components with Uniwind support:
+
+```tsx
+// From @/components/ui
+export {
+  View,              // React Native View
+  ScrollView,        // React Native ScrollView
+  ActivityIndicator, // React Native ActivityIndicator
+  Pressable,         // React Native Pressable
+  TouchableOpacity,  // React Native TouchableOpacity
+  SafeAreaView,      // react-native-safe-area-context
+} from '@/components/ui';
+```
+
+**Why re-export?**
+- Consistent import source
+- Some have Uniwind support applied
+- Easier to swap implementations if needed
+
+**Usage:**
+
+```tsx
+import { View, ScrollView, SafeAreaView } from '@/components/ui';
+
+export function MyScreen() {
+  return (
+    <SafeAreaView className="flex-1">
+      <ScrollView className="flex-1">
+        <View className="p-4">
+          {/* Content */}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+```
+
+---
+
+## Utility Exports
+
+The `utils.tsx` file provides helper functions:
+
+```tsx
+// Modal utilities
+export { useModal } from '@/components/ui';
+
+// Styling utilities
+export { cn } from '@/components/ui';  // className merger from heroui-native
+```
+
+---
+
+## When to Create Custom Components
+
+Create a custom component when:
+
+1. **HeroUI Native doesn't provide it** - Like the i18n-enabled Text component
+2. **Specific integration needed** - Like ControlledInput for react-hook-form
+3. **Performance optimization required** - Like List wrapping FlashList
+4. **Platform-specific behavior** - Like FocusAwareStatusBar for Expo Router
+
+**Don't create custom components for:**
+- Buttons, inputs, cards, dialogs → Use HeroUI Native
+- Standard layouts → Use View, ScrollView from @/components/ui
+- Icons → Create SVG components in `src/components/ui/icons/`
+
+---
+
+## Import Patterns
+
+**Correct imports:**
+
+```tsx
+// Custom components
+import {
+  Image,
+  Text,
+  View,
+  ControlledInput,
+  List,
+  Modal,
+  FocusAwareStatusBar
+} from '@/components/ui';
+
+// HeroUI Native components
+import {
+  Button,
+  TextField,
+  Card,
+  Dialog
+} from 'heroui-native';
+```
+
+**Incorrect imports:**
+
+```tsx
+// ❌ Don't import HeroUI Native components from @/components/ui
+import { Button } from '@/components/ui';
+
+// ❌ Don't import custom components from heroui-native
+import { Text } from 'heroui-native';
+```
+
+---
+
+## Component File Structure
+
+All custom components follow this structure:
+
+```tsx
+import * as React from 'react';
+// Other imports...
+
+type ComponentProps = {
+  // Props definition
+};
+
+export function ComponentName({ prop1, prop2 }: ComponentProps) {
+  // Component implementation
+  return (
+    // JSX
+  );
+}
+
+// Export additional utilities if needed
+export { useComponentHook };
+```
+
+---
+
+## Styling Custom Components
+
+All custom components support the `className` prop for Uniwind styling:
+
+```tsx
+import { Text, View, Image } from '@/components/ui';
+
+<View className="flex-1 bg-white p-4">
+  <Image className="h-32 w-32 rounded-full mb-4" source={avatar} />
+  <Text className="text-2xl font-bold text-gray-900">Title</Text>
+  <Text className="text-base text-gray-600">Subtitle</Text>
+</View>
+```
+
+**Exception:** Components using `Animated.View` from `react-native-reanimated` must use the `style` prop:
+
+```tsx
+import Animated from 'react-native-reanimated';
+
+// ❌ Won't work
+<Animated.View className="flex-1" />
+
+// ✅ Correct
+<Animated.View style={{ flex: 1 }} />
+```
+
+---
+
+## Adding New Custom Components
+
+If you need to add a custom component:
+
+1. **Check HeroUI Native first** - Does it already provide what you need?
+2. **Create in `src/components/ui/`** - Follow existing file structure
+3. **Export from `index.tsx`** - Add to the main export file
+4. **Support `className`** - Use `withUniwind()` if needed
+5. **Document usage** - Add inline comments and examples
+6. **Keep it simple** - Avoid over-engineering
+
+**Example structure:**
+
+```tsx
+// src/components/ui/my-component.tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import { withUniwind } from 'uniwind';
+
+type MyComponentProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+const MyComponentBase = ({ children, ...props }: MyComponentProps) => {
+  return <View {...props}>{children}</View>;
+};
+
+export const MyComponent = withUniwind(MyComponentBase);
+```
+
+```tsx
+// src/components/ui/index.tsx
+export * from './my-component';
+```
+
+---
+
+## Resources
+
+- **HeroUI Native Components:** See [HeroUI Native Guide](./heroui-native/)
+- **Component Showcases:** See [Component Showcase Guide](./component-showcase/)
+- **Forms Integration:** See [Forms Documentation](./forms/)
+- **Styling Guide:** See [UI & Theming](./ui-theming/)
+- **Uniwind Documentation:** [https://docs.uniwind.dev/](https://docs.uniwind.dev/)
+
+---
+
+## Summary
+
+**Use HeroUI Native for:**
+- Buttons, TextField, Card, Dialog, Tabs, Checkbox, Switch, Select, etc.
+- Any standard UI component
+- Form controls
+
+**Use Custom Components for:**
+- Image (Uniwind support)
+- Text (i18n support)
+- ControlledInput (form integration)
+- List (FlashList wrapper)
+- Modal (bottom sheet)
+- FocusAwareStatusBar (Expo Router integration)
+
+This separation keeps the codebase maintainable while providing flexibility for specific needs.

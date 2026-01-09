@@ -38,7 +38,34 @@ For more details about Uniwind, check the [official documentation](https://docs.
 
 Here is an example of how your component should look like:
 
-<CodeBlock file="src/components/card.tsx" />
+```tsx
+import { Card, Button } from 'heroui-native';
+import { View, Text } from '@/components/ui';
+
+export function ProfileCard() {
+  return (
+    <View className="p-4">
+      <Card className="border border-neutral-200 dark:border-neutral-700">
+        <Card.Header>
+          <Text className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+            User Profile
+          </Text>
+        </Card.Header>
+        <Card.Body>
+          <Text className="text-base text-neutral-600 dark:text-neutral-400">
+            This card demonstrates Uniwind styling with dark mode support.
+          </Text>
+        </Card.Body>
+        <Card.Footer>
+          <Button variant="solid" color="primary">
+            View Details
+          </Button>
+        </Card.Footer>
+      </Card>
+    </View>
+  );
+}
+```
 
 ## Configuration
 

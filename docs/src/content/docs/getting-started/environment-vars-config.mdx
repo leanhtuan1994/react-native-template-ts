@@ -1,6 +1,6 @@
 ---
 title: Environment Variables and Configuration
-description: Environment variables and configuration with validation and type-checking.
+description: Complete guide to managing environment variables with Zod validation, type-checking, and multi-environment support in Atlas starter.
 head:
   - tag: title
     content: Environment Variables and Configuration | React Native / Expo Starter
@@ -8,153 +8,830 @@ head:
 
 import Code from '../../../components/code.astro';
 
-Managing environment variables in your project is an essential task, but it can also be challenging. That's why we have included a complete setup for environment variables in this project. This setup comes with validation and type-checking using the `zod` library.
+Managing environment variables in React Native projects is essential but challenging. The Atlas starter includes a production-ready setup with **Zod validation**, **TypeScript type-checking**, and **multi-environment support** (development, staging, production).
 
-All the code related to environment variables is located in the `env.js` and `src/lib/env.js` files. The `env.js` read the `APP_ENV` variable and loads the correct `.env` file, then defines the `zod` schema for the environment variables for client and build-time, parses the `_env` object, and returns the parsed object, or throws errors in case of invalid or missing variables.
+## Overview
 
-To increase security, we are splitting environment variables into two parts:
+The environment variable system provides:
 
-- **Client Variables**: Variables that are safe to be exposed to the client and used in your `src` folder. These variables are passed to the client side using the `extra` configuration in the `app.config.ts` file.
-- **Build Time Variables**: Variables that we don't need on the client-side and are only used in the `app.config.ts`, for example `SENTRY_AUTH` to upload the source maps to Sentry.
+✅ **Type-safe variables** with automatic TypeScript inference
+✅ **Runtime validation** using Zod schemas
+✅ **Multi-environment support** (dev/staging/prod)
+✅ **Security** by splitting client and build-time variables
+✅ **Clear error messages** when variables are missing or invalid
 
-By using this pre-configured setup for environment variables, you can focus on building your project without worrying about managing and validating your environment variables.
+**Key Files:**
+- `env.js` - Root file that loads and validates all environment variables
+- `src/lib/env.js` - Client-side re-export for use in app code
+- `.env.{APP_ENV}` - Environment-specific configuration files
 
-This setup is highly inspired by [T3 Stack](https://create.t3.gg/) 👌
+:::tip
+This setup is inspired by [T3 Stack](https://create.t3.gg/)'s excellent environment variable system 👌
+:::
 
-## Adding a new environment variable to the project.
+---
 
-To add a new environment variable to the project, follow these steps:
+## How It Works
 
-1. Add the new environment variable to the correct `zod` schema inside the `env.js` file based on this simple rule :
-   If the variable is used in the `src` folder, add it to the `client` schema, otherwise add it to the `buildTime` schema.
+### Architecture Overview
 
-This will ensure that the new variable is validated correctly. and make sure we are only sending the correct vars to the client side
-Here's an example:
+```
+┌─────────────────────────────────────────────────────────┐
+│ .env.{APP_ENV} files                                    │
+│ ├── .env.development                                    │
+│ ├── .env.staging                                        │
+│ └── .env.production                                     │
+└──────────────────┬──────────────────────────────────────┘
+                   │ Loaded by dotenv
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│ env.js (Root)                                           │
+│ ├── Defines Zod schemas (client + buildTime)           │
+│ ├── Validates all variables                            │
+│ ├── Exports: Env, ClientEnv, withEnvSuffix             │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+        ▼                     ▼
+┌────────────────┐    ┌──────────────────┐
+│ app.config.ts  │    │ src/lib/env.js   │
+│ (Build time)   │    │ (Client runtime) │
+│ Uses: Env      │    │ Re-exports:      │
+│       ClientEnv│    │ ClientEnv        │
+└────────────────┘    └─────────┬────────┘
+                                │
+                                ▼
+                        ┌───────────────┐
+                        │ Your App Code │
+                        │ import @env   │
+                        └───────────────┘
+```
 
-```js title="env.js"
+### Variable Types
+
+**1. Client Variables** (accessible in `src/` folder):
+- Exposed to the client-side app
+- Used in your React components and logic
+- Passed via `app.config.ts` → `extra` field
+- Import from `@env` in your code
+
+**2. Build-Time Variables** (only in `app.config.ts`):
+- Used during the build process
+- Never exposed to the client
+- For sensitive data like API keys for build tools
+- Examples: Sentry auth tokens, EAS project secrets
+
+---
+
+## Quick Start
+
+### Accessing Environment Variables
+
+In your app code (anywhere in `src/`):
+
+```tsx
+import { Env } from '@env';
+
+// Access variables
+const apiUrl = Env.API_URL;
+const appName = Env.NAME;
+const version = Env.VERSION;
+```
+
+### Switching Environments
+
+Use the `APP_ENV` variable to load different configurations:
+
+```bash
+# Development (default)
+pnpm start
+
+# Staging
+APP_ENV=staging pnpm start
+
+# Production
+APP_ENV=production pnpm start
+
+# Clear cache when switching
+pnpm start -c
+```
+
+---
+
+## File Structure
+
+### Root `env.js` File
+
+<Code file="env.js" />
+
+**This file has three main parts:**
+
+#### Part 1: Load Environment File (Lines 1-26)
+
+```javascript
+const APP_ENV = process.env.APP_ENV ?? 'development';
+const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
+
+require('dotenv').config({
+  path: envPath,
+});
+```
+
+- Reads `APP_ENV` variable (defaults to `development`)
+- Loads corresponding `.env.{APP_ENV}` file
+- Uses `dotenv` package to parse variables
+
+#### Part 2: Define Zod Schemas (Lines 74-93)
+
+```javascript
 const client = z.object({
-  // ...
-  // add the new environment variable here/ accessible on the client side and build time(app.config.ts)
-  NEW_ENV_VAR: z.string(),
+  APP_ENV: z.enum(['development', 'staging', 'production']),
+  NAME: z.string(),
+  SCHEME: z.string(),
+  BUNDLE_ID: z.string(),
+  PACKAGE: z.string(),
+  VERSION: z.string(),
+  API_URL: z.string(),
+  VAR_NUMBER: z.number(),
+  VAR_BOOL: z.boolean(),
 });
 
 const buildTime = z.object({
-  // ...
-  // add the new environment variable here / accessible only on build time(app.config.ts)
-  NEW_SECRET_ENV: z.string(),
+  EXPO_ACCOUNT_OWNER: z.string(),
+  EAS_PROJECT_ID: z.string(),
+  SECRET_KEY: z.string(),
 });
 ```
 
-2. Add the new environment variable to the correct env object inside the `env.js`, `_clientEnv` for client variables and `_buildTimeEnv` for build time variables. Here's an example:
+**Client Schema:**
+- Variables used in your app code
+- Validated as specific types (string, number, boolean, enum)
+- Automatically inferred to TypeScript types
 
-```js title="env.js"
+**Build-Time Schema:**
+- Variables only used in `app.config.ts`
+- Sensitive data never exposed to client
+- For build tools and CI/CD
+
+#### Part 3: Create Environment Objects (Lines 98-120)
+
+```javascript
 const _clientEnv = {
-  // ...
-  // add the new environment variable here
-  NEW_ENV_VAR: process.env.NEW_ENV_VAR,
+  APP_ENV,
+  NAME: NAME,
+  SCHEME: SCHEME,
+  BUNDLE_ID: withEnvSuffix(BUNDLE_ID),
+  PACKAGE: withEnvSuffix(PACKAGE),
+  VERSION: packageJSON.version,
+  API_URL: process.env.API_URL,
+  VAR_NUMBER: Number(process.env.VAR_NUMBER),
+  VAR_BOOL: process.env.VAR_BOOL === 'true',
 };
 
 const _buildTimeEnv = {
-  // ...
-  // add the new environment variable here
-  NEW_SECRET_ENV: process.env.NEW_SECRET_ENV,
+  EXPO_ACCOUNT_OWNER,
+  EAS_PROJECT_ID,
+  SECRET_KEY: process.env.SECRET_KEY,
 };
 ```
 
-3. Add the new environment variable to your `.env` files. Make sure to include it in all relevant files (`development`, `staging`, and `production`). Here's an example:
+**Key points:**
+- `withEnvSuffix()` adds environment suffix to bundle ID/package
+- Type conversions: `Number()` for numbers, `=== 'true'` for booleans
+- Static variables (NAME, BUNDLE_ID) defined in env.js directly
 
-```bash title=".env.{APP_ENV}"
-# ...
-# add the new environment variable here
-NEW_ENV_VAR=my-new-var
+### Client `src/lib/env.js` File
+
+<Code file="src/lib/env.js" />
+
+**Purpose:**
+- Re-exports client environment variables from root `env.js`
+- Provides type-safe access via `@env` import
+- Only exposes variables from the `client` schema
+
+**Import alias:**
+- `@env` resolves to `src/lib/env.js` (configured in tsconfig.json and babel.config.js)
+
+---
+
+## Static Variables
+
+Some variables are defined directly in `env.js` rather than `.env` files:
+
+```javascript
+// env.js (lines 38-43)
+const BUNDLE_ID = 'com.atlas';          // iOS bundle identifier
+const PACKAGE = 'com.atlas';            // Android package name
+const NAME = 'AtlasApp';                // App display name
+const EXPO_ACCOUNT_OWNER = 'leanhtuan1994';
+const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044';
+const SCHEME = 'atlasApp';              // Deep linking scheme
 ```
 
-:::note
-if you are not pushing env files to your repo(recomended), please make sure to check the [App releasing process](/ci-cd/app-releasing-process/#github-action-and-env-variables) to see how to create the env file on the fly before the prebuild script in the github actions.
-:::
+**Why static?**
+- These rarely change and are tied to the app's identity
+- Used by `withEnvSuffix()` to create environment-specific identifiers
+- Easier to manage in code than across multiple `.env` files
 
-4. Make sure to run `pnpm prebuild` to load the new values.
+**Environment-Specific Identifiers:**
 
-```bash
-pnpm prebuild
+The `withEnvSuffix()` function appends environment to bundle IDs:
+
+```javascript
+const withEnvSuffix = (name) => {
+  return APP_ENV === 'production' ? name : `${name}.${APP_ENV}`;
+};
+
+// Results:
+// Development: com.atlas.development
+// Staging:     com.atlas.staging
+// Production:  com.atlas (no suffix)
 ```
 
-5. The new environment variable is now ready to use in your project. You can access it in your code using the `Env` object, like this:
+**Benefit:** Install dev, staging, and production builds side-by-side on the same device.
 
-```ts title="client.ts"
-import { Env } from '@env';
-import axios from 'axios';
-export const client = axios.create({
-  baseURL: Env.API_URL,
+---
+
+## Adding a New Environment Variable
+
+Follow these steps to add a new variable:
+
+### Step 1: Add to Zod Schema
+
+Choose the correct schema based on usage:
+
+**For client-side variables** (used in `src/` folder):
+
+```javascript
+// env.js
+const client = z.object({
+  // ... existing variables
+  NEW_API_KEY: z.string().min(1), // Required, non-empty
+  FEATURE_FLAG: z.boolean(),
+  MAX_RETRIES: z.number(),
 });
 ```
 
-:::note[Important]
-Using `import { Env } from '@env';` will import the env from the `src/lib/env.js` file, which export client only env vars.
-:::
+**For build-time only variables** (used in `app.config.ts`):
 
-6. Use `APP_ENV` to load the correct `.env` file :
-
-```bash
-APP_ENV=production pnpm start -cc
+```javascript
+// env.js
+const buildTime = z.object({
+  // ... existing variables
+  SENTRY_AUTH_TOKEN: z.string().min(1),
+  BUILD_NUMBER: z.number().optional(), // Optional variable
+});
 ```
 
-As mentioned earlier, `zod` is used to validate environment variables at runtime and build time. If there are any missing or invalid variables, you'll see an error message with information on what needs to be fixed. Here's an example error message:
+**Zod Type Reference:**
+```javascript
+z.string()              // Any string (can be empty)
+z.string().min(1)       // Required non-empty string
+z.string().email()      // Email format validation
+z.string().url()        // URL format validation
+z.number()              // Numeric value
+z.boolean()             // Boolean value
+z.enum(['a', 'b', 'c']) // One of specific values
+z.string().optional()   // Optional string
+```
+
+### Step 2: Add to Environment Object
+
+**For client variables:**
+
+```javascript
+// env.js
+const _clientEnv = {
+  // ... existing variables
+  NEW_API_KEY: process.env.NEW_API_KEY,
+  FEATURE_FLAG: process.env.FEATURE_FLAG === 'true',
+  MAX_RETRIES: Number(process.env.MAX_RETRIES),
+};
+```
+
+**For build-time variables:**
+
+```javascript
+// env.js
+const _buildTimeEnv = {
+  // ... existing variables
+  SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+  BUILD_NUMBER: process.env.BUILD_NUMBER
+    ? Number(process.env.BUILD_NUMBER)
+    : undefined,
+};
+```
+
+**Type Conversion Examples:**
+
+```javascript
+// Strings - no conversion needed
+MY_STRING: process.env.MY_STRING,
+
+// Numbers - use Number() constructor
+MY_NUMBER: Number(process.env.MY_NUMBER),
+
+// Booleans - compare to 'true' string
+MY_BOOL: process.env.MY_BOOL === 'true',
+
+// Optional values - check existence
+MY_OPTIONAL: process.env.MY_OPTIONAL || undefined,
+```
+
+:::caution
+**All environment variables are strings by default.** You must convert them to the correct type when reading from `process.env`.
+:::
+
+### Step 3: Add to `.env` Files
+
+Add the variable to **all environment files**:
 
 ```bash
-❌ Invalid environment variables: { TEST: [ 'Required' ] }
+# .env.development
+NEW_API_KEY=dev-api-key-12345
+FEATURE_FLAG=true
+MAX_RETRIES=3
+```
+
+```bash
+# .env.staging
+NEW_API_KEY=staging-api-key-67890
+FEATURE_FLAG=true
+MAX_RETRIES=5
+```
+
+```bash
+# .env.production
+NEW_API_KEY=prod-api-key-abcdef
+FEATURE_FLAG=false
+MAX_RETRIES=10
+```
+
+:::note
+If you don't commit `.env` files to your repo (recommended for security), make sure to configure them in your CI/CD pipeline. See [App Releasing Process](/ci-cd/app-releasing-process/#github-action-and-env-variables) for GitHub Actions setup.
+:::
+
+### Step 4: Rebuild Native Code
+
+```bash
+# Clear cache and rebuild
+pnpm prebuild
+
+# Or rebuild for specific platform
+pnpm prebuild:staging
+```
+
+### Step 5: Use in Your Code
+
+**Client variables:**
+
+```tsx
+import { Env } from '@env';
+
+export function MyComponent() {
+  const apiKey = Env.NEW_API_KEY;
+  const isFeatureEnabled = Env.FEATURE_FLAG;
+  const retries = Env.MAX_RETRIES;
+
+  return (
+    <View>
+      <Text>API Key: {apiKey}</Text>
+      <Text>Feature: {isFeatureEnabled ? 'ON' : 'OFF'}</Text>
+      <Text>Max Retries: {retries}</Text>
+    </View>
+  );
+}
+```
+
+**Build-time variables** (only in `app.config.ts`):
+
+```typescript
+// app.config.ts
+import { Env } from './env';
+
+export default {
+  // ...
+  hooks: {
+    postPublish: [
+      {
+        file: 'sentry-expo/upload-sourcemaps',
+        config: {
+          authToken: Env.SENTRY_AUTH_TOKEN,
+        },
+      },
+    ],
+  },
+};
+```
+
+---
+
+## TypeScript Integration
+
+### Automatic Type Inference
+
+Zod automatically infers TypeScript types from schemas:
+
+```typescript
+// env.js schemas generate these types automatically:
+
+type ClientEnv = {
+  APP_ENV: 'development' | 'staging' | 'production';
+  NAME: string;
+  SCHEME: string;
+  BUNDLE_ID: string;
+  PACKAGE: string;
+  VERSION: string;
+  API_URL: string;
+  VAR_NUMBER: number;
+  VAR_BOOL: boolean;
+};
+
+type BuildTimeEnv = {
+  EXPO_ACCOUNT_OWNER: string;
+  EAS_PROJECT_ID: string;
+  SECRET_KEY: string;
+};
+```
+
+### Type-Safe Access
+
+```tsx
+import { Env } from '@env';
+
+// TypeScript knows all available variables
+const url: string = Env.API_URL;        // ✅ Valid
+const num: number = Env.VAR_NUMBER;     // ✅ Valid
+const bool: boolean = Env.VAR_BOOL;     // ✅ Valid
+const invalid = Env.DOES_NOT_EXIST;     // ❌ Type error
+```
+
+### Adding Type Checking
+
+If you add a variable to the schema but forget to add it to the env object, TypeScript will show an error:
+
+```javascript
+// ❌ This will cause a TypeScript error
+const client = z.object({
+  NEW_VAR: z.string(), // Added to schema
+});
+
+const _clientEnv = {
+  // Missing NEW_VAR - TypeScript error!
+};
+```
+
+The `@type` comment enforces this:
+
+```javascript
+/**
+ * @type {Record<keyof z.infer<typeof client>, unknown>}
+ */
+const _clientEnv = {
+  // Must include all keys from schema
+};
+```
+
+---
+
+## Validation and Error Handling
+
+### Runtime Validation
+
+When the app starts, Zod validates all environment variables:
+
+```javascript
+// env.js (lines 136-147)
+if (parsed.success === false) {
+  console.error(
+    '❌ Invalid environment variables:',
+    parsed.error.flatten().fieldErrors,
+    `\n❌ Missing variables in .env.${APP_ENV} file...`
+  );
+  throw new Error('Invalid environment variables...');
+}
+```
+
+### Example Error Messages
+
+**Missing variable:**
+```bash
+❌ Invalid environment variables: { API_URL: [ 'Required' ] }
 ❌ Missing variables in .env.development file, Make sure all required variables are defined in the .env.development file.
 💡 Tip: If you recently updated the .env.development file and the error still persists, try restarting the server with the -c flag to clear the cache.
 ```
 
-:::note[Important]
-As `dotenv` handles variables as strings, you need to convert them to the correct type while reading them from the `process.env` object. check the example below for more details on how to use numbers and boolean values.
-:::
+**Wrong type:**
+```bash
+❌ Invalid environment variables: { VAR_NUMBER: [ 'Expected number, received string' ] }
+```
 
-## How it works
+**Invalid enum value:**
+```bash
+❌ Invalid environment variables: { APP_ENV: [ "Invalid enum value. Expected 'development' | 'staging' | 'production', received 'prod'" ] }
+```
 
-#### ✅ Validate and parse environment variables
+---
 
-If you take a look at the `env.js` file, you will notice that the file is split into three main parts as shown below:
+## Usage in `app.config.ts`
 
-<Code file="env.js" />
+The root `env.js` file is imported in `app.config.ts` to configure Expo:
 
-**In the first part** We load the correct `.env` file based on the `APP_ENV` variable using `dotenv` package. If the `APP_ENV` variable is not defined, we default to `development`.
+```typescript
+// app.config.ts (lines 1-4)
+import type { ConfigContext, ExpoConfig } from '@expo/config';
+import { ClientEnv, Env } from './env';
 
-we define some static variables for the app such as the app name, bundle Id and package. While these variables can be added to the `.env` files, we recommend keeping them in the `env.js` file as they are not meant to change. To handle different app variants, you can add suffixes to these variables using the `withEnvSuffix` function.
-
-**In the second part**, we define the `zod` schema for the environment variables.
-
-We split the environment variables into two parts:
-
-- **Client Variables**: Variables that are safe to be exposed to the client and used in the `src` folder.
-
-- **Build Time Variables**: Variables that we don't need on the client-side and are only used in the `app.config.ts`, for example, `SENTRY_AUTH` to upload the source maps to Sentry.
-
-These schemas are used to validate the environment variables. All the environment variables should be added to the correct schema.
-
-We use the `z.infer` utility to infer the environment variables' types from the schema and use it to define the `_clientEnv` and `_buildTimeEnv` objects' type. This means that if you add a new environment variable to the schema, you will get a type error if you don't add it to the correct `_clientEnv` and `_buildTimeEnv` object as well, and vice versa.
-
-**Finally**, in the third part, we merge variables to `_env`, pare it using the zod schema, and return the parsed object as well as the client environment variable, or throw errors in case of invalid or missing variables.
-
-#### ✅ Use and send environment variables to the client
-
-Now it's as easy as importing `Env` , `ClientEnv` and `withEnvSuffix` from the `./env.js` file and use inside our `app.config.ts`, and finally sending client env vars to the client side using `extra` property.
-
-<Code file="app.config.ts" meta="{4,8-10}" />
-
-#### ✅ Type checking for client environment variables
-
-Here, we added a separate file to export all variables that have already been passed in the `extra` property to the client side. We added a little bit of magic to make it type-safe and easy to use.
-
-<Code file="src/lib/env.js" />
-
-Now the environment variables are ready to use in your project. You can access them in your code by importing `Env` from `@env` and using it like this:
-
-```ts title="client.ts"
-import { Env } from '@env';
-import axios from 'axios';
-export const client = axios.create({
-  baseURL: Env.API_URL,
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  ...config,
+  name: Env.NAME,                          // Build-time var
+  owner: Env.EXPO_ACCOUNT_OWNER,           // Build-time var
+  scheme: Env.SCHEME,                      // Client var
+  version: Env.VERSION,                    // Client var
+  ios: {
+    bundleIdentifier: Env.BUNDLE_ID,       // Client var (with suffix)
+  },
+  android: {
+    package: Env.PACKAGE,                  // Client var (with suffix)
+  },
+  extra: {
+    ...ClientEnv,                          // ✅ Pass all client vars to app
+  },
 });
 ```
+
+**Key points:**
+- Import `Env` for all variables (client + build-time)
+- Import `ClientEnv` to pass client variables to the app
+- Spread `ClientEnv` in `extra` field to make variables accessible in app code
+- Build-time variables (like `EXPO_ACCOUNT_OWNER`) are NOT in `ClientEnv`
+
+---
+
+## Environment File Examples
+
+### `.env.development`
+
+```bash
+# API Configuration
+API_URL=https://dev-api.example.com
+
+# Feature Flags
+VAR_BOOL=true
+
+# Configuration
+VAR_NUMBER=42
+
+# Build Time Only (not accessible in app)
+SECRET_KEY=dev-secret-key-12345
+```
+
+### `.env.staging`
+
+```bash
+# API Configuration
+API_URL=https://staging-api.example.com
+
+# Feature Flags
+VAR_BOOL=true
+
+# Configuration
+VAR_NUMBER=100
+
+# Build Time Only
+SECRET_KEY=staging-secret-key-67890
+```
+
+### `.env.production`
+
+```bash
+# API Configuration
+API_URL=https://api.example.com
+
+# Feature Flags
+VAR_BOOL=false
+
+# Configuration
+VAR_NUMBER=500
+
+# Build Time Only
+SECRET_KEY=prod-secret-key-abcdef
+```
+
+---
+
+## Common Patterns
+
+### API Client Configuration
+
+```tsx
+// src/api/common/client.tsx
+import { Env } from '@env';
+import axios from 'axios';
+
+export const client = axios.create({
+  baseURL: Env.API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+```
+
+### Feature Flags
+
+```tsx
+// src/lib/features.ts
+import { Env } from '@env';
+
+export const features = {
+  enableNewUI: Env.FEATURE_FLAG,
+  maxRetries: Env.MAX_RETRIES,
+  apiUrl: Env.API_URL,
+};
+
+// Usage
+import { features } from '@/lib/features';
+
+if (features.enableNewUI) {
+  // Show new UI
+}
+```
+
+### Environment-Specific Behavior
+
+```tsx
+import { Env } from '@env';
+
+export function MyComponent() {
+  const isDev = Env.APP_ENV === 'development';
+  const isStaging = Env.APP_ENV === 'staging';
+  const isProd = Env.APP_ENV === 'production';
+
+  if (isDev) {
+    console.log('Debug info:', Env.API_URL);
+  }
+
+  return (
+    <View>
+      {!isProd && (
+        <Text className="bg-yellow-200 p-2">
+          Environment: {Env.APP_ENV}
+        </Text>
+      )}
+    </View>
+  );
+}
+```
+
+---
+
+## Best Practices
+
+### DO ✅
+
+- **Use Zod schemas** for all environment variables
+- **Add variables to ALL `.env` files** (dev, staging, prod)
+- **Convert types explicitly** (Number(), === 'true')
+- **Use client schema for app code** variables only
+- **Keep secrets in buildTime schema** only
+- **Commit `.env.example`** but not actual `.env` files
+- **Clear cache** when changing env files: `pnpm start -c`
+- **Document** what each variable does in comments
+
+### DON'T ❌
+
+- **Don't skip type conversion** - all env vars are strings
+- **Don't use client vars for secrets** - use buildTime schema
+- **Don't commit `.env` files** with sensitive data
+- **Don't access `process.env` directly** in app code - use `Env` from `@env`
+- **Don't forget to rebuild** after adding variables
+- **Don't use different variable names** across environments
+- **Don't assume variables exist** - define them in schema
+
+---
+
+## Troubleshooting
+
+### Issue: Variables not updating
+
+**Solution:**
+```bash
+# Clear cache and restart
+pnpm start -c
+
+# Or rebuild native code
+pnpm prebuild
+```
+
+### Issue: TypeScript errors after adding variable
+
+**Cause:** Variable added to schema but not to env object (or vice versa)
+
+**Solution:** Make sure variable exists in BOTH places:
+```javascript
+// 1. Add to schema
+const client = z.object({
+  NEW_VAR: z.string(),
+});
+
+// 2. Add to env object
+const _clientEnv = {
+  NEW_VAR: process.env.NEW_VAR,
+};
+```
+
+### Issue: "Invalid environment variables" error
+
+**Cause:** Missing or incorrectly typed variable in `.env` file
+
+**Solution:**
+1. Check error message for which variable is invalid
+2. Verify variable exists in `.env.{APP_ENV}` file
+3. Check type conversion (Number(), === 'true')
+4. Restart with `-c` flag
+
+### Issue: Cannot access variable in app code
+
+**Cause:** Variable only in `buildTime` schema
+
+**Solution:** Move to `client` schema if needed in app:
+```javascript
+// ❌ Wrong - in buildTime only
+const buildTime = z.object({
+  API_URL: z.string(),
+});
+
+// ✅ Correct - in client schema
+const client = z.object({
+  API_URL: z.string(),
+});
+```
+
+---
+
+## Security Considerations
+
+### What NOT to Put in Client Variables
+
+❌ **Never expose these in client schema:**
+- API keys for third-party services
+- Database credentials
+- Secret signing keys
+- Private tokens
+- Sentry auth tokens
+- EAS submit credentials
+
+✅ **These are safe for client:**
+- API URLs (public endpoints)
+- App configuration (feature flags, limits)
+- Public API keys (like Google Maps API key with restrictions)
+- App metadata (name, version, scheme)
+
+### Using Secrets in CI/CD
+
+For GitHub Actions:
+
+```yaml
+# .github/workflows/eas-build.yml
+- name: Create .env file
+  run: |
+    cat > .env.production << EOF
+    API_URL=${{ secrets.API_URL }}
+    VAR_NUMBER=500
+    VAR_BOOL=false
+    SECRET_KEY=${{ secrets.SECRET_KEY }}
+    EOF
+```
+
+See [App Releasing Process](/ci-cd/app-releasing-process/) for complete CI/CD setup.
+
+---
+
+## Resources
+
+- **Zod Documentation:** [https://zod.dev/](https://zod.dev/)
+- **T3 Stack Env System:** [https://create.t3.gg/en/usage/env-variables](https://create.t3.gg/en/usage/env-variables)
+- **Expo Environment Variables:** [https://docs.expo.dev/guides/environment-variables/](https://docs.expo.dev/guides/environment-variables/)
+- **dotenv Package:** [https://www.npmjs.com/package/dotenv](https://www.npmjs.com/package/dotenv)
+
+---
+
+## Summary
+
+Atlas starter provides a robust environment variable system with:
+
+✅ **Zod validation** - Runtime type checking with clear errors
+✅ **TypeScript inference** - Automatic types from schemas
+✅ **Multi-environment** - Dev, staging, production configs
+✅ **Security** - Client vs build-time variable separation
+✅ **Type safety** - No `any` types, full autocomplete
+✅ **Developer experience** - Clear errors, easy to extend
+
+**Quick reference:**
+- Add to `client` schema for app usage
+- Add to `buildTime` schema for build-only usage
+- Convert types: `Number()`, `=== 'true'`
+- Import: `import { Env } from '@env'`
+- Switch environments: `APP_ENV=staging pnpm start`

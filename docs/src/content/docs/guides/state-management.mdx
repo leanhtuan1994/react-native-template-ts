@@ -1,0 +1,752 @@
+---
+title: State Management
+description: Complete guide to global state management using Zustand with the selectors pattern in Atlas.
+head:
+  - tag: title
+    content: State Management | React Native / Expo Starter
+---
+
+import CodeBlock from '../../../components/code.astro';
+
+Atlas uses **Zustand** for global client state management, combined with **React Query** for server state. This guide covers Zustand patterns, the selectors optimization, and MMKV persistence integration.
+
+## Overview
+
+Atlas follows a clear separation of concerns for state management:
+
+- **Zustand**: Global client state (auth, user preferences, UI state)
+- **React Query**: Server state (API data, caching, synchronization)
+- **MMKV**: Persistent storage (tokens, settings, cached data)
+
+:::tip[Why This Approach?]
+- **Simple**: Minimal boilerplate, no context providers needed
+- **Performant**: Selector pattern prevents unnecessary re-renders
+- **Type-safe**: Full TypeScript support with inference
+- **Persistent**: Easy integration with MMKV storage
+- **Testable**: Simple store access without complex setup
+:::
+
+## Why Zustand?
+
+Zustand is a small (1KB), fast, and scalable state management solution that doesn't require wrapping your app in context providers.
+
+**Advantages over alternatives:**
+
+| Feature | Zustand | Redux | Context API | Jotai |
+|---------|---------|-------|-------------|-------|
+| **Bundle size** | 1KB | 8KB+ | 0KB | 3KB |
+| **Boilerplate** | Minimal | Heavy | Medium | Minimal |
+| **Performance** | Excellent | Excellent | Poor | Excellent |
+| **DevTools** | Yes | Yes | No | Yes |
+| **Persistence** | Easy | Medium | Hard | Easy |
+| **TypeScript** | Excellent | Good | Good | Excellent |
+
+## The Selectors Pattern
+
+Atlas uses a **custom selectors pattern** to optimize component re-renders. Instead of subscribing to the entire store, components subscribe only to the specific state slices they need.
+
+### How It Works
+
+The `createSelectors` utility wraps a Zustand store and auto-generates selector hooks for each state property.
+
+<CodeBlock file="src/lib/utils.ts" />
+
+**Without selectors (inefficient):**
+```tsx
+// ❌ Component re-renders on ANY state change
+const { token, status, signIn, signOut } = useAuth();
+
+// Only using token, but re-renders when status changes too
+return <Text>{token?.access}</Text>;
+```
+
+**With selectors (optimized):**
+```tsx
+// ✅ Component re-renders ONLY when token changes
+const token = useAuth.use.token();
+
+return <Text>{token?.access}</Text>;
+```
+
+### Performance Impact
+
+```tsx
+// Example: 3 components using auth state
+
+// Component A: Only needs token
+const token = useAuth.use.token(); // Re-renders only when token changes
+
+// Component B: Only needs status
+const status = useAuth.use.status(); // Re-renders only when status changes
+
+// Component C: Only needs signOut function
+const signOut = useAuth.use.signOut(); // Never re-renders (functions are stable)
+```
+
+Without selectors, all 3 components would re-render on every state change. With selectors, each component re-renders only when its specific data changes.
+
+## Auth Store Example
+
+Atlas includes a production-ready authentication store demonstrating all key patterns.
+
+<CodeBlock file="src/lib/auth/index.tsx" />
+
+### Key Features
+
+**1. Type-safe state:**
+```typescript
+interface AuthState {
+  token: TokenType | null;
+  status: 'idle' | 'signOut' | 'signIn';
+  signIn: (data: TokenType) => void;
+  signOut: () => void;
+  hydrate: () => void;
+}
+```
+
+**2. Actions with side effects:**
+```typescript
+signIn: (token) => {
+  setToken(token);           // Persist to MMKV
+  set({ status: 'signIn', token }); // Update state
+}
+```
+
+**3. Hydration from storage:**
+```typescript
+hydrate: () => {
+  const userToken = getToken();  // Load from MMKV
+  if (userToken !== null) {
+    get().signIn(userToken);     // Restore session
+  }
+}
+```
+
+**4. Exported actions:**
+```typescript
+// Call outside components (e.g., API interceptor)
+export const signOut = () => _useAuth.getState().signOut();
+export const signIn = (token: TokenType) => _useAuth.getState().signIn(token);
+```
+
+### Using the Auth Store
+
+**In components:**
+```tsx
+import { useAuth } from '@/lib/auth';
+
+export function ProfileScreen() {
+  // Subscribe to specific state slices
+  const token = useAuth.use.token();
+  const status = useAuth.use.status();
+  const signOut = useAuth.use.signOut();
+
+  if (status === 'idle') {
+    return <LoadingSpinner />;
+  }
+
+  return (
+    <View>
+      <Text>Access Token: {token?.access}</Text>
+      <Button onPress={signOut}>Sign Out</Button>
+    </View>
+  );
+}
+```
+
+**Outside components:**
+```tsx
+import { signOut } from '@/lib/auth';
+
+// In API interceptor
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      signOut(); // Trigger sign out from anywhere
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+## MMKV Persistence
+
+Atlas integrates Zustand with **MMKV** for fast, synchronous, encrypted storage.
+
+### Storage Utilities
+
+<CodeBlock file="src/lib/storage.tsx" />
+
+**Features:**
+- **Synchronous**: No async/await needed
+- **Type-safe**: Generic `getItem<T>` and `setItem<T>`
+- **Encrypted**: Secure storage by default
+- **Fast**: 30x faster than AsyncStorage
+- **JSON serialization**: Automatic object serialization
+
+### Persisting Store State
+
+**Manual persistence (used in auth):**
+```tsx
+import { getItem, setItem } from '@/lib/storage';
+
+const useStore = create<State>((set) => ({
+  data: null,
+  setData: (data) => {
+    setItem('my-data', data);  // Save to MMKV
+    set({ data });             // Update state
+  },
+  hydrate: () => {
+    const data = getItem('my-data'); // Load from MMKV
+    if (data) set({ data });
+  },
+}));
+```
+
+**Automatic persistence with middleware:**
+```tsx
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { storage } from '@/lib/storage';
+
+type State = {
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+};
+
+const _useSettings = create<State>()(
+  persist(
+    (set) => ({
+      theme: 'light',
+      setTheme: (theme) => set({ theme }),
+    }),
+    {
+      name: 'settings-storage',
+      storage: createJSONStorage(() => ({
+        getItem: (key) => {
+          const value = storage.getString(key);
+          return value ? JSON.parse(value) : null;
+        },
+        setItem: (key, value) => {
+          storage.set(key, JSON.stringify(value));
+        },
+        removeItem: (key) => {
+          storage.delete(key);
+        },
+      })),
+    }
+  )
+);
+
+export const useSettings = createSelectors(_useSettings);
+```
+
+## Creating Custom Stores
+
+Follow this pattern to create new Zustand stores in Atlas.
+
+### 1. Define Types
+
+```tsx
+// src/lib/preferences/types.ts
+export type Theme = 'light' | 'dark' | 'system';
+export type Language = 'en' | 'es' | 'fr';
+
+export interface PreferencesState {
+  theme: Theme;
+  language: Language;
+  notifications: boolean;
+  setTheme: (theme: Theme) => void;
+  setLanguage: (language: Language) => void;
+  toggleNotifications: () => void;
+  reset: () => void;
+}
+```
+
+### 2. Create Store
+
+```tsx
+// src/lib/preferences/index.tsx
+import { create } from 'zustand';
+import { createSelectors } from '@/lib/utils';
+import { getItem, setItem, removeItem } from '@/lib/storage';
+import type { PreferencesState, Theme, Language } from './types';
+
+const STORAGE_KEY = 'preferences';
+
+const initialState = {
+  theme: 'system' as Theme,
+  language: 'en' as Language,
+  notifications: true,
+};
+
+const _usePreferences = create<PreferencesState>((set, get) => ({
+  ...initialState,
+
+  setTheme: (theme) => {
+    const state = get();
+    const newState = { ...state, theme };
+    setItem(STORAGE_KEY, newState);
+    set({ theme });
+  },
+
+  setLanguage: (language) => {
+    const state = get();
+    const newState = { ...state, language };
+    setItem(STORAGE_KEY, newState);
+    set({ language });
+  },
+
+  toggleNotifications: () => {
+    const state = get();
+    const notifications = !state.notifications;
+    const newState = { ...state, notifications };
+    setItem(STORAGE_KEY, newState);
+    set({ notifications });
+  },
+
+  reset: () => {
+    removeItem(STORAGE_KEY);
+    set(initialState);
+  },
+}));
+
+// Hydrate from storage on app start
+const stored = getItem<PreferencesState>(STORAGE_KEY);
+if (stored) {
+  _usePreferences.setState(stored);
+}
+
+export const usePreferences = createSelectors(_usePreferences);
+
+// Export actions for use outside components
+export const setTheme = (theme: Theme) =>
+  _usePreferences.getState().setTheme(theme);
+export const setLanguage = (language: Language) =>
+  _usePreferences.getState().setLanguage(language);
+export const resetPreferences = () =>
+  _usePreferences.getState().reset();
+```
+
+### 3. Use in Components
+
+```tsx
+import { usePreferences } from '@/lib/preferences';
+
+export function SettingsScreen() {
+  const theme = usePreferences.use.theme();
+  const language = usePreferences.use.language();
+  const setTheme = usePreferences.use.setTheme();
+  const setLanguage = usePreferences.use.setLanguage();
+
+  return (
+    <View>
+      <Select value={theme} onValueChange={setTheme}>
+        <SelectItem value="light">Light</SelectItem>
+        <SelectItem value="dark">Dark</SelectItem>
+        <SelectItem value="system">System</SelectItem>
+      </Select>
+
+      <Select value={language} onValueChange={setLanguage}>
+        <SelectItem value="en">English</SelectItem>
+        <SelectItem value="es">Español</SelectItem>
+        <SelectItem value="fr">Français</SelectItem>
+      </Select>
+    </View>
+  );
+}
+```
+
+## Zustand vs React Query
+
+Understanding when to use each tool is crucial for maintainable architecture.
+
+### Use Zustand For:
+
+**✅ Client-only state:**
+- Authentication status
+- User preferences (theme, language)
+- UI state (modal open/closed, selected tab)
+- Form state across multiple screens
+- App-wide flags (feature flags, onboarding completed)
+
+**Example:**
+```tsx
+// ✅ Good: Client state in Zustand
+const useUIStore = create((set) => ({
+  isModalOpen: false,
+  selectedTab: 'home',
+  openModal: () => set({ isModalOpen: true }),
+  closeModal: () => set({ isModalOpen: false }),
+}));
+```
+
+### Use React Query For:
+
+**✅ Server state:**
+- API data (posts, users, products)
+- Remote data fetching
+- Caching and synchronization
+- Background updates
+- Optimistic updates
+- Invalidation and refetching
+
+**Example:**
+```tsx
+// ✅ Good: Server state in React Query
+import { createQuery } from 'react-query-kit';
+
+export const useUser = createQuery({
+  queryKey: ['user'],
+  fetcher: () => axios.get('/api/user'),
+});
+
+// Usage
+const { data: user, isLoading } = useUser();
+```
+
+### Don't Mix Them
+
+**❌ Avoid:**
+```tsx
+// ❌ Bad: Storing API data in Zustand
+const useStore = create((set) => ({
+  users: [],
+  fetchUsers: async () => {
+    const users = await api.getUsers();
+    set({ users });
+  },
+}));
+
+// ❌ Bad: Storing UI state in React Query
+const { data: isModalOpen } = useQuery(['modal'], () => false);
+```
+
+## Advanced Patterns
+
+### 1. Computed Values
+
+```tsx
+const _useCart = create<CartState>((set, get) => ({
+  items: [],
+
+  addItem: (item) => set({ items: [...get().items, item] }),
+
+  removeItem: (id) => set({
+    items: get().items.filter(item => item.id !== id)
+  }),
+
+  // Computed values as getters
+  get total() {
+    return get().items.reduce((sum, item) => sum + item.price, 0);
+  },
+
+  get itemCount() {
+    return get().items.length;
+  },
+}));
+
+export const useCart = createSelectors(_useCart);
+
+// Usage
+const total = useCart.use.total();
+const count = useCart.use.itemCount();
+```
+
+### 2. Middleware for Logging
+
+```tsx
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+
+const _useStore = create<State>()(
+  devtools(
+    (set) => ({
+      // your store
+    }),
+    { name: 'MyStore' }
+  )
+);
+```
+
+Install Redux DevTools to inspect state changes in development.
+
+### 3. Resetting Store
+
+```tsx
+const initialState = {
+  count: 0,
+  text: '',
+};
+
+const _useStore = create<State>((set) => ({
+  ...initialState,
+
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  setText: (text) => set({ text }),
+
+  reset: () => set(initialState),
+}));
+```
+
+### 4. Async Actions
+
+```tsx
+const _useStore = create<State>((set) => ({
+  data: null,
+  loading: false,
+  error: null,
+
+  fetchData: async () => {
+    set({ loading: true, error: null });
+    try {
+      const response = await api.getData();
+      set({ data: response, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+}));
+```
+
+:::caution[Prefer React Query for Async]
+While Zustand can handle async actions, React Query is better suited for server state. Use Zustand async actions only for client-side operations (e.g., uploading files, processing images).
+:::
+
+### 5. Subscribing to Changes
+
+```tsx
+import { useEffect } from 'react';
+
+// Subscribe to specific state changes
+useEffect(() => {
+  const unsubscribe = useAuth.subscribe(
+    (state) => state.token,
+    (token) => {
+      console.log('Token changed:', token);
+      // Update API headers, trigger analytics, etc.
+    }
+  );
+
+  return unsubscribe;
+}, []);
+```
+
+## Best Practices
+
+### 1. Keep Stores Focused
+
+**✅ Good: Single responsibility**
+```tsx
+const useAuth = create(...);      // Auth only
+const useTheme = create(...);     // Theme only
+const usePrefs = create(...);     // Preferences only
+```
+
+**❌ Bad: God store**
+```tsx
+const useGlobalStore = create(...); // Everything in one store
+```
+
+### 2. Use Selectors Pattern
+
+**✅ Good: Selective subscriptions**
+```tsx
+const token = useAuth.use.token();
+const status = useAuth.use.status();
+```
+
+**❌ Bad: Full store subscription**
+```tsx
+const { token, status, signIn, signOut } = useAuth();
+```
+
+### 3. Export Actions
+
+```tsx
+// ✅ Good: Actions available outside components
+export const signOut = () => _useAuth.getState().signOut();
+
+// Usage in API interceptor
+if (error.status === 401) {
+  signOut();
+}
+```
+
+### 4. Type Everything
+
+```tsx
+// ✅ Good: Explicit types
+interface State {
+  count: number;
+  increment: () => void;
+}
+
+const useStore = create<State>((set) => ({
+  count: 0,
+  increment: () => set((s) => ({ count: s.count + 1 })),
+}));
+```
+
+### 5. Persist Sensitive Data Securely
+
+```tsx
+// ✅ Good: MMKV is encrypted by default
+setItem('token', { access: '...', refresh: '...' });
+
+// ✅ Even better: Use expo-secure-store for tokens
+import * as SecureStore from 'expo-secure-store';
+await SecureStore.setItemAsync('token', JSON.stringify(token));
+```
+
+### 6. Initialize on App Start
+
+```tsx
+// src/app/_layout.tsx
+import { hydrateAuth } from '@/lib/auth';
+
+export default function RootLayout() {
+  useEffect(() => {
+    hydrateAuth(); // Load persisted state
+  }, []);
+
+  return <Stack />;
+}
+```
+
+## Testing Stores
+
+Zustand stores are easy to test without complex setup.
+
+```tsx
+// preferences.test.tsx
+import { renderHook, act } from '@testing-library/react-native';
+import { usePreferences, resetPreferences } from '@/lib/preferences';
+
+describe('Preferences Store', () => {
+  beforeEach(() => {
+    resetPreferences(); // Reset to initial state
+  });
+
+  it('should set theme', () => {
+    const { result } = renderHook(() => usePreferences.use.setTheme());
+
+    act(() => {
+      result.current('dark');
+    });
+
+    const { result: themeResult } = renderHook(() =>
+      usePreferences.use.theme()
+    );
+
+    expect(themeResult.current).toBe('dark');
+  });
+
+  it('should toggle notifications', () => {
+    const { result: toggle } = renderHook(() =>
+      usePreferences.use.toggleNotifications()
+    );
+    const { result: notifications } = renderHook(() =>
+      usePreferences.use.notifications()
+    );
+
+    expect(notifications.current).toBe(true); // initial
+
+    act(() => {
+      toggle.current();
+    });
+
+    expect(notifications.current).toBe(false); // toggled
+  });
+});
+```
+
+## Troubleshooting
+
+### Store Updates Not Triggering Re-renders
+
+**Problem:** Component doesn't re-render when state changes.
+
+**Solution:** Ensure you're using selectors correctly:
+```tsx
+// ✅ Correct
+const token = useAuth.use.token();
+
+// ❌ Wrong: accessing property directly
+const token = useAuth.getState().token; // No subscription!
+```
+
+### Re-rendering Too Often
+
+**Problem:** Component re-renders on unrelated state changes.
+
+**Solution:** Use more specific selectors:
+```tsx
+// ❌ Bad: subscribes to entire store
+const store = useAuth();
+
+// ✅ Good: subscribes only to token
+const token = useAuth.use.token();
+```
+
+### Persisted State Not Loading
+
+**Problem:** Store doesn't load persisted data on app start.
+
+**Solution:** Call hydration function in root layout:
+```tsx
+// src/app/_layout.tsx
+useEffect(() => {
+  hydrateAuth();
+  // ... other hydrations
+}, []);
+```
+
+### TypeScript Errors with Selectors
+
+**Problem:** `use.property()` shows TypeScript error.
+
+**Solution:** Ensure `createSelectors` wraps your store:
+```tsx
+const _useStore = create<State>(...);
+export const useStore = createSelectors(_useStore); // Don't forget this!
+```
+
+### Actions Not Updating State
+
+**Problem:** Calling action but state doesn't change.
+
+**Solution:** Ensure you're using `set` correctly:
+```tsx
+// ✅ Correct
+increment: () => set((state) => ({ count: state.count + 1 }))
+
+// ❌ Wrong: mutating state directly
+increment: () => {
+  get().count++; // Doesn't trigger re-render!
+}
+```
+
+## Additional Resources
+
+- [Zustand Documentation](https://docs.pmnd.rs/zustand/getting-started/introduction)
+- [Zustand DevTools](https://github.com/pmndrs/zustand#devtools)
+- [MMKV Documentation](https://github.com/mrousavy/react-native-mmkv)
+- [React Query Documentation](https://tanstack.com/query/latest/docs/react/overview)
+- [Data Fetching Guide](/guides/data-fetching/) (React Query patterns)
+- [Storage Guide](/guides/storage/) (MMKV usage)
+
+## Summary
+
+**Key Takeaways:**
+
+1. **Use Zustand for client state**, React Query for server state
+2. **Always use the selectors pattern** with `createSelectors` for performance
+3. **Persist important state** with MMKV integration
+4. **Export actions** for use outside components (API interceptors, utils)
+5. **Keep stores focused** - single responsibility principle
+6. **Hydrate on app start** to restore persisted state
+7. **Type everything** for safety and autocomplete
+
+The auth store (`src/lib/auth/index.tsx`) serves as a complete example demonstrating all these patterns in production.

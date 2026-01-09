@@ -1,25 +1,680 @@
 ---
-title: Expo Router
-description: How to use Expo Router in your app.
+title: Navigation with Expo Router
+description: Complete guide to navigation using Expo Router with typed routes and route groups in Atlas.
 head:
   - tag: title
-    content: Expo Router | React Native / Expo Starter
+    content: Navigation | React Native / Expo Starter
 ---
 
 import CodeBlock from '../../../components/code.astro';
 
-[expo-router](https://docs.expo.dev/router/introduction/) is a navigation library provided by Expo that simplifies the implementation of navigation in React Native applications. It is built on top of React Navigation, a widely used navigation library, and abstracts away much of the complexity involved in managing navigation state and transitions between screens.
+[Expo Router](https://docs.expo.dev/router/introduction/) is a file-based routing library for React Native and web apps built with Expo. It brings the simplicity of file-based routing (like Next.js) to React Native, making navigation intuitive and type-safe.
 
-Navigation in Expo Router is expressed declaratively, utilizing components to define the flow of the application. This approach makes it intuitive for developers to structure their navigation hierarchy.
+## Overview
 
-Conventional React Native projects typically adopt a structure where a sole root component is commonly specified in either ./App.js or ./index.js. Within the context of Expo Router, an alternative approach is offered through the utilization of the Root Layout, located in `app/_layout.tsx` in our Demo. Thereby, the `_layout` section of our app handles the overall structure and navigation setup.
+Atlas uses **Expo Router v6** with the following features enabled:
+
+- **Typed Routes**: Compile-time route validation and autocomplete
+- **Route Groups**: Organize routes without affecting URL structure
+- **Deep Linking**: Automatic deep link handling
+- **Shared Routes**: Common layouts across multiple screens
+- **Modal Presentation**: Native modal navigation
+
+:::tip[Key Benefits]
+- **Type-safe navigation**: Autocomplete and compile-time errors for route names
+- **File-based routing**: Routes are defined by file structure in `src/app/`
+- **No manual configuration**: Router automatically detects screens
+- **Deep linking by default**: Every screen is accessible via URL
+:::
+
+## Project Structure
+
+Atlas organizes routes using **route groups** - folders wrapped in parentheses that don't appear in the URL.
+
+```
+src/app/
+├── _layout.tsx              # Root layout (providers, theme)
+├── +not-found.tsx           # 404 screen
+├── (home)/                  # Main app (tab navigation)
+│   ├── _layout.tsx          # Tab navigator
+│   ├── index.tsx            # Home tab (/)
+│   ├── settings.tsx         # Settings tab (/settings)
+│   ├── style.tsx            # Style tab (/style)
+│   └── onboarding.tsx       # Onboarding screen (/onboarding)
+└── (components)/            # Component showcases (30 screens)
+    ├── _layout.tsx          # Stack navigator
+    ├── index.tsx            # Showcase list (/components)
+    ├── button.tsx           # Button showcase (/components/button)
+    ├── text-field.tsx       # TextField showcase (/components/text-field)
+    └── [28 more...]         # Other component showcases
+```
+
+### Route Groups Explained
+
+**`(home)` Group**: Main application with bottom tab navigation
+- Contains the core app experience
+- Uses `Tabs` layout for bottom navigation
+- URL path: `/` (no "home" in URL)
+
+**`(components)` Group**: Component showcase and documentation
+- 30 interactive component examples
+- Uses `Stack` layout for hierarchical navigation
+- URL path: `/components/...`
+
+:::note
+Route groups (folders with parentheses) organize your code without affecting URLs. Both `(home)/index.tsx` and `(components)/index.tsx` are valid routes.
+:::
+
+## Root Layout
+
+The root layout (`src/app/_layout.tsx`) wraps the entire app with providers and configures global navigation settings.
 
 <CodeBlock file="src/app/_layout.tsx" />
 
-The Demo app comes with a simple stack and tabs layout. Feel free to remove what is not working for you and add your own using the same approach as the existing ones.
+**Key responsibilities:**
+- Provider hierarchy (Theme, HeroUI, API, Keyboard, etc.)
+- Splash screen handling
+- Font loading
+- Global navigation configuration
+- Status bar styling
 
-Here is a simple example of the tabs layout.
+## Tab Navigation
 
-<CodeBlock file="src/app/(app)/_layout.tsx" />
+The `(home)` group uses tab navigation for the main app experience.
 
-Make sure to check the official docs for more information and examples about [expo-router](https://docs.expo.dev/router/introduction/).
+<CodeBlock file="src/app/(home)/_layout.tsx" />
+
+**Tab Configuration:**
+- **Home Tab**: Main feed or dashboard (`index.tsx`)
+- **Settings Tab**: App settings and preferences (`settings.tsx`)
+- **Style Tab**: Theme and appearance settings (`style.tsx`)
+
+Each tab can define:
+- `title`: Tab label
+- `headerShown`: Show/hide header
+- `tabBarIcon`: Custom icon component
+- `tabBarTestID`: Test identifier
+
+## Stack Navigation
+
+The `(components)` group uses stack navigation for hierarchical screens.
+
+<CodeBlock file="src/app/(components)/_layout.tsx" />
+
+**Stack Features:**
+- Back navigation with native transitions
+- Custom headers with `headerShown`, `headerTitle`, etc.
+- Modal presentation with `presentation: 'modal'`
+- Card animations and gestures
+
+## Typed Routes
+
+Atlas has **typed routes enabled** in `app.config.ts`:
+
+```typescript
+experiments: {
+  typedRoutes: true,
+}
+```
+
+This generates TypeScript types for all routes, providing autocomplete and compile-time validation.
+
+### Navigation with Type Safety
+
+```tsx
+import { router } from 'expo-router';
+
+// ✅ Type-safe navigation (autocomplete works)
+router.push('/(home)/settings');
+router.push('/(components)/button');
+router.navigate('/onboarding');
+
+// ❌ Compile error: route doesn't exist
+router.push('/non-existent-route'); // TypeScript error
+
+// Dynamic routes with params
+router.push({
+  pathname: '/(components)/[id]',
+  params: { id: 'button' }
+});
+```
+
+### Link Component
+
+```tsx
+import { Link } from 'expo-router';
+
+export function MyComponent() {
+  return (
+    <>
+      {/* Type-safe href */}
+      <Link href="/(home)/settings">Go to Settings</Link>
+
+      {/* With params */}
+      <Link
+        href={{
+          pathname: '/(components)/[id]',
+          params: { id: 'button' }
+        }}
+      >
+        View Button Showcase
+      </Link>
+
+      {/* Replace instead of push */}
+      <Link href="/(home)/" replace>
+        Reset to Home
+      </Link>
+    </>
+  );
+}
+```
+
+## Navigation Hooks
+
+Expo Router provides several hooks for navigation and route information.
+
+### `useRouter`
+
+Imperative navigation API.
+
+```tsx
+import { useRouter } from 'expo-router';
+
+export function MyScreen() {
+  const router = useRouter();
+
+  return (
+    <Button
+      onPress={() => {
+        // Push new screen
+        router.push('/(home)/settings');
+
+        // Navigate (replace if already in stack)
+        router.navigate('/onboarding');
+
+        // Go back
+        router.back();
+
+        // Replace current screen
+        router.replace('/(home)/');
+
+        // Dismiss modal
+        router.dismiss();
+
+        // Can go back?
+        if (router.canGoBack()) {
+          router.back();
+        }
+      }}
+    >
+      Navigate
+    </Button>
+  );
+}
+```
+
+### `usePathname`
+
+Get the current pathname.
+
+```tsx
+import { usePathname } from 'expo-router';
+
+export function MyComponent() {
+  const pathname = usePathname();
+
+  console.log(pathname); // "/(home)/settings" or "/components/button"
+
+  return <Text>Current path: {pathname}</Text>;
+}
+```
+
+### `useSegments`
+
+Get route segments as an array.
+
+```tsx
+import { useSegments } from 'expo-router';
+
+export function MyComponent() {
+  const segments = useSegments();
+
+  console.log(segments); // ["(home)", "settings"] or ["(components)", "button"]
+
+  const isComponentShowcase = segments[0] === '(components)';
+
+  return <Text>Is Showcase: {isComponentShowcase}</Text>;
+}
+```
+
+### `useLocalSearchParams` & `useGlobalSearchParams`
+
+Access route parameters.
+
+```tsx
+import { useLocalSearchParams, useGlobalSearchParams } from 'expo-router';
+
+export function ComponentShowcase() {
+  // Local params (from this route only)
+  const local = useLocalSearchParams<{ id: string }>();
+
+  // Global params (from entire URL)
+  const global = useGlobalSearchParams<{ theme?: string }>();
+
+  return (
+    <View>
+      <Text>Component ID: {local.id}</Text>
+      <Text>Theme: {global.theme || 'default'}</Text>
+    </View>
+  );
+}
+```
+
+### `useFocusEffect`
+
+Run side effects when screen focuses/unfocuses.
+
+```tsx
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+
+export function MyScreen() {
+  useFocusEffect(
+    useCallback(() => {
+      // Screen focused - fetch fresh data
+      console.log('Screen focused');
+
+      return () => {
+        // Screen unfocused - cleanup
+        console.log('Screen unfocused');
+      };
+    }, [])
+  );
+
+  return <View>...</View>;
+}
+```
+
+## Deep Linking
+
+Every route in Expo Router is automatically deep-linkable. No configuration required.
+
+### URL Schemes
+
+Atlas is configured with URL schemes in `app.config.ts`:
+
+```typescript
+// app.config.ts
+export default {
+  scheme: 'atlas',
+  // ...
+}
+```
+
+**Available schemes:**
+- `atlas://` - Custom scheme (all environments)
+- `exp+atlas://` - Expo Go scheme (development)
+- `https://yourapp.com/` - Universal links (production)
+
+### Deep Link Examples
+
+```bash
+# Open settings screen
+atlas://settings
+
+# Open component showcase
+atlas://components/button
+
+# With query parameters
+atlas://settings?theme=dark
+
+# Universal link (production)
+https://yourapp.com/components/text-field
+```
+
+### Testing Deep Links
+
+**iOS Simulator:**
+```bash
+xcrun simctl openurl booted "atlas://settings"
+```
+
+**Android Emulator:**
+```bash
+adb shell am start -W -a android.intent.action.VIEW -d "atlas://settings"
+```
+
+**Expo Go:**
+```bash
+npx uri-scheme open "exp+atlas://components/button" --ios
+npx uri-scheme open "exp+atlas://components/button" --android
+```
+
+### Handling Deep Links
+
+```tsx
+import { useEffect } from 'react';
+import * as Linking from 'expo-linking';
+
+export function useDeepLinkHandler() {
+  useEffect(() => {
+    // Get initial URL (app opened from deep link)
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        console.log('App opened with:', url);
+        // Handle deep link
+      }
+    });
+
+    // Listen for deep links while app is running
+    const subscription = Linking.addEventListener('url', ({ url }) => {
+      console.log('Deep link received:', url);
+      // Handle deep link
+    });
+
+    return () => subscription.remove();
+  }, []);
+}
+```
+
+:::tip[Automatic Routing]
+With Expo Router, you typically don't need to manually parse deep links. The router automatically navigates to the correct screen based on the URL.
+:::
+
+## Modal Presentation
+
+Present screens as modals using the `presentation` option.
+
+### Stack Modal
+
+```tsx
+// src/app/(home)/_layout.tsx
+<Stack.Screen
+  name="modal-screen"
+  options={{
+    presentation: 'modal',
+    headerShown: true,
+    headerTitle: 'Modal Screen',
+  }}
+/>
+```
+
+### Programmatic Modal
+
+```tsx
+import { router } from 'expo-router';
+
+export function MyComponent() {
+  return (
+    <Button
+      onPress={() => {
+        // Push modal
+        router.push({
+          pathname: '/modal-screen',
+        });
+      }}
+    >
+      Open Modal
+    </Button>
+  );
+}
+
+// In modal screen
+export function ModalScreen() {
+  const router = useRouter();
+
+  return (
+    <View>
+      <Button onPress={() => router.dismiss()}>
+        Close Modal
+      </Button>
+    </View>
+  );
+}
+```
+
+### Full Screen Modal
+
+```tsx
+<Stack.Screen
+  name="full-screen-modal"
+  options={{
+    presentation: 'fullScreenModal',
+    headerShown: false,
+  }}
+/>
+```
+
+## Navigation Guards
+
+Protect routes with authentication checks.
+
+```tsx
+// src/app/_layout.tsx
+import { useAuth } from '@/lib/auth';
+import { Redirect, Stack } from 'expo-router';
+
+export default function RootLayout() {
+  const status = useAuth.use.status();
+  const token = useAuth.use.token();
+
+  // Show splash while checking auth
+  if (status === 'idle') {
+    return <SplashScreen />;
+  }
+
+  // Redirect to onboarding if not authenticated
+  if (status === 'signOut' && !token) {
+    return <Redirect href="/onboarding" />;
+  }
+
+  return <Stack>...</Stack>;
+}
+```
+
+## Common Patterns
+
+### Back Navigation with Fallback
+
+```tsx
+import { router } from 'expo-router';
+
+function handleBack() {
+  if (router.canGoBack()) {
+    router.back();
+  } else {
+    router.replace('/(home)/');
+  }
+}
+```
+
+### Conditional Navigation
+
+```tsx
+function handleLogin() {
+  if (isFirstTimeUser) {
+    router.replace('/onboarding');
+  } else {
+    router.replace('/(home)/');
+  }
+}
+```
+
+### Reset Navigation Stack
+
+```tsx
+// Clear stack and go to home
+router.dismissAll();
+router.replace('/(home)/');
+```
+
+### Passing Data Between Screens
+
+**Via URL params (recommended for simple data):**
+```tsx
+// Navigate with params
+router.push({
+  pathname: '/(components)/button',
+  params: { variant: 'solid', color: 'primary' }
+});
+
+// Access params
+const { variant, color } = useLocalSearchParams<{
+  variant: string;
+  color: string;
+}>();
+```
+
+**Via global state (for complex data):**
+```tsx
+// Use Zustand or React Context
+const { setSelectedItem } = useStore();
+
+function handleNavigate(item: Item) {
+  setSelectedItem(item);
+  router.push('/item-details');
+}
+```
+
+## Tab Bar Customization
+
+Customize tab bar appearance and behavior.
+
+```tsx
+<Tabs
+  screenOptions={{
+    tabBarActiveTintColor: '#000',
+    tabBarInactiveTintColor: '#666',
+    tabBarStyle: {
+      backgroundColor: '#fff',
+      borderTopColor: '#e5e5e5',
+    },
+    tabBarLabelStyle: {
+      fontSize: 12,
+      fontFamily: 'Inter',
+    },
+    headerShown: false,
+  }}
+>
+  {/* tabs */}
+</Tabs>
+```
+
+### Hide Tab Bar on Specific Screens
+
+```tsx
+<Stack.Screen
+  name="details"
+  options={{
+    tabBarStyle: { display: 'none' }, // Hide tab bar
+  }}
+/>
+```
+
+## Header Customization
+
+Customize stack headers.
+
+```tsx
+<Stack.Screen
+  name="settings"
+  options={{
+    headerShown: true,
+    headerTitle: 'Settings',
+    headerTitleAlign: 'center',
+    headerStyle: {
+      backgroundColor: '#f5f5f5',
+    },
+    headerTintColor: '#000',
+    headerShadowVisible: false,
+    headerBackTitle: 'Back',
+  }}
+/>
+```
+
+### Custom Header Component
+
+```tsx
+<Stack.Screen
+  name="profile"
+  options={{
+    header: () => <CustomHeader />,
+  }}
+/>
+```
+
+## Troubleshooting
+
+### Routes Not Appearing
+
+**Problem:** New screen not showing in app.
+
+**Solution:**
+1. Ensure file is in `src/app/` directory
+2. File must export default component
+3. Restart dev server (`pnpm start` then `r`)
+4. Clear Metro cache: `pnpm start --clear`
+
+### Type Errors on Routes
+
+**Problem:** TypeScript errors on route names.
+
+**Solution:**
+1. Types generate on save - edit any file in `src/app/`
+2. Restart TypeScript server in VS Code
+3. Check `expo-env.d.ts` is in your project root
+
+### Deep Links Not Working
+
+**Problem:** Deep links not opening app.
+
+**Solution:**
+1. Ensure `scheme` is configured in `app.config.ts`
+2. Rebuild app after config changes: `pnpm prebuild`
+3. Test with correct scheme: `atlas://` (not `http://`)
+4. Check URL format matches file structure
+
+### Tab Bar Flickering
+
+**Problem:** Tab bar flickers when navigating.
+
+**Solution:**
+```tsx
+<Tabs
+  screenOptions={{
+    lazy: false, // Render all tabs immediately
+  }}
+>
+  {/* tabs */}
+</Tabs>
+```
+
+## Best Practices
+
+1. **Use typed routes**: Always use TypeScript autocomplete for route names
+2. **Route groups**: Organize related screens in route groups
+3. **Lazy loading**: Use `lazy: true` for tabs with heavy content
+4. **Deep link testing**: Test all routes with deep links in development
+5. **Navigation guards**: Protect authenticated routes at root layout
+6. **Error boundaries**: Add error boundaries to catch navigation errors
+7. **Back button**: Always provide a way to go back (header or custom button)
+8. **Modal dismissal**: Ensure modals can be dismissed with gestures or button
+
+## Additional Resources
+
+- [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
+- [Expo Router API Reference](https://docs.expo.dev/router/reference/api/)
+- [Typed Routes](https://docs.expo.dev/router/reference/typed-routes/)
+- [Deep Linking Guide](https://docs.expo.dev/guides/linking/)
+- [React Navigation (underlying library)](https://reactnavigation.org/)
+
+## Component Showcase Routes
+
+Atlas includes 30 component showcase routes in the `(components)` group. These are interactive examples demonstrating HeroUI Native components.
+
+**View the showcase:**
+- Navigate to Settings → Component Showcase
+- Or use deep link: `atlas://components`
+- Or see [Component Showcase documentation](/ui-and-theme/component-showcase/)
+
+All showcase routes are listed in [Project Structure](/getting-started/project-structure/#component-showcases).

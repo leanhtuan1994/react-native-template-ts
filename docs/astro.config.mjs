@@ -101,6 +101,11 @@ export default defineConfig({
               link: '/getting-started/project-structure/',
             },
             {
+              label: 'React Compiler & New Architecture',
+              link: '/getting-started/react-compiler-new-arch/',
+              badge: 'new',
+            },
+            {
               label: 'Environment Variables and Configurations',
               link: '/getting-started/environment-vars-config/',
             },
@@ -120,8 +125,17 @@ export default defineConfig({
               link: '/ui-and-theme/fonts/',
             },
             {
-              label: 'UI Components',
-              link: '/ui-and-theme/components/',
+              label: 'HeroUI Native Components',
+              link: '/ui-and-theme/heroui-native/',
+            },
+            {
+              label: 'Custom Components',
+              link: '/ui-and-theme/custom-components/',
+            },
+            {
+              label: 'Component Showcase',
+              link: '/ui-and-theme/component-showcase/',
+              badge: 'new',
             },
             {
               label: 'Forms',
@@ -136,6 +150,10 @@ export default defineConfig({
             {
               label: 'Navigation',
               link: '/guides/navigation/',
+            },
+            {
+              label: 'State Management',
+              link: '/guides/state-management/',
             },
             {
               label: 'Authentication',

@@ -1,6 +1,6 @@
 ---
 title: Project Structure
-description: Project structure files and folders.
+description: Complete guide to the Atlas starter project structure, file organization, and architectural patterns.
 head:
   - tag: title
     content: Project Structure | React Native / Expo Starter
@@ -9,100 +9,580 @@ head:
 import { FileTree } from '@astrojs/starlight/components';
 import Code from '../../../components/code.astro';
 
-If you open the new project in VSCode you will see the following structure:
+The Atlas starter follows a well-organized, scalable structure designed for production React Native applications. This guide explains the purpose of each directory and how they work together.
+
+## Overview
+
+If you open the project in your editor, you'll see this structure:
 
 <FileTree>
 
-- api ## any thing related to api calls and data fetching
-  - common/
-  - index.tsx
-  - posts
-  - types.ts
-- app ## app routes and layouts
-  - (app)/
-  - \_layout.tsx
-  - feed/
-  - login.tsx
-  - onboarding.tsx
-- components ## any reusable components
-  - ui ## core ui and theme configuration
-    - button.tsx
-    - checkbox.tsx
-    - colors.js
-    - focus-aware-status-bar.tsx
-    - icons
-    - image.tsx
+- src/ ## Source code root
+  - api/ ## API layer and data fetching
+    - common/ ## Shared API utilities
+      - api-provider.tsx
+      - client.tsx
     - index.tsx
-    - input.tsx
-    - list.tsx
-    - modal.tsx
-    - progress-bar.tsx
-    - select.tsx
-    - text.tsx
-    - utils.tsx
-  - buttons.tsx
-  - card.tsx
-  - colors.tsx
-  - cover.tsx
-  - inputs.tsx
-  - login-form.test.tsx
-  - login-form.tsx
-  - settings/
-  - title.tsx
-  - typography.tsx
-- lib ## core files such as auth, localization, storage and more
-  - auth
-  - contexts
-  - env.js
-  - hooks
-  - i18n
-  - index.tsx
-  - storage.tsx
-  - test-utils.tsx
-  - utils.ts
-- translations ## translation resources files
-  - ar.json
-  - en.json
-- types ## global types
-  - index.ts
+    - types.ts
+  - app/ ## Expo Router routes (file-based routing)
+    - (components)/ ## 30 component showcase routes
+      - _layout.tsx ## Stack navigation
+      - accordion.tsx
+      - avatar.tsx
+      - bottom-sheet.tsx
+      - bottom-sheet-native-modal.tsx
+      - button.tsx
+      - card.tsx
+      - checkbox.tsx
+      - chip.tsx
+      - component-list.tsx
+      - dialog.tsx
+      - dialog-native-modal.tsx
+      - divider.tsx
+      - error-view.tsx
+      - form-field.tsx
+      - popover.tsx
+      - popover-native-modal.tsx
+      - pressable-feedback.tsx
+      - radio-group.tsx
+      - scroll-shadow.tsx
+      - select.tsx
+      - select-native-modal.tsx
+      - skeleton.tsx
+      - spinner.tsx
+      - surface.tsx
+      - switch.tsx
+      - tabs.tsx
+      - text-field.tsx
+      - toast.tsx
+      - toast-native-modal.tsx
+    - (home)/ ## Main app routes
+      - _layout.tsx ## Tab navigation
+      - index.tsx ## Home/Feed screen
+      - settings.tsx ## Settings screen
+    - _layout.tsx ## Root layout with providers
+    - +html.tsx ## HTML document shell
+    - [...messing].tsx ## 404 catch-all route
+  - components/ ## Reusable components
+    - ui/ ## Core UI components (custom)
+      - focus-aware-status-bar.tsx
+      - image.tsx
+      - index.tsx
+      - input.tsx ## ControlledInput
+      - list.tsx ## FlashList wrapper
+      - modal.tsx ## Bottom sheet modal
+      - modal-keyboard-aware-scroll-view.tsx
+      - text.tsx ## i18n-enabled Text
+      - utils.tsx ## UI utilities
+      - icons/ ## SVG icon components
+    - accordion/ ## Accordion demo components
+    - component-presentation/ ## Showcase utilities
+    - select/ ## Select demo components
+    - toast/ ## Toast demo components
+    - animated-blur-view.tsx
+    - bottom-sheet-blur-overlay.tsx
+    - dialog-blur-backdrop.tsx
+    - logo.tsx
+    - screen-scroll-view.tsx
+    - theme-toggle.tsx
+  - lib/ ## Core utilities and configuration
+    - auth/ ## Authentication state (Zustand)
+      - index.tsx
+      - utils.tsx
+    - contexts/ ## React contexts
+      - app-theme-context.tsx
+    - hooks/ ## Custom React hooks
+      - index.tsx
+      - use-is-first-time.tsx
+      - use-selected-theme.tsx
+      - use-accessability-info.ts
+    - i18n/ ## Internationalization
+      - index.tsx
+      - resources.ts
+      - react-i18next.d.ts
+    - env.js ## Client env re-export
+    - index.tsx
+    - storage.tsx ## MMKV wrapper
+    - test-utils.tsx ## Jest/RTL setup
+    - utils.ts ## General utilities
+  - translations/ ## i18n resource files
+    - ar.json
+    - en.json
+  - types/ ## Global TypeScript types
+    - index.ts
+    - image.d.ts
+- env.js ## Environment variable validation (Zod)
+- app.config.ts ## Expo configuration
+- package.json ## Dependencies and scripts
+- tsconfig.json ## TypeScript configuration
+- tailwind.config.ts ## Uniwind (TailwindCSS) config
+- babel.config.js ## Babel configuration
+- metro.config.js ## Metro bundler config
+- jest.config.js ## Testing configuration
+- eslint.config.mjs ## ESLint configuration
 
 </FileTree>
 
-- `components/ui`: This folder contains all the UI components and the theme configuration. We provide minimal components based on HeroUI Native and Uniwind. You can add your own components and theme configuration here.
+## Directory Deep Dive
 
-- `components`: This folder contains the components of the app. mainly components used inside the app folder.
+### `src/app/` - File-Based Routing
 
-- `lib`: This folder contains the core files, such as authentication, localization, storage, and more. It can be shared with other projects. That's why we are only including modules that have nothing to do with project logic. This approach helps us share code between projects and also update the starter with new features.
+The `app/` directory contains all routes using [Expo Router](https://docs.expo.dev/router/introduction/) with file-based routing and typed routes enabled.
 
-- `app`: This folder contains the routes of the app, along with its layout routes such as stack and tab navigation structures. We provide a basic navigation structure for the demo app that you can modify to fit your needs.
+#### Route Groups
 
-- `api`: This folder contains the API files. We provide a basic API client and provider and you just need to create query and mutation for your modules. Check `posts` folder for inspiration on how to create a query and mutation.
+The project uses **route groups** (directories wrapped in parentheses) to organize routes without affecting URLs:
 
-- `translations`: This folder contains the translation resources files. We recommend using translation files even if you are not supporting multiple languages as it will help you to support multiple languages in the future and also help you to find all the strings in one place.
+##### `(home)` - Main Application Routes
 
-- `types`: This folder contains the global types.
+Contains the primary app screens with **native tab navigation**:
 
-:::note
-The structure is very opinionated but we think it's
-the best way to structure a react native project. For sure you can change it as you like based on your needs.
+- `_layout.tsx` - Tab navigator using `expo-router/unstable-native-tabs`
+- `index.tsx` - Home/Feed screen (main landing page)
+- `settings.tsx` - Settings screen
+
+**Navigation:** These appear as tabs at the bottom of the app.
+
+##### `(components)` - Component Showcase Routes
+
+Contains **30 interactive component examples** demonstrating HeroUI Native components:
+
+- `_layout.tsx` - Stack navigator for component screens
+- 29 component showcase screens (accordion, button, card, etc.)
+- `component-list.tsx` - Navigation hub for all showcases
+
+**Purpose:** Educational resource and reference implementation for developers learning HeroUI Native components.
+
+**Navigation:** Accessed through a dedicated "Components" section in the app.
+
+:::tip
+The `(components)` route group serves as a **living documentation** system. Run the app and explore these screens to see HeroUI Native components in action with real code examples.
 :::
 
-## Importing files
+#### Root Layout (`_layout.tsx`)
 
-We use absolute imports to import files using the Babel module resolver plugin and TypeScript path mapping. This approach helps us avoid long relative paths and makes the code cleaner and more readable.
+The root layout establishes the **provider hierarchy** critical for the app to function:
 
-Here is a simple example of how the Feed screen looks with absolute imports.
-
-<Code file="src/app/(app)/index.tsx" meta="{4-7}" />
-
-This approach is very useful when you are working on a large project with a lot of files and folders and it can be done by updating the `babel.config.js` file and `tsconfig.json` file to the following:
+```tsx
+// Provider order (inside to outside):
+1. GestureHandlerRootView - Gesture support
+2. KeyboardProvider - Keyboard handling
+3. AppThemeProvider - Theme management (light/dark)
+4. HeroUINativeProvider - UI component context
+5. APIProvider - React Query setup
+6. BottomSheetModalProvider - Bottom sheet support
+```
 
 <details>
-  <summary>⚙️ Babel configuration</summary>
+  <summary>⚙️ View Root Layout Structure</summary>
+  <Code file="src/app/_layout.tsx" />
+</details>
+
+### `src/components/` - Reusable Components
+
+#### `components/ui/` - Custom UI Components
+
+Contains **6 custom components** designed for specific needs:
+
+| Component | Purpose | File |
+|-----------|---------|------|
+| **Image** | expo-image with Uniwind support | `image.tsx` |
+| **Text** | i18n-enabled with RTL support | `text.tsx` |
+| **ControlledInput** | Form input with react-hook-form | `input.tsx` |
+| **List** | FlashList wrapper with EmptyList | `list.tsx` |
+| **Modal** | Bottom sheet modal wrapper | `modal.tsx` |
+| **FocusAwareStatusBar** | Route-aware StatusBar | `focus-aware-status-bar.tsx` |
+
+**Important:** For buttons, cards, dialogs, and other standard UI, use [HeroUI Native components](../../ui-and-theme/heroui-native/) instead.
+
+See [Custom Components documentation](../../ui-and-theme/custom-components/) for detailed usage.
+
+#### Other Components
+
+- `accordion/`, `select/`, `toast/` - Demo-specific components for showcases
+- `component-presentation/` - Utilities for component showcases
+- `animated-blur-view.tsx`, `dialog-blur-backdrop.tsx` - Visual effects
+- `theme-toggle.tsx` - Theme switcher component
+- `logo.tsx` - App logo component
+
+### `src/api/` - Data Fetching Layer
+
+API calls organized using React Query with react-query-kit for type safety:
+
+```
+api/
+├── common/
+│   ├── api-provider.tsx    # QueryClient provider
+│   └── client.tsx          # Axios instance (baseURL from Env.API_URL)
+├── index.tsx               # API exports
+└── types.ts               # API type definitions
+```
+
+**Pattern:**
+```tsx
+import { createQuery } from 'react-query-kit';
+import { client } from './common/client';
+
+export const usePosts = createQuery({
+  queryKey: ['posts'],
+  fetcher: () => client.get('/posts'),
+});
+```
+
+See [Data Fetching guide](../../guides/data-fetching/) for complete patterns.
+
+### `src/lib/` - Core Utilities
+
+The `lib/` directory contains framework-agnostic utilities that can be shared across projects.
+
+#### `lib/auth/` - Authentication State
+
+Zustand-based auth state with MMKV persistence:
+
+```tsx
+// src/lib/auth/index.tsx
+type AuthState = {
+  token: TokenType | null;
+  status: 'idle' | 'signOut' | 'signIn';
+  signIn: (data: TokenType) => void;
+  signOut: () => void;
+  hydrate: () => void;
+};
+
+// Usage with selectors pattern
+const token = useAuth.use.token();
+const signIn = useAuth.use.signIn();
+```
+
+See [Authentication guide](../../guides/authentication/) for details.
+
+#### `lib/contexts/` - React Contexts
+
+- `app-theme-context.tsx` - Theme management (light/dark/system)
+
+#### `lib/hooks/` - Custom Hooks
+
+- `use-is-first-time.tsx` - First-time user detection
+- `use-selected-theme.tsx` - Current theme selection
+- `use-accessability-info.ts` - Accessibility utilities
+
+#### `lib/i18n/` - Internationalization
+
+i18next configuration and TypeScript types:
+
+```
+i18n/
+├── index.tsx          # i18next setup
+├── resources.ts       # Translation imports
+└── react-i18next.d.ts # TypeScript definitions
+```
+
+See [Internationalization guide](../../guides/internationalization/) for usage.
+
+#### `lib/storage.tsx` - MMKV Storage
+
+Type-safe wrapper around react-native-mmkv:
+
+```tsx
+import { getItem, setItem, removeItem } from '@/lib/storage';
+
+// Persist data
+await setItem('user', { id: 1, name: 'John' });
+
+// Retrieve data
+const user = getItem<User>('user');
+
+// Remove data
+await removeItem('user');
+```
+
+See [Storage guide](../../guides/storage/) for details.
+
+#### `lib/env.js` - Environment Variables
+
+Re-exports client environment variables from root `env.js`:
+
+```tsx
+import { Env } from '@env'; // Resolves to src/lib/env.js
+
+const apiUrl = Env.API_URL;
+const appName = Env.NAME;
+```
+
+See [Environment Variables guide](./environment-vars-config/) for configuration.
+
+#### `lib/utils.ts` - General Utilities
+
+Shared utilities including:
+- `createSelectors` - Zustand selectors pattern for performance
+- Other helper functions
+
+### `src/translations/` - Translation Resources
+
+JSON files for each supported locale:
+
+```
+translations/
+├── en.json  # English translations
+└── ar.json  # Arabic translations
+```
+
+**Format:**
+```json
+{
+  "welcome": {
+    "title": "Welcome to Atlas",
+    "subtitle": "A React Native starter"
+  }
+}
+```
+
+**Validation:** ESLint ensures:
+- Identical keys across all language files
+- Sorted keys alphabetically
+- Valid JSON syntax
+
+### `src/types/` - Global TypeScript Types
+
+Shared type definitions used across the app:
+
+```
+types/
+├── index.ts    # General types
+└── image.d.ts  # Image module declarations
+```
+
+## Root Configuration Files
+
+### `env.js` - Environment Variable System
+
+**Critical file** that loads and validates environment variables using Zod schemas:
+
+```javascript
+// Defines two schemas:
+const client = z.object({
+  APP_ENV: z.enum(['development', 'staging', 'production']),
+  API_URL: z.string(),
+  // ... client variables
+});
+
+const buildTime = z.object({
+  EXPO_ACCOUNT_OWNER: z.string(),
+  EAS_PROJECT_ID: z.string(),
+  // ... build-time only variables
+});
+```
+
+**Environment files:** `.env.development`, `.env.staging`, `.env.production`
+
+See [Environment Variables guide](./environment-vars-config/) for complete setup.
+
+### `app.config.ts` - Expo Configuration
+
+Dynamic Expo configuration with:
+- Multi-environment support (dev/staging/prod)
+- React Compiler enabled (experimental)
+- New Architecture enabled
+- Typed routes enabled
+- App icon badges for non-production builds
+
+<details>
+  <summary>⚙️ Key Configuration Options</summary>
+
+```typescript
+experiments: {
+  typedRoutes: true,        // Type-safe navigation
+  reactCompiler: true,      // Automatic optimization
+}
+newArchEnabled: true,       // New Architecture
+scheme: 'atlasApp',         // Deep linking
+```
+</details>
+
+### `tailwind.config.ts` - Uniwind Configuration
+
+TailwindCSS configuration for React Native via Uniwind (v1.2.2):
+
+```typescript
+// Custom colors, fonts, spacing, etc.
+theme: {
+  extend: {
+    colors: { /* custom colors */ },
+    fontFamily: { /* custom fonts */ },
+  }
+}
+```
+
+See [UI & Theming guide](../../ui-and-theme/ui-theming/) for styling.
+
+### Testing & Quality
+
+- **`jest.config.js`** - Jest configuration with jest-expo preset
+- **`eslint.config.mjs`** - ESLint flat config (v9) with React Compiler plugin
+- **`.prettierrc.js`** - Code formatting with TailwindCSS plugin
+
+## Key Architectural Patterns
+
+### 1. Route Groups for Organization
+
+Route groups organize routes without affecting URLs:
+
+```
+app/
+├── (home)/        # Tab navigation
+│   └── index.tsx  # URL: /
+└── (components)/  # Stack navigation
+    └── button.tsx # URL: /button (not /components/button)
+```
+
+### 2. Absolute Imports
+
+All imports use `@/` prefix for cleaner code:
+
+```tsx
+// ✅ Good
+import { Image, Text } from '@/components/ui';
+import { useAuth } from '@/lib/auth';
+import { usePosts } from '@/api';
+
+// ❌ Avoid
+import { Image } from '../../../components/ui';
+```
+
+**Configuration:** Set up in `tsconfig.json` and `babel.config.js`:
+
+<details>
+  <summary>⚙️ Babel Configuration</summary>
   <Code file="babel.config.js" meta="ins={8-27}" />
 </details>
 
 <details>
-  <summary>⚙️ Typescript Config</summary>
+  <summary>⚙️ TypeScript Configuration</summary>
   <Code file="tsconfig.json" meta="ins={5-9}" />
 </details>
+
+### 3. Provider Hierarchy
+
+The app wraps components in a specific order (see `src/app/_layout.tsx`):
+
+```
+GestureHandlerRootView
+  └─ KeyboardProvider
+      └─ AppThemeProvider
+          └─ HeroUINativeProvider
+              └─ APIProvider (React Query)
+                  └─ BottomSheetModalProvider
+                      └─ App Content
+```
+
+**Why this order?**
+- Gestures must wrap everything
+- Keyboard handling before UI
+- Theme before styled components
+- API provider before data-fetching components
+- Bottom sheet last for modals to overlay everything
+
+### 4. Component Showcase System
+
+The `(components)` route group provides:
+- **30 interactive examples** of HeroUI Native components
+- **Live demonstrations** with code patterns
+- **Learning resource** for developers
+- **Reference implementation** for component usage
+
+**How to use:**
+1. Run the app: `pnpm start`
+2. Navigate to Components section
+3. Explore each component showcase
+4. View source code in `src/app/(components)/`
+
+### 5. Separation of Concerns
+
+| Directory | Purpose | Import From |
+|-----------|---------|-------------|
+| `components/ui/` | Custom components | `@/components/ui` |
+| HeroUI Native | Standard UI library | `heroui-native` |
+| `lib/` | Framework-agnostic utils | `@/lib/*` |
+| `api/` | Data fetching | `@/api` |
+| `app/` | Routes only | Don't import from here |
+
+## Common Use Cases
+
+### Adding a New Screen
+
+1. Create file in appropriate route group:
+   ```
+   src/app/(home)/profile.tsx
+   ```
+
+2. Export default component:
+   ```tsx
+   export default function ProfileScreen() {
+     return <View>...</View>;
+   }
+   ```
+
+3. Navigation handled automatically by Expo Router
+
+### Adding a New Component
+
+1. **For standard UI:** Use HeroUI Native components
+2. **For custom needs:** Create in `src/components/`
+3. **For reusable UI utilities:** Add to `src/components/ui/`
+
+### Adding a New API Endpoint
+
+1. Create in `src/api/`:
+   ```tsx
+   // src/api/users.ts
+   export const useUsers = createQuery({
+     queryKey: ['users'],
+     fetcher: () => client.get('/users'),
+   });
+   ```
+
+2. Export from `src/api/index.tsx`
+
+3. Use in components:
+   ```tsx
+   import { useUsers } from '@/api';
+
+   const { data, isLoading } = useUsers();
+   ```
+
+## Project Philosophy
+
+The structure follows these principles:
+
+1. **🚀 Production-ready:** Organized for scale and maintainability
+2. **📁 Clear separation:** Each directory has a single responsibility
+3. **🔄 Reusability:** Lib utilities are framework-agnostic
+4. **📚 Living documentation:** Component showcases as learning tool
+5. **🎯 Type safety:** TypeScript throughout with strict mode
+6. **🧩 Minimal dependencies:** Only essential, well-maintained libraries
+
+:::note
+**Opinionated but flexible:** This structure represents best practices for React Native development. Feel free to adapt it to your project's needs, but the core organization principles should remain.
+:::
+
+## What's Next?
+
+Now that you understand the project structure, explore:
+
+- [Environment Variables](./environment-vars-config/) - Multi-environment setup
+- [Rules and Conventions](./rules-and-conventions/) - Code standards
+- [Navigation](../../guides/navigation/) - Routing and navigation patterns
+- [HeroUI Native Components](../../ui-and-theme/heroui-native/) - UI component library
+- [Custom Components](../../ui-and-theme/custom-components/) - Custom UI components
+
+---
+
+**Quick Reference:**
+
+```bash
+# View file tree in terminal
+tree -L 3 -I 'node_modules|.expo|android|ios|dist'
+
+# Count component showcases
+ls src/app/\(components\)/*.tsx | wc -l  # 30 files
+```

@@ -27,22 +27,59 @@ When creating this starter kit, we had several guiding principles in mind::
 
 ## ⭐ Key Features
 
-- ✅ Latest Expo SDK with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
+### Core Framework & Performance
+
+- ✅ **Latest Expo SDK 54** with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
+- ⚡ **React 19** with [React Compiler](https://react.dev/learn/react-compiler) enabled: Automatic optimization without manual memoization.
+- 🏗️ **New Architecture** enabled: Fabric renderer, TurboModules, and JSI for superior performance.
 - 🎉 [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
-- 💅 Minimal UI kit built with [Uniwind](https://docs.uniwind.dev/) and [HeroUI Native](https://v3.heroui.com/docs/native/getting-started), featuring common components essential for your app.
-- ⚙️ Multi-environment build support (Production, Staging, Development) using Expo configuration.
-- 🦊 Husky for Git Hooks: Automate your git hooks and enforce code standards.
-- 💡 Clean project structure with Absolute Imports for easier code navigation and management.
-- 🚫 Lint-staged: Run Eslint and TypeScript checks on Git staged files to maintain code quality.
-- 🗂 VSCode recommended extensions, settings, and snippets for an enhanced developer experience.
-- ☂️ Pre-installed [Expo Router](https://docs.expo.dev/router/introduction/) with examples for comprehensive app navigation.
-- 💫 Auth flow implementation using [Zustand](https://github.com/pmndrs/zustand) for state management and [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) for secure data storage.
-- 🛠 10+ [Github Actions](https://github.com/features/actions) workflows for building, releasing, testing, and distributing your app.
-- 🔥 [React Query](https://react-query.tanstack.com/) and [axios](https://github.com/axios/axios) for efficient data fetching and state management.
-- 🧵 Robust form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://github.com/colinhacks/zod) for validation, plus keyboard handling.
-- 🎯 Localization support with [i18next](https://www.i18next.com/), including Eslint for validation.
-- 🧪 Unit testing setup with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
-- 🔍 E2E testing capabilities with [Maestro](https://maestro.mobile.dev/) for comprehensive app testing.
+
+### Navigation & Routing
+
+- ☂️ [Expo Router v6](https://docs.expo.dev/router/introduction/) with **typed routes** and route groups for type-safe, file-based navigation.
+- 🗺️ **30 interactive component showcases** organized in route groups for learning and reference.
+
+### UI & Styling
+
+- 💅 **Production-ready UI** with [HeroUI Native](https://v3.heroui.com/docs/native/getting-started) (30+ components) and [Uniwind](https://docs.uniwind.dev/) for TailwindCSS styling.
+- 🎨 **6 custom components** (Image, Text, Input, List, Modal, StatusBar) for specialized needs.
+- 🌗 **Dark mode support** with system preference detection.
+
+### State Management & Data
+
+- 💫 **Zustand** for global client state with selectors pattern for optimal performance.
+- 🔥 [React Query v5](https://tanstack.com/query/latest) with [react-query-kit](https://github.com/liaoliao666/react-query-kit) for type-safe server state management.
+- 💾 [MMKV](https://github.com/mrousavy/react-native-mmkv) for fast, encrypted storage (30x faster than AsyncStorage).
+- 🧵 Robust form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://zod.dev/) validation.
+
+### Development Experience
+
+- ⚙️ **Multi-environment build** support (Development, Staging, Production) with environment-specific configs.
+- 💡 Clean project structure with **absolute imports** (`@/`) for easier navigation.
+- 🗂 **VSCode** recommended extensions, settings, and snippets for enhanced productivity.
+- 🦊 **Husky** for Git Hooks to automate code quality checks.
+- 🚫 **Lint-staged**: Run ESLint and TypeScript checks on staged files only.
+- 📦 **pnpm** enforced for fast, disk-efficient package management.
+
+### Testing & Quality
+
+- 🧪 **Unit testing** with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
+- 🔍 **E2E testing** with [Maestro](https://maestro.mobile.dev/) (3 workflow variants included).
+- 🛠 **14 GitHub Actions workflows** for automated building, releasing, testing, and quality checks.
+- 🏥 **Expo Doctor** integration for health checks and dependency validation.
+
+### Internationalization & Accessibility
+
+- 🎯 **i18next** for localization with ESLint validation of translation files.
+- ♿ Accessibility-first component design with ARIA support.
+
+### Additional Features
+
+- 🖼️ **Automatic image compression** in PRs to reduce bundle size.
+- 📱 **Deep linking** configured for all routes out of the box.
+- 🎹 Advanced **keyboard handling** with react-native-keyboard-controller.
+- 🎬 **Smooth animations** with Reanimated and Moti.
+- 🚨 **Error boundaries** with react-error-boundary for graceful error handling.
 
 ## 🤔 Is this starter for me?
 
@@ -86,28 +123,72 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 ## 💎 Libraries used
 
-- [Expo](https://docs.expo.io/)
-- [Expo Router](https://docs.expo.dev/router/introduction/)
-- [Uniwind](https://docs.uniwind.dev/)
-- [HeroUI Native](https://v3.heroui.com/docs/native/getting-started)
-- [Flash list](https://github.com/Shopify/flash-list)
-- [React Query](https://tanstack.com/query/v4)
-- [Axios](https://axios-http.com/docs/intro)
-- [React Hook Form](https://react-hook-form.com/)
-- [i18next](https://www.i18next.com/)
-- [zustand](https://github.com/pmndrs/zustand)
-- [React Native MMKV](https://github.com/mrousavy/react-native-mmkv)
-- [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/)
-- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/)
+### Core Framework
+
+- [React](https://react.dev/) 19.1.0 with [React Compiler](https://react.dev/learn/react-compiler)
+- [React Native](https://reactnative.dev/) 0.81.5 with [New Architecture](https://reactnative.dev/docs/new-architecture-intro)
+- [Expo SDK](https://docs.expo.dev/) 54.0.31
+- [TypeScript](https://www.typescriptlang.org/) 5.9.3
+
+### Navigation & Routing
+
+- [Expo Router](https://docs.expo.dev/router/introduction/) 6.0.21 (typed routes enabled)
+
+### UI & Styling
+
+- [HeroUI Native](https://v3.heroui.com/docs/native/getting-started) 1.0.0-beta.11 (30+ components)
+- [Uniwind](https://docs.uniwind.dev/) 1.2.2 (TailwindCSS for React Native)
+- [Tailwind Variants](https://www.tailwind-variants.org/)
 - [React Native Svg](https://github.com/software-mansion/react-native-svg)
-- [React Error Boundaries](https://github.com/bvaughn/react-error-boundary)
-- [Expo Image](https://docs.expo.dev/versions/unversioned/sdk/image/)
-- [React Native Keyboard Controller](https://github.com/kirillzyusko/react-native-keyboard-controller)
+
+### State Management & Data Fetching
+
+- [Zustand](https://github.com/pmndrs/zustand) 5.0.5
+- [React Query](https://tanstack.com/query/latest) 5.52.1
+- [react-query-kit](https://github.com/liaoliao666/react-query-kit) (type-safe query wrapper)
+- [Axios](https://axios-http.com/docs/intro)
+
+### Forms & Validation
+
+- [React Hook Form](https://react-hook-form.com/) 7.53.0
+- [Zod](https://zod.dev/) 3.23.8
+
+### Storage
+
+- [React Native MMKV](https://github.com/mrousavy/react-native-mmkv) 4.1.0
+
+### Animations & Interactions
+
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/)
+- [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/)
 - [Moti](https://moti.fyi/)
+
+### Lists & Performance
+
+- [FlashList](https://github.com/Shopify/flash-list) (optimized lists)
+
+### Internationalization
+
+- [i18next](https://www.i18next.com/)
+- [react-i18next](https://react.i18next.com/)
+
+### Developer Experience
+
+- [React Native Keyboard Controller](https://github.com/kirillzyusko/react-native-keyboard-controller)
+- [React Error Boundaries](https://github.com/bvaughn/react-error-boundary)
+- [Expo Image](https://docs.expo.dev/versions/latest/sdk/image/)
 - [React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)
 - [React Native Screens](https://github.com/software-mansion/react-native-screens)
-- [Tailwind Variants](https://www.tailwind-variants.org/)
-- [Zod](https://zod.dev/)
+
+### Testing
+
+- [Jest](https://jestjs.io/) 29
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Maestro](https://maestro.mobile.dev/) (E2E testing)
+
+### Package Management
+
+- [pnpm](https://pnpm.io/) 10.12.3 (enforced via preinstall script)
 
 ## Contributors
 

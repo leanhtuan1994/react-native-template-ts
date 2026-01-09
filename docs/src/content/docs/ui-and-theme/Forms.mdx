@@ -1,6 +1,6 @@
 ---
 title: Forms
-description: How to handle forms with react-hook-form and controlled components.
+description: Complete guide to handling forms with react-hook-form, Zod validation, and keyboard management in Atlas starter.
 head:
   - tag: title
     content: Forms | React Native / Expo Starter
@@ -8,107 +8,617 @@ head:
 
 import CodeBlock from '../../../components/code.astro';
 
-Forms are a common feature of any application. In this section, we will show you how you can handle form the right way with the starter.
+Forms are a fundamental part of most applications. The Atlas starter provides a robust, type-safe approach to form handling using modern React Native best practices.
 
-## react-hook-form
+## Form Handling Stack
 
-The starter uses [react-hook-form](https://react-hook-form.com/) to handle forms. It is a popular library that provides a lot of features out of the box. It is also very easy to use and integrate with React Native.
+The starter uses three key libraries for forms:
 
-Make sure to check the [react-hook-form documentation](https://react-hook-form.com/) to learn more about how to use it.
+1. **[react-hook-form](https://react-hook-form.com/)** (v7.53.0) - Form state management
+2. **[Zod](https://zod.dev/)** (v3.23.8) - Schema validation with TypeScript inference
+3. **[react-native-keyboard-controller](https://kirillzyusko.github.io/react-native-keyboard-controller/)** (v1.18.5) - Keyboard handling
 
-As we mention in the components section of the documentation [here](../components/), we create a set of controlled components that are only used with react-hook-form. The starter only provides two components: `ControlledInput` and `ControlledSelect` but you can easily create other components using the same approach.
+**Why this combination?**
+- Type-safe forms with automatic TypeScript inference
+- Minimal re-renders (only when needed)
+- Excellent validation error handling
+- Smooth keyboard interactions
+- Works seamlessly with [HeroUI Native](./heroui-native/) components
 
-Here is the complete code of our `ControlledInput` when we use `useController` hook from react-hook-form to handle form state and validation rules:
+---
+
+## ControlledInput Component
+
+The starter provides `ControlledInput` - a wrapper around HeroUI Native's `TextField` that integrates with react-hook-form:
 
 <CodeBlock file="src/components/ui/input.tsx" />
 
-If you want to create your own controlled component, you just need to make sure your component props type extends from `InputControllerType` the same way we are using it with `ControlledInput`.
-Here is another example of a Select input we create using the same approach as `ControlledInput`:
+**Key features:**
+- Uses `useController` hook from react-hook-form
+- Automatically displays validation errors
+- Supports all TextField props from HeroUI Native
+- Type-safe with TypeScript
 
-<CodeBlock file="src/components/ui/select.tsx" />
+**Import:**
+```tsx
+import { ControlledInput } from '@/components/ui';
+```
 
-## Use Case
+:::tip
+`ControlledInput` wraps HeroUI Native's TextField component. For direct use without forms, import `TextField` from `heroui-native`.
+:::
 
-Let's say you want to create a form that allows the user to log in to the application. You will need to create a screen that contains the form with email and password fields, as well as a submit button. The form will need to be validated, and the data will need to be sent to the backend. Here's how you can do it:
+---
 
-**Step 1: Create your schema validation **
+## Basic Form Example
 
-The right way to validate a form is to create a schema validation. You can use any library you want but we recommend using zod as you can easily infer the types from the schema. Here is how you can create a schema validation for the login form:
+Let's build a simple login form step by step.
+
+### Step 1: Define Validation Schema
+
+Use Zod to create a schema with validation rules:
 
 ```tsx
 import * as z from 'zod';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email('Invalid email format'),
+  password: z
+    .string({
+      required_error: 'Password is required',
+    })
+    .min(6, 'Password must be at least 6 characters'),
 });
 
+// Infer TypeScript type from schema
 type FormType = z.infer<typeof schema>;
 ```
 
-**Step 2: Create your form component**
-
-Now that you have your schema validation, you can easily create your login screen using react-hook-form and the controlled components we already have.
-Here is how you can create your login screen:
+### Step 2: Create Form Component
 
 ```tsx
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import * as z from 'zod';
 
-import { useAuth } from '@/lib';
-import { Button, ControlledInput, View } from '@/components/ui';
+import { Button } from 'heroui-native';
+import { ControlledInput, View } from '@/components/ui';
+import { useAuth } from '@/lib/auth';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(6, 'Password too short'),
 });
 
 type FormType = z.infer<typeof schema>;
 
-export const Login = () => {
+export function LoginForm() {
   const { signIn } = useAuth();
 
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormType) => {
+  const onSubmit: SubmitHandler<FormType> = (data) => {
     console.log(data);
     signIn({ access: 'access-token', refresh: 'refresh-token' });
   };
+
   return (
-    <View className="flex-1 justify-center p-4">
-      <ControlledInput control={control} name="email" label="Email" />
-      <ControlledInput
-        control={control}
-        name="password"
-        label="Password"
-        placeholder="***"
-        secureTextEntry={true}
-      />
-      <Button
-        label="Login"
-        onPress={handleSubmit(onSubmit)}
-        variant="primary"
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior="padding"
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={100}
+    >
+      <View className="flex-1 justify-center gap-4 p-4">
+        <ControlledInput
+          control={control}
+          name="email"
+          label="Email"
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+          testID="email-input"
+        />
+
+        <ControlledInput
+          control={control}
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          secureTextEntry
+          testID="password-input"
+        />
+
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          variant="solid"
+          color="primary"
+          testID="login-button"
+        >
+          Login
+        </Button>
+      </View>
+    </KeyboardAvoidingView>
   );
-};
+}
 ```
 
-Done ! You have created a form with validation and typescript support.
+### Key Points
 
-:::tip
-Any Component with props that inherit from the `InputControllerType` can be used with react-hook-form. You can easily create your own controlled component using the same approach as `ControlledInput` and `ControlledSelect`.
-:::
+**✅ Correct Imports:**
+```tsx
+// HeroUI Native component
+import { Button } from 'heroui-native';
 
-## Handling Keyboard
+// Custom components
+import { ControlledInput, View } from '@/components/ui';
 
-The template comes with [`react-native-keyboard-controller`](https://kirillzyusko.github.io/react-native-keyboard-controller/) pre-installed and configured to handle the keyboard. You only need to check the [documentation](https://kirillzyusko.github.io/react-native-keyboard-controller/) and use the appropriate approach for your use case. ( note that we already added the `KeyboardProvider` to the layout in the root file)
+// Keyboard handling (NOT from 'react-native')
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+```
 
-Make sure to check the following video for more details on how to handle keyboard in react native:
+**✅ Button Usage:**
+```tsx
+// ✅ Correct - HeroUI Native Button
+<Button onPress={handleSubmit(onSubmit)} variant="solid">
+  Login
+</Button>
+
+// ❌ Wrong - Old custom Button API (doesn't exist)
+<Button label="Login" onPress={handleSubmit(onSubmit)} variant="primary" />
+```
+
+**✅ KeyboardAvoidingView:**
+Always wrap forms in `KeyboardAvoidingView` from `react-native-keyboard-controller` to prevent keyboard from covering inputs.
+
+---
+
+## Advanced Form Patterns
+
+### Form with Multiple Sections
+
+```tsx
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import * as z from 'zod';
+
+import { Button } from 'heroui-native';
+import { ControlledInput, View, Text, ScrollView } from '@/components/ui';
+
+const schema = z.object({
+  // Personal Info
+  firstName: z.string().min(1, 'Required'),
+  lastName: z.string().min(1, 'Required'),
+  email: z.string().email('Invalid email'),
+
+  // Account Info
+  username: z.string().min(3, 'At least 3 characters'),
+  password: z.string().min(8, 'At least 8 characters'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+});
+
+type FormType = z.infer<typeof schema>;
+
+export function RegistrationForm() {
+  const { control, handleSubmit } = useForm<FormType>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = (data: FormType) => {
+    console.log('Form data:', data);
+  };
+
+  return (
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <ScrollView className="flex-1">
+        <View className="gap-6 p-4">
+          {/* Personal Information Section */}
+          <View className="gap-4">
+            <Text className="text-xl font-bold">Personal Information</Text>
+
+            <ControlledInput
+              control={control}
+              name="firstName"
+              label="First Name"
+              placeholder="John"
+            />
+
+            <ControlledInput
+              control={control}
+              name="lastName"
+              label="Last Name"
+              placeholder="Doe"
+            />
+
+            <ControlledInput
+              control={control}
+              name="email"
+              label="Email"
+              placeholder="john.doe@example.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+
+          {/* Account Information Section */}
+          <View className="gap-4">
+            <Text className="text-xl font-bold">Account Information</Text>
+
+            <ControlledInput
+              control={control}
+              name="username"
+              label="Username"
+              placeholder="johndoe"
+              autoCapitalize="none"
+            />
+
+            <ControlledInput
+              control={control}
+              name="password"
+              label="Password"
+              placeholder="Enter password"
+              secureTextEntry
+            />
+
+            <ControlledInput
+              control={control}
+              name="confirmPassword"
+              label="Confirm Password"
+              placeholder="Re-enter password"
+              secureTextEntry
+            />
+          </View>
+
+          <Button onPress={handleSubmit(onSubmit)} variant="solid">
+            Create Account
+          </Button>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+```
+
+### Form with Conditional Fields
+
+```tsx
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import { Button, Switch } from 'heroui-native';
+import { ControlledInput, View, Text } from '@/components/ui';
+
+const schema = z.object({
+  enableNotifications: z.boolean(),
+  email: z.string().email().optional(),
+  phone: z.string().min(10).optional(),
+}).refine(
+  (data) => {
+    if (data.enableNotifications) {
+      return data.email || data.phone;
+    }
+    return true;
+  },
+  {
+    message: 'Please provide either email or phone for notifications',
+    path: ['email'],
+  }
+);
+
+type FormType = z.infer<typeof schema>;
+
+export function NotificationSettingsForm() {
+  const { control, handleSubmit } = useForm<FormType>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      enableNotifications: false,
+    },
+  });
+
+  // Watch enableNotifications to show/hide fields
+  const enableNotifications = useWatch({
+    control,
+    name: 'enableNotifications',
+  });
+
+  const onSubmit = (data: FormType) => {
+    console.log(data);
+  };
+
+  return (
+    <View className="gap-4 p-4">
+      <View className="flex-row items-center justify-between">
+        <Text className="text-lg">Enable Notifications</Text>
+        <Switch
+          isSelected={enableNotifications}
+          onValueChange={(value) => {
+            control._formValues.enableNotifications = value;
+          }}
+        />
+      </View>
+
+      {enableNotifications && (
+        <View className="gap-4">
+          <ControlledInput
+            control={control}
+            name="email"
+            label="Email (Optional)"
+            placeholder="notifications@example.com"
+            keyboardType="email-address"
+          />
+
+          <ControlledInput
+            control={control}
+            name="phone"
+            label="Phone (Optional)"
+            placeholder="+1 234 567 8900"
+            keyboardType="phone-pad"
+          />
+        </View>
+      )}
+
+      <Button onPress={handleSubmit(onSubmit)}>
+        Save Settings
+      </Button>
+    </View>
+  );
+}
+```
+
+### Form with Loading State
+
+```tsx
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import { Button } from 'heroui-native';
+import { ControlledInput, View } from '@/components/ui';
+
+const schema = z.object({
+  email: z.string().email(),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
+type FormType = z.infer<typeof schema>;
+
+export function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { control, handleSubmit, reset } = useForm<FormType>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = async (data: FormType) => {
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await fetch('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+
+      // Reset form on success
+      reset();
+      alert('Message sent successfully!');
+    } catch (error) {
+      alert('Failed to send message');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View className="gap-4 p-4">
+      <ControlledInput
+        control={control}
+        name="email"
+        label="Email"
+        placeholder="your@email.com"
+        keyboardType="email-address"
+        isDisabled={isSubmitting}
+      />
+
+      <ControlledInput
+        control={control}
+        name="message"
+        label="Message"
+        placeholder="Your message here..."
+        multiline
+        numberOfLines={4}
+        isDisabled={isSubmitting}
+      />
+
+      <Button
+        onPress={handleSubmit(onSubmit)}
+        isLoading={isSubmitting}
+        isDisabled={isSubmitting}
+      >
+        Send Message
+      </Button>
+    </View>
+  );
+}
+```
+
+---
+
+## Validation Patterns
+
+### Custom Error Messages
+
+```tsx
+const schema = z.object({
+  username: z
+    .string({
+      required_error: 'Username is required',
+      invalid_type_error: 'Username must be a string',
+    })
+    .min(3, 'Username must be at least 3 characters')
+    .max(20, 'Username must be less than 20 characters')
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      'Username can only contain letters, numbers, and underscores'
+    ),
+});
+```
+
+### Cross-Field Validation
+
+```tsx
+const schema = z
+  .object({
+    password: z.string().min(8),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'], // Error appears on confirmPassword field
+  });
+```
+
+### Async Validation
+
+```tsx
+import { z } from 'zod';
+
+const schema = z.object({
+  username: z.string().refine(
+    async (username) => {
+      // Check if username is available
+      const response = await fetch(`/api/check-username/${username}`);
+      const { available } = await response.json();
+      return available;
+    },
+    {
+      message: 'Username is already taken',
+    }
+  ),
+});
+```
+
+### Optional Fields with Transforms
+
+```tsx
+const schema = z.object({
+  age: z
+    .string()
+    .optional()
+    .transform((val) => (val ? parseInt(val, 10) : undefined))
+    .refine((val) => !val || (val >= 18 && val <= 120), {
+      message: 'Age must be between 18 and 120',
+    }),
+});
+```
+
+---
+
+## Keyboard Handling
+
+The starter includes `react-native-keyboard-controller` pre-configured for smooth keyboard interactions.
+
+### KeyboardAvoidingView
+
+**Always use** `KeyboardAvoidingView` from `react-native-keyboard-controller` (not from `react-native`):
+
+```tsx
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+
+export function MyForm() {
+  return (
+    <KeyboardAvoidingView
+      behavior="padding"              // iOS: padding, Android: padding or height
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={100}    // Adjust based on header height
+    >
+      {/* Form content */}
+    </KeyboardAvoidingView>
+  );
+}
+```
+
+### KeyboardAwareScrollView
+
+For forms with many fields:
+
+```tsx
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+
+export function LongForm() {
+  return (
+    <KeyboardAwareScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{ padding: 16 }}
+      keyboardShouldPersistTaps="handled"
+      extraScrollHeight={20}
+    >
+      {/* Many form fields */}
+    </KeyboardAwareScrollView>
+  );
+}
+```
+
+### Dismiss Keyboard on Tap
+
+```tsx
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+
+// Already set up in src/app/_layout.tsx
+<KeyboardProvider>
+  {/* Your app */}
+</KeyboardProvider>
+```
+
+Users can tap outside inputs to dismiss the keyboard automatically.
+
+### Manual Keyboard Control
+
+```tsx
+import { useKeyboardController } from 'react-native-keyboard-controller';
+
+export function MyForm() {
+  const { dismiss } = useKeyboardController();
+
+  const handleSubmit = (data: FormType) => {
+    dismiss(); // Dismiss keyboard before navigation
+    // Process form...
+  };
+
+  return (
+    <View>
+      {/* Form */}
+      <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
+    </View>
+  );
+}
+```
+
+### Learn More
+
+Watch this comprehensive video on keyboard handling in React Native:
 
 <div class="embed-container">
   <iframe
@@ -117,3 +627,208 @@ Make sure to check the following video for more details on how to handle keyboar
     allowfullscreen
   ></iframe>
 </div>
+
+---
+
+## Creating Custom Controlled Components
+
+You can create controlled wrappers for any HeroUI Native form component.
+
+### Example: ControlledSwitch
+
+```tsx
+import { useController } from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form';
+import { Switch } from 'heroui-native';
+import type { SwitchProps } from 'heroui-native';
+
+type ControlledSwitchProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: Path<T>;
+} & Omit<SwitchProps, 'isSelected' | 'onValueChange'>;
+
+export function ControlledSwitch<T extends FieldValues>({
+  control,
+  name,
+  ...switchProps
+}: ControlledSwitchProps<T>) {
+  const { field } = useController({ control, name });
+
+  return (
+    <Switch
+      isSelected={field.value}
+      onValueChange={field.onChange}
+      {...switchProps}
+    />
+  );
+}
+```
+
+### Example: ControlledCheckbox
+
+```tsx
+import { useController } from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form';
+import { Checkbox } from 'heroui-native';
+import type { CheckboxProps } from 'heroui-native';
+
+type ControlledCheckboxProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: Path<T>;
+  label?: string;
+} & Omit<CheckboxProps, 'isSelected' | 'onChange'>;
+
+export function ControlledCheckbox<T extends FieldValues>({
+  control,
+  name,
+  label,
+  ...checkboxProps
+}: ControlledCheckboxProps<T>) {
+  const { field } = useController({ control, name });
+
+  return (
+    <Checkbox
+      isSelected={field.value}
+      onChange={field.onChange}
+      {...checkboxProps}
+    >
+      {label}
+    </Checkbox>
+  );
+}
+```
+
+---
+
+## Best Practices
+
+### DO ✅
+
+- **Use Zod for validation** - Type inference and runtime validation
+- **Wrap forms in KeyboardAvoidingView** - Better UX on mobile
+- **Add testID props** - Essential for testing
+- **Provide default values** - Prevents uncontrolled to controlled warnings
+- **Use proper keyboard types** - `email-address`, `phone-pad`, `numeric`, etc.
+- **Disable autocapitalize for emails/usernames** - Better UX
+- **Show loading states** - Use `isLoading` prop on Button
+- **Reset form after successful submission** - Use `reset()` from useForm
+- **Handle errors gracefully** - Show user-friendly error messages
+
+### DON'T ❌
+
+- **Don't use uncontrolled inputs** - Always use ControlledInput
+- **Don't import Button from @/components/ui** - Use HeroUI Native Button
+- **Don't use KeyboardAvoidingView from react-native** - Use from react-native-keyboard-controller
+- **Don't skip validation** - Always validate both client and server-side
+- **Don't forget testID** - Makes testing much harder
+- **Don't block submission unnecessarily** - Show errors but allow fixes
+- **Don't ignore accessibility** - Use proper labels and hints
+
+---
+
+## Common Issues & Solutions
+
+### Issue: Form values not updating
+
+**Cause:** Using wrong prop names (HeroUI Native uses `isDisabled` not `disabled`)
+
+**Solution:**
+```tsx
+// ✅ Correct
+<ControlledInput control={control} name="email" isDisabled={loading} />
+
+// ❌ Wrong
+<ControlledInput control={control} name="email" disabled={loading} />
+```
+
+### Issue: Keyboard covering inputs
+
+**Cause:** Missing KeyboardAvoidingView or wrong behavior
+
+**Solution:**
+```tsx
+<KeyboardAvoidingView
+  behavior="padding"
+  style={{ flex: 1 }}
+  keyboardVerticalOffset={100}
+>
+  {/* Form */}
+</KeyboardAvoidingView>
+```
+
+### Issue: Button not responding to form submit
+
+**Cause:** Wrong Button API usage
+
+**Solution:**
+```tsx
+// ✅ Correct
+<Button onPress={handleSubmit(onSubmit)}>Submit</Button>
+
+// ❌ Wrong
+<Button label="Submit" onPress={handleSubmit(onSubmit)} />
+```
+
+---
+
+## Testing Forms
+
+Example test for login form:
+
+```tsx
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { LoginForm } from './login-form';
+
+describe('LoginForm', () => {
+  it('validates email format', async () => {
+    const { getByTestId, getByText } = render(<LoginForm />);
+
+    const emailInput = getByTestId('email-input');
+    const submitButton = getByTestId('login-button');
+
+    fireEvent.changeText(emailInput, 'invalid-email');
+    fireEvent.press(submitButton);
+
+    await waitFor(() => {
+      expect(getByText('Invalid email')).toBeTruthy();
+    });
+  });
+
+  it('submits valid form', async () => {
+    const mockSignIn = jest.fn();
+    const { getByTestId } = render(<LoginForm onSignIn={mockSignIn} />);
+
+    fireEvent.changeText(getByTestId('email-input'), 'test@example.com');
+    fireEvent.changeText(getByTestId('password-input'), 'password123');
+    fireEvent.press(getByTestId('login-button'));
+
+    await waitFor(() => {
+      expect(mockSignIn).toHaveBeenCalled();
+    });
+  });
+});
+```
+
+---
+
+## Resources
+
+- **react-hook-form:** [https://react-hook-form.com/](https://react-hook-form.com/)
+- **Zod:** [https://zod.dev/](https://zod.dev/)
+- **react-native-keyboard-controller:** [https://kirillzyusko.github.io/react-native-keyboard-controller/](https://kirillzyusko.github.io/react-native-keyboard-controller/)
+- **HeroUI Native TextField:** [https://v3.heroui.com/native/components/text-field](https://v3.heroui.com/native/components/text-field)
+- **Custom Components:** [Custom Components Guide](./custom-components/)
+
+---
+
+## Summary
+
+Forms in Atlas starter use:
+- ✅ **react-hook-form** for state management
+- ✅ **Zod** for validation with TypeScript inference
+- ✅ **ControlledInput** wrapping HeroUI Native TextField
+- ✅ **HeroUI Native Button** for submission (not custom Button)
+- ✅ **react-native-keyboard-controller** for keyboard handling
+- ✅ **Type safety** throughout with TypeScript
+
+This combination provides excellent developer experience with minimal code and maximum type safety.
