@@ -45,14 +45,14 @@ configureReanimatedLogger({
 // });
 
 export default function RootLayout() {
-  const fonts = useFonts({
+  const [loaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
   });
 
-  if (!fonts) {
+  if (!loaded) {
     return null;
   }
 
@@ -60,7 +60,6 @@ export default function RootLayout() {
     <Providers>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
-        <Stack.Screen name="(components)" options={{ headerShown: false }} />
       </Stack>
     </Providers>
   );

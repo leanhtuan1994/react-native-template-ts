@@ -1,9 +1,9 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg from 'react-native-svg';
 import { withUniwind } from 'uniwind';
 
 export * from './focus-aware-status-bar';
 export * from './image';
-export * from './input';
 export * from './list';
 export * from './modal';
 export * from './text';
@@ -17,7 +17,6 @@ export {
   TouchableOpacity,
   View,
 } from 'react-native';
-export { SafeAreaView } from 'react-native-safe-area-context';
 
-//Apply uniwind to Svg to resolve className string into style
-withUniwind(Svg);
+export const StyledSafeAreaView = withUniwind(SafeAreaView);
+export const StyledSvg = withUniwind(Svg);

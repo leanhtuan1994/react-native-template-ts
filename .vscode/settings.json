@@ -25,6 +25,7 @@
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },
   "cSpell.words": [
+    "atlasapp",
     "Entypo",
     "Flashlist",
     "flatlist",
