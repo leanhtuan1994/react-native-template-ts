@@ -1,0 +1,33 @@
+{
+  "onboarding": {
+    "message": "Chào mừng đến với ứng dụng obytes"
+  },
+  "settings": {
+    "about": "Giới thiệu",
+    "app_name": "Tên ứng dụng",
+    "english": "Tiếng Anh",
+    "generale": "Chung",
+    "github": "Github",
+    "language": "Ngôn ngữ",
+    "links": "Liên kết",
+    "logout": "Đăng xuất",
+    "more": "Thêm",
+    "privacy": "Chính sách bảo mật",
+    "rate": "Đánh giá",
+    "share": "Chia sẻ",
+    "support": "Hỗ trợ",
+    "support_us": "Ủng hộ chúng tôi",
+    "terms": "Điều khoản dịch vụ",
+    "theme": {
+      "dark": "Tối",
+      "light": "Sáng",
+      "system": "Hệ thống",
+      "title": "Giao diện"
+    },
+    "title": "Cài đặt",
+    "version": "Phiên bản",
+    "vietnamese": "Tiếng Việt",
+    "website": "Trang web"
+  },
+  "welcome": "Chào mừng đến với ứng dụng obytes"
+}

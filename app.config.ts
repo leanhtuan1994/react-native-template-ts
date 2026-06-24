@@ -6,16 +6,8 @@ import { ClientEnv, Env } from './env';
 const appIconBadgeConfig: AppIconBadgeConfig = {
   enabled: Env.APP_ENV !== 'production',
   badges: [
-    {
-      text: Env.APP_ENV,
-      type: 'banner',
-      color: 'white',
-    },
-    {
-      text: Env.VERSION.toString(),
-      type: 'ribbon',
-      color: 'white',
-    },
+    { text: Env.APP_ENV, type: 'banner', color: 'white' },
+    { text: Env.VERSION.toString(), type: 'ribbon', color: 'white' },
   ],
 };
 
@@ -30,21 +22,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
-  updates: {
-    fallbackToCacheTimeout: 0,
-  },
+  updates: { fallbackToCacheTimeout: 0 },
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,
-    infoPlist: {
-      ITSAppUsesNonExemptEncryption: false,
-    },
+    infoPlist: { ITSAppUsesNonExemptEncryption: false },
   },
-  experiments: {
-    typedRoutes: true,
-    reactCompiler: true,
-  },
+  experiments: { typedRoutes: true, reactCompiler: true },
   android: {
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
@@ -53,16 +38,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     package: Env.PACKAGE,
     predictiveBackGestureEnabled: false,
   },
-  web: {
-    favicon: './assets/favicon.png',
-    bundler: 'metro',
-  },
+  web: { favicon: './assets/favicon.png', bundler: 'metro' },
   plugins: [
     [
       'expo-build-properties',
       {
         buildReactNativeFromSource: true,
         useHermesV1: true,
+        android: { usePrecompiledHeaders: true },
       },
     ],
     [
@@ -79,11 +62,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
     ['expo-image'],
+    'expo-status-bar',
   ],
-  extra: {
-    ...ClientEnv,
-    eas: {
-      projectId: Env.EAS_PROJECT_ID,
-    },
-  },
+  extra: { ...ClientEnv, eas: { projectId: Env.EAS_PROJECT_ID } },
 });

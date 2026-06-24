@@ -1,9 +1,9 @@
 import '@shopify/flash-list/jestSetup';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
 import type { RenderOptions } from '@testing-library/react-native';
 import { render, userEvent } from '@testing-library/react-native';
+import { NavigationContainer } from 'expo-router/react-navigation';
 import { HeroUINativeProvider } from 'heroui-native';
 import type { ReactElement } from 'react';
 import React from 'react';

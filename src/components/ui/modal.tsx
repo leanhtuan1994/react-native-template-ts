@@ -98,6 +98,7 @@ export const Modal = React.forwardRef(
       <BottomSheetModal
         {...props}
         {...detachedProps}
+        // eslint-disable-next-line react-hooks/refs
         ref={modal.ref}
         index={0}
         snapPoints={snapPoints}

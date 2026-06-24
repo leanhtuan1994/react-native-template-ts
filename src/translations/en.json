@@ -5,7 +5,6 @@
   "settings": {
     "about": "About",
     "app_name": "App Name",
-    "arabic": "Arabic",
     "english": "English",
     "generale": "General",
     "github": "Github",
@@ -27,6 +26,7 @@
     },
     "title": "Settings",
     "version": "Version",
+    "vietnamese": "Vietnamese",
     "website": "Website"
   },
   "welcome": "Welcome to obytes app site"

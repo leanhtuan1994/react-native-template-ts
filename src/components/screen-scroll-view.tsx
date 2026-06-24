@@ -1,4 +1,4 @@
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from 'expo-router/react-navigation';
 import { cn } from 'heroui-native';
 import { type FC, type PropsWithChildren } from 'react';
 import { ScrollView, type ScrollViewProps } from 'react-native';
