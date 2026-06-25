@@ -119,9 +119,7 @@ This repository includes a root `llms.txt` file that defines canonical documenta
 
 ## 📚 Documentation
 
-Full documentation is available at the docs site (deployed on Vercel from the `docs/` directory).
-
-<!-- TODO: replace with the live Vercel URL after the first deploy, e.g. https://<project>.vercel.app -->
+Full documentation is available at [react-native-template-atlas.vercel.app](https://react-native-template-atlas.vercel.app) (deployed on Vercel from the `docs/` directory).
 
 To run the docs locally:
 
