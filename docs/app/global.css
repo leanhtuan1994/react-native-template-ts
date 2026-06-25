@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@source '../components/**/*.{ts,tsx}';
+@source '../app/**/*.{ts,tsx}';
+
+/* Map the next/font CSS vars into Tailwind's font utilities (inline so the
+ * runtime-defined variables are referenced, not their empty build-time value). */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+}
+
+/*
+ * Atlas docs — bold, dark-first brand system.
+ * Deep blue/purple ink base + single bold "blurple" accent.
+ * Fumadocs theme CSS vars are overridden below for both schemes.
+ */
+
+:root {
+  /* Brand blurple accent (light mode) */
+  --color-fd-primary: oklch(0.55 0.22 277);
+  --brand-blurple: #5b53ff;
+  --brand-blurple-soft: #8a84ff;
+}
+
+.dark {
+  /* Dark-first: deep blue/purple ink base */
+  --color-fd-background: oklch(0.16 0.03 277);
+  --color-fd-foreground: oklch(0.96 0.01 277);
+  --color-fd-card: oklch(0.2 0.035 277);
+  --color-fd-popover: oklch(0.18 0.035 277);
+  --color-fd-muted: oklch(0.24 0.03 277);
+  --color-fd-muted-foreground: oklch(0.72 0.02 277);
+  --color-fd-border: oklch(0.3 0.03 277);
+  --color-fd-secondary: oklch(0.24 0.03 277);
+  --color-fd-accent: oklch(0.28 0.04 277);
+  --color-fd-primary: oklch(0.72 0.18 277);
+  --color-fd-ring: oklch(0.72 0.18 277);
+}
+
+/* Brand gradient utilities used by hero / landing */
+.brand-gradient-text {
+  background-image: linear-gradient(
+    110deg,
+    var(--brand-blurple-soft),
+    var(--brand-blurple) 55%,
+    #b39dff
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-mesh {
+  background:
+    radial-gradient(60% 50% at 20% 0%, rgba(91, 83, 255, 0.28), transparent 70%),
+    radial-gradient(50% 50% at 90% 10%, rgba(138, 132, 255, 0.18), transparent 70%);
+}
+
+.brand-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000, transparent);
+  mask-image: radial-gradient(70% 60% at 50% 0%, #000, transparent);
+}

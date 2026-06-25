@@ -1,0 +1,22 @@
+---
+title: Testing Overview
+description: What to test and how to test it in your Atlas app.
+---
+
+Testing is an essential part of any software development process. It helps ensure that your code is working as expected and that you don't introduce any bugs into your codebase. The starter template makes it easy to write tests — it includes the [Jest](https://jestjs.io/) testing framework and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for unit tests, along with mocks for most libraries. We also use [Maestro](https://maestro.mobile.dev/) for end-to-end tests.
+
+## Testing approaches
+
+It's clear that testing is important, but what should you test? Especially for front-end apps (including mobile apps), there is no clear answer. Should you aim for 100% code coverage? Should you test every component?
+
+The answer depends on your app, your team, and your goals. Testing is a trade-off between the time you spend writing tests and the confidence you get from them. You should aim for a good balance between the two.
+
+Aiming for 100% test coverage is not always a good idea and doesn't always make sense. The same applies to testing views and components that only render UI. Instead, focus on the following:
+
+- **Business logic**: Test component and function utilities that contain business logic — form validation, data manipulation, calculations, etc.
+
+- **Complex components**: Test components that contain complex logic, such as components with a lot of conditional rendering or heavy state management logic.
+
+Focus on the above and write unit tests for them. This will help you get the most out of your tests and find bugs early.
+
+To ensure that your app is functioning as expected, we recommend writing end-to-end tests, as they provide the highest level of confidence and help you test the app as a whole — similar to how your users will use it.

@@ -1,0 +1,146 @@
+---
+title: App Releasing Process
+description: How to release your app to the App Store and Google Play.
+---
+
+Releasing your app to the App Store and Google Play — or even to your QA team for real-device testing — is a very important step in the app development process. Internally, a new version is typically released to the QA team at the end of each sprint (every one or two weeks). This gives you feedback from your team on real devices.
+
+Doing this on a regular basis requires automating the process as much as possible to save time and avoid manual work.
+
+To make this process as easy as possible, Atlas uses GitHub Actions and Expo EAS to build and release the app to the App Store and Google Play.
+
+## The Philosophy
+
+The philosophy behind this process is to have a single task that any developer on the team can trigger to build and distribute the app.
+
+The main idea is to focus on the QA release process and push a new release to the QA team whenever the team reaches the end of a sprint. Whenever you are ready to push a new release to the App Store and Google Play, you can trigger a production release manually from the master branch or from the last GitHub release tag that has already been pushed to the QA team.
+
+In conclusion, there are two types of releases:
+
+- **QA release**: Triggered automatically whenever a new GitHub release is created. Used to distribute the app to the QA team for testing.
+
+- **Production release**: Triggered manually whenever you want to push a new release to the App Store and Google Play. Can be built from the last GitHub release tag or from the master branch.
+
+<Callout type="info">
+We aim to simplify the process as much as possible. Depending on your requirements, you can take inspiration from this process and modify it to meet your needs.
+</Callout>
+
+## The Process
+
+The starter comes with a set of tools and scripts that help make the process as easy as possible.
+
+### `app-release` npm script
+
+A simple npm script that runs the `np` package, which helps manage the version of the app and push a new tag to GitHub.
+
+```json
+{
+  "scripts": {
+    "app-release": "cross-env SKIP_BRANCH_PROTECTION=true np --no-publish --no-cleanup --no-release-draft",
+    "version": "pnpm run prebuild && git add ."
+  }
+}
+```
+
+If you run `pnpm run app-release`, it will ask you to choose the type of release (major, minor, patch). Based on the type of release, it will update the version inside `package.json`.
+
+Since the version from `package.json` is used as the app version inside `app.config.ts`, you just need to run the prebuild script to update the app version inside the `ios` and `android` folders. The prebuild script is executed automatically using the `version` script inside `package.json`, which handles the task and also adds the changes to the commit that is pushed to GitHub, creating a new tag with the version number.
+
+So technically, you just need to run `pnpm run app-release` and it handles the rest — from updating the native app version to pushing a new tag to GitHub.
+
+### GitHub Actions and Expo EAS workflows
+
+The starter comes with a set of GitHub workflows that use Expo EAS to build and distribute the app to the App Store and Google Play.
+
+- **`new-app-version.yml`**: Runs the `app-release` script to update the app version and push a new tag to GitHub.
+
+- **`new-github-release.yml`**: Triggered whenever a new tag is pushed to GitHub. Creates a new GitHub release based on the tag name with the correct changelog.
+
+- **`eas-build-qa.yml`**: Triggered whenever a new release is created on GitHub. Builds the app using Expo EAS and distributes it based on the config.
+
+- **`eas-build-prod.yml`**: Triggered manually whenever you want to push a new release to the App Store and Google Play. Builds the app using Expo EAS and distributes it based on the config.
+
+In conclusion, when you want to release a new QA version, manually execute `new-app-version.yml` with the correct release type. After successful execution, `new-github-release.yml` triggers automatically, followed by the automatic execution of `eas-build-qa.yml`. This will distribute the app to the QA team.
+
+## Setup Release Process for your app
+
+To set up the release process for your app, follow these steps.
+
+### Run Build Locally
+
+First, make sure to create an [Expo](https://expo.dev) account and then create a new organization for your project.
+
+When the name of your organization is ready, update the `EXPO_ACCOUNT_OWNER` variable in `env.js` with the name of your organization.
+
+**For QA release:**
+
+```bash
+pnpm run prebuild:staging
+```
+
+The above command will regenerate the iOS and Android folders based on the `staging` configuration.
+
+Then run the following command to build the app using EAS:
+
+<Callout type="warn">
+You need to be logged in to EAS using `eas login` before running this command. Check [step 1 and 2 from EAS docs](https://docs.expo.dev/build/setup/) for more details.
+</Callout>
+
+```bash
+pnpm run build:staging:ios
+pnpm run build:staging:android
+```
+
+The above commands will generate the required credentials for the build and store them in EAS servers so that you can use them later to trigger builds from GitHub Actions.
+
+**For production release:**
+
+```bash
+pnpm run prebuild:production
+pnpm run build:production:ios
+pnpm run build:production:android
+```
+
+If you want to submit the app to the App Store and Google Play, check the EAS submit configuration and follow the steps from [EAS docs](https://docs.expo.dev/submit/introduction/).
+
+### Setup GitHub Actions
+
+All GitHub workflows are already ready to use in the starter. You just need to add the required secrets to your GitHub repo:
+
+- **`GH_TOKEN`**: A [GitHub token](https://github.com/settings/tokens) with access to your repo.
+- **`EXPO_TOKEN`**: Expo token to authenticate with EAS. You can generate yours [here](https://expo.dev/settings/access-tokens).
+
+### GitHub Actions and env variables
+
+For simplicity, we assume that all your environment variables are already added to your env files and have been pushed to your repository.
+
+If you prefer not to push env files (recommended), you need to add all your environment variables to GitHub secrets. Then, use the `create-envfile` action to create the env file on the fly before the prebuild script.
+
+```yaml
+## .github/workflows/eas-build-prod.yml
+
+- name: Create envfile
+  uses: SpicyPizza/create-envfile@v2.0
+  with:
+    envkey_DEBUG: false
+    envkey_SECRET_KEY: ${{ secrets.PRODUCTION_SECRET_KEY }}
+    file_name: .env.production
+
+- name: EAS Build
+  uses: ./.github/actions/eas-build
+  with:
+    APP_ENV: production
+    EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+```
+
+This action will create a new env file `.env.production` with the variables you added to the action. Make sure to include all your env variables in the action.
+
+## Create a New Release
+
+For a QA release, go to your GitHub repo's Actions tab and run the `new-app-version` workflow with your desired release type.
+
+After successful execution, a new tag is pushed to master and then the `new-github-release` workflow is triggered automatically, creating a GitHub release based on the tag name with the correct changelog.
+
+After that, `eas-build-qa` is triggered automatically and builds the app using EAS, distributing it to the QA team.
+
+For a production release, go to your GitHub repo's Actions tab and run the `eas-build-prod` workflow manually.

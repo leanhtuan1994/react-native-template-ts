@@ -1,0 +1,12 @@
+{
+  "title": "UI & Theming",
+  "pages": [
+    "ui-theming",
+    "heroui-native",
+    "fonts",
+    "components",
+    "custom-components",
+    "component-showcase",
+    "forms"
+  ]
+}

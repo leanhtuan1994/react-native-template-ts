@@ -1,0 +1,62 @@
+---
+title: Unit Tests
+description: How to write unit tests using Jest and React Native Testing Library.
+---
+
+As mentioned in the [testing overview](/docs/testing/overview), the starter includes the [Jest](https://jestjs.io/) testing framework and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for unit tests, along with mocks for most libraries.
+
+The following guide is not a tutorial on how to write tests using React Native Testing Library and Jest, but rather a guide on how to write tests within this starter and some best practices to follow. If you are not familiar with testing, we recommend reading the [official Jest documentation](https://jestjs.io/docs/en/getting-started) and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) to get familiar with them.
+
+We should aim to test the following:
+
+- **Business logic**: Test component and function utilities that contain business logic — form validation, data manipulation, calculations, etc.
+
+- **Complex components**: Test components that contain complex logic, such as components with a lot of conditional rendering or heavy state management logic.
+
+## Writing tests
+
+Let's start by writing a simple test for a login screen. We will test a login form component.
+
+<Callout type="info">
+To make it easier to write tests, separate the form from any other logic related to API calls, navigation, etc. This way, you can test the form logic without having to worry about other concerns.
+
+Writing code with the intention of testing it will also assist you in producing cleaner code.
+</Callout>
+
+For the login form component, we will test the following:
+
+- The form renders correctly.
+- Shows the correct error messages on invalid or missing data.
+- Submits the form with valid data and makes sure that the `onSubmit` function is called with the correct data.
+
+Create a new file called `login-form.test.tsx` in the same directory as your component, then add your test cases using `@testing-library/react-native` imports.
+
+The starter provides a `@/lib/test-utils` module that exports everything from `@testing-library/react-native` and overrides the `render` function to wrap components with all required providers. This means you don't have to import providers in every test file.
+
+<Callout type="info">
+You can update `src/lib/test-utils.tsx` to add any other providers your tests need, as well as any shared utility functions.
+
+Use the `setup` function when you need to test interactions with a component. It returns a `userEvent` object that you can use to fire events against the component.
+</Callout>
+
+To run the tests:
+
+```bash
+pnpm test
+pnpm test:watch  # Run tests in watch mode
+```
+
+## Tests on CI with GitHub Actions
+
+It's important to run tests on CI in addition to local testing. This ensures that code doesn't break when pushed to GitHub. The starter includes a GitHub Actions workflow that runs tests for every push to the main branch or new pull request. It reports results through annotations and provides a summary along with coverage.
+
+<Callout type="info">
+Aiming for 100% test coverage is not always a good idea and doesn't always make sense. The same applies to testing views and components that only render UI.
+</Callout>
+
+## More tests
+
+For more complex logic and components, we recommend taking a look at this project which provides many examples and best practices for testing React Native apps with React Native Testing Library and Jest:
+
+- [React Native Testing](https://github.com/vanGalilea/react-native-testing/)
+- [React Native Testing Library Cookbook](https://callstack.github.io/react-native-testing-library/cookbook/index)

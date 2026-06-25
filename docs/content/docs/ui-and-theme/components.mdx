@@ -1,0 +1,64 @@
+---
+title: UI Components
+description: Overview of the UI component system in Atlas — HeroUI Native and custom components.
+---
+
+The UI Components documentation is organized into two focused guides:
+
+## [HeroUI Native Components](/docs/ui-and-theme/heroui-native)
+
+Documentation for the **primary UI component library** used in Atlas (heroui-native v1.0.4).
+
+**Includes:**
+- 30+ production-ready components (Button, TextField, Card, Dialog, etc.)
+- Component variants and styling
+- Dark mode support
+- Form integration patterns
+- 30 interactive component showcases
+- Complete API reference
+
+## [Custom Components](/docs/ui-and-theme/custom-components)
+
+Documentation for the **6 custom components** built specifically for Atlas.
+
+**Includes:**
+- Image (Uniwind wrapper for expo-image)
+- Text (i18n-enabled)
+- ControlledInput (react-hook-form integration)
+- List (FlashList wrapper)
+- Modal (bottom sheet)
+- FocusAwareStatusBar
+
+## Quick Reference
+
+### Import from `heroui-native`
+
+```tsx
+import {
+  Button,
+  TextField,
+  Card,
+  Dialog,
+  Checkbox,
+  Switch,
+  Select,
+  Tabs,
+  // ... and 20+ more
+} from 'heroui-native';
+```
+
+### Import from `@/components/ui`
+
+```tsx
+import {
+  Image,
+  Text,
+  View,
+  ControlledInput,
+  List,
+  Modal,
+  FocusAwareStatusBar,
+} from '@/components/ui';
+```
+
+The separation keeps clear boundaries between library components and custom components, and ensures accurate import statements throughout the codebase.

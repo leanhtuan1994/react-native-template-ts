@@ -1,0 +1,44 @@
+---
+title: Storage
+description: Storage guide with the react-native-mmkv library.
+---
+
+Atlas ships with a simple storage module built on [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv), a fast key-value store for React Native. A thin utility wrapper lives at `src/lib/storage.tsx` to keep usage ergonomic and type-safe across the codebase.
+
+## Storage Utilities
+
+The wrapper at `src/lib/storage.tsx` exports three helpers:
+
+- `getItem<T>(key)` — reads and JSON-deserializes a value; returns `null` if absent
+- `setItem<T>(key, value)` — JSON-serializes and writes a value
+- `removeItem(key)` — deletes a key
+
+These are used throughout Atlas for token persistence, user preferences, and language selection.
+
+```typescript title="src/lib/storage.tsx"
+import { MMKV } from 'react-native-mmkv';
+
+export const storage = new MMKV();
+
+export function getItem<T>(key: string): T | null {
+  const value = storage.getString(key);
+  return value ? (JSON.parse(value) as T) : null;
+}
+
+export function setItem<T>(key: string, value: T): void {
+  storage.set(key, JSON.stringify(value));
+}
+
+export function removeItem(key: string): void {
+  storage.delete(key);
+}
+```
+
+## Why MMKV?
+
+- **Synchronous**: No `async`/`await` needed — reads and writes are instant
+- **Fast**: Roughly 30× faster than AsyncStorage
+- **Encrypted**: Supports AES encryption for sensitive data
+- **Hook support**: `react-native-mmkv` exposes reactive hooks for live value subscriptions
+
+See the [official MMKV docs](https://github.com/mrousavy/react-native-mmkv) for encryption setup, hooks, and advanced configuration.

@@ -1,0 +1,12 @@
+{
+  "title": "Guides",
+  "pages": [
+    "navigation",
+    "state-management",
+    "authentication",
+    "data-fetching",
+    "internationalization",
+    "storage",
+    "upgrading-deps"
+  ]
+}

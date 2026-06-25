@@ -1,0 +1,83 @@
+---
+title: Internationalization
+description: How to add internationalization to your app.
+---
+
+Atlas ships with a basic internationalization (i18n) setup using [expo-localization](https://docs.expo.dev/guides/localization/) and [i18next](https://www.i18next.com/). Everything i18n-related lives in `src/lib/i18n/`.
+
+## Adding a New Language
+
+The demo app supports English and Arabic (RTL) out of the box. To add another language:
+
+1. Create a new translation JSON file in `src/translations/`.
+2. Register it in `src/lib/i18n/resources.ts`.
+
+```typescript title="src/lib/i18n/resources.ts"
+import en from '@/translations/en.json';
+import ar from '@/translations/ar.json';
+// import fr from '@/translations/fr.json';
+
+export const resources = {
+  en: { translation: en },
+  ar: { translation: ar },
+  // fr: { translation: fr },
+};
+```
+
+<Callout type="info">
+Anything related to internationalization lives in `src/lib/i18n/`.
+</Callout>
+
+## Using Translations in Your App
+
+### `useTranslation` hook
+
+Use the `useTranslation` hook from `react-i18next` to get the `t` translation function:
+
+```tsx
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Text } from '@/components/ui';
+
+export const Foo = () => {
+  const { t } = useTranslation();
+  return <Text className="text-center">{t('settings.language')}</Text>;
+};
+```
+
+### `tx` prop shorthand
+
+The `Text` component from `@/components/ui` accepts a `tx` prop as a shorthand, so you can skip importing `useTranslation` for simple cases:
+
+```tsx
+import React from 'react';
+import { Text } from '@/components/ui';
+
+export const Foo = () => {
+  return <Text className="text-center" tx="settings.language" />;
+};
+```
+
+### `useSetLanguage` hook
+
+Use `useSetLanguage` from `src/lib/i18n/utils.tsx` to read and change the active language at runtime.
+
+This hook:
+- Returns the currently selected language and a setter function
+- Persists the selection to device storage via MMKV so the preference is restored on next launch
+- Applies extra RTL configuration for right-to-left languages when switching
+
+## Robust Translations
+
+### TypeScript Support
+
+Atlas adds TypeScript definitions for translation keys, giving you autocomplete and compile-time errors when you use an incorrect key. If you reference a key that doesn't exist in the translation files, TypeScript will flag it immediately.
+
+### ESLint Rules
+
+Atlas enforces translation file consistency via [eslint-plugin-i18n-json](https://github.com/godaddy/eslint-plugin-i18n-json) and a custom i18next validation script. These rules run as a pre-commit hook whenever translation files change.
+
+The checks enforce:
+- All resource files have identical keys (no missing translations)
+- Keys are sorted consistently
+- JSON syntax is valid

@@ -1,0 +1,54 @@
+---
+title: Fonts
+description: How to add custom fonts to your app.
+---
+
+With Expo, you can load fonts dynamically using the `useFont` hook from the `expo-font` library. With this approach, you need to wait for the font to load before showing or hiding your splash screen.
+
+With the version of `expo-font` introduced in Expo 50+, you can use `expo-font` as a plugin in your `app.config.js` to load fonts natively. Atlas uses Expo SDK 56, so this native approach is the recommended path.
+
+To add a custom font you only need to put the font file in `assets/fonts` and update the Expo config by adding the exact file path like the following:
+
+```js title="app.config.js"
+import type { ConfigContext, ExpoConfig } from '@expo/config';
+
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  ...config,
+  plugins: [
+    [
+      'expo-font',
+      {
+        fonts: ['./assets/fonts/Inter.ttf'],
+      },
+    ],
+  ],
+});
+```
+
+Next, make sure to add your new font to the Tailwind CSS config to use it with `className`:
+
+```js title="tailwind.config.js"
+const colors = require('./src/components/ui/theme/colors');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  // NOTE: Update this to include the paths to all of your component files.
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  presets: [require('uniwind/preset')],
+  theme: {
+    extend: {
+      fontFamily: {
+        inter: ['Inter'],
+      },
+      colors,
+    },
+  },
+  plugins: [],
+};
+```
+
+<Callout type="info">
+As we are linking fonts natively, you need to run `expo prebuild` and then `expo ios` or `expo android` to use the new font.
+</Callout>
+
+More details about adding fonts with TailwindCSS can be found in the [Uniwind documentation](https://docs.uniwind.dev/).

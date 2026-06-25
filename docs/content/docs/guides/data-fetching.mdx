@@ -1,0 +1,210 @@
+---
+title: Data Fetching
+description: Learn how to fetch data from a server using React Query and Axios.
+---
+
+React Query has become the community standard for server state in React and React Native apps. Its simplicity, flexibility, and built-in features for caching, invalidation, and optimistic UI make it the right default choice.
+
+## What is React Query?
+
+[React Query](https://tanstack.com/query/v4/docs/overview) is a powerful library for managing data fetching, caching, and synchronization. It provides hooks like `useQuery` and `useMutation`, or you can build your own typed hooks on top of them.
+
+## Using react-query-kit & Axios
+
+Atlas ships with React Query and Axios pre-installed and configured. All fetching logic lives in `src/api/`, with a `common/` sub-folder holding the Axios `client`, `queryClient`, and shared utilities.
+
+Axios gives access to interceptors, request cancellation, and other advanced features. See the [Axios docs](https://axios-http.com/) for details.
+
+To reduce boilerplate and improve type safety, Atlas uses [react-query-kit](https://github.com/liaoliao666/react-query-kit) — a thin toolkit that makes React Query hooks reusable and strongly typed.
+
+<Callout type="info">
+Recommended reading before diving in:
+
+- [React Query overview](https://tanstack.com/query/v4/docs/overview)
+- [react-query-kit](https://github.com/liaoliao666/react-query-kit)
+- [Practical React Query](https://tkdodo.eu/blog/practical-react-query)
+</Callout>
+
+## Data Fetching Use Cases
+
+Suppose you're building a blog app with these features:
+
+- A Feed Screen that lists all posts
+- A Post Screen showing details of a single post
+- A Screen to create a new post
+
+Create a `posts/` folder inside `src/api/`. Apply the same structure to any other entity (users, comments, etc.).
+
+### Feed Screen
+
+The feed screen needs a `usePosts` hook to fetch and display a list of posts.
+
+**Steps:**
+
+1. Inside `src/api/posts/`, create `use-posts.ts`.
+2. Define the `Response` and `Variables` types to ensure correct data shapes.
+3. Use `createQuery` from `react-query-kit` to build the hook.
+
+```typescript title="src/api/posts/use-posts.ts"
+import { createQuery } from 'react-query-kit';
+import { client } from '@/api/common/client';
+import type { Post } from './types';
+
+type Response = Post[];
+type Variables = void;
+
+export const usePosts = createQuery<Response, Variables>({
+  queryKey: ['posts'],
+  fetcher: () => client.get('/posts').then((res) => res.data),
+});
+```
+
+`createQuery` accepts `queryKey`, `fetcher`, and optional `options`. Since migrating to the latest `react-query-kit`, `queryFn` is replaced by `fetcher` and the `queryKey` structure is simplified. See [createQuery docs](https://github.com/liaoliao666/react-query-kit#createQuery).
+
+<Callout type="info">
+Use the `useq` VSCode snippet to scaffold a query hook instantly.
+</Callout>
+
+Use the hook in your screen:
+
+```tsx title="src/app/(app)/index.tsx"
+import { usePosts } from '@/api/posts/use-posts';
+import { FlatList, View, Text } from '@/components/ui';
+import { ActivityIndicator } from 'react-native';
+
+export default function FeedScreen() {
+  const { data: posts, isLoading, isError } = usePosts();
+
+  if (isLoading) return <ActivityIndicator />;
+  if (isError) return <Text>Failed to load posts.</Text>;
+
+  return (
+    <FlatList
+      data={posts}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => <Text>{item.title}</Text>}
+    />
+  );
+}
+```
+
+### Post Screen
+
+The post detail screen needs a `usePost` hook that accepts a post `id` as a variable.
+
+```typescript title="src/api/posts/use-post.ts"
+import { createQuery } from 'react-query-kit';
+import { client } from '@/api/common/client';
+import type { Post } from './types';
+
+type Response = Post;
+type Variables = { id: number };
+
+export const usePost = createQuery<Response, Variables>({
+  queryKey: ['post'],
+  fetcher: ({ id }) => client.get(`/posts/${id}`).then((res) => res.data),
+});
+```
+
+Use it in the detail screen:
+
+```tsx title="src/app/feed/[id].tsx"
+import { useLocalSearchParams } from 'expo-router';
+import { usePost } from '@/api/posts/use-post';
+
+export default function PostScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: post, isLoading } = usePost({ variables: { id: Number(id) } });
+
+  if (isLoading) return <ActivityIndicator />;
+
+  return <Text>{post?.title}</Text>;
+}
+```
+
+### Add New Post
+
+Use `createMutation` from `react-query-kit` to handle POST/PUT/DELETE operations.
+
+**Steps:**
+
+1. Create `use-add-post.ts` inside `src/api/posts/`.
+2. Define `Variables` (request body) and `Response` types.
+3. Use `createMutation` to build the hook.
+
+```typescript title="src/api/posts/use-add-post.ts"
+import { createMutation } from 'react-query-kit';
+import { client } from '@/api/common/client';
+import type { Post } from './types';
+
+type Variables = { title: string; body: string };
+type Response = Post;
+
+export const useAddPost = createMutation<Response, Variables>({
+  mutationFn: (variables) =>
+    client.post('/posts', variables).then((res) => res.data),
+});
+```
+
+<Callout type="info">
+Use the `usem` VSCode snippet to scaffold a mutation hook instantly.
+</Callout>
+
+Wire it up in a form screen following the same pattern as the login form — define a Zod schema, create the form with react-hook-form, call `mutate` on submit, and use `isPending` to show a loading state:
+
+```tsx title="src/app/feed/add-post.tsx"
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useAddPost } from '@/api/posts/use-add-post';
+import { ControlledInput } from '@/components/ui';
+import { Button } from 'heroui-native';
+import { router } from 'expo-router';
+
+const schema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  body: z.string().min(1, 'Body is required'),
+});
+
+type FormType = z.infer<typeof schema>;
+
+export default function AddPostScreen() {
+  const { mutate, isPending } = useAddPost();
+  const { control, handleSubmit } = useForm<FormType>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: FormType) => {
+    mutate(data, {
+      onSuccess: () => router.replace('/feed'),
+    });
+  };
+
+  return (
+    <View>
+      <ControlledInput control={control} name="title" label="Title" />
+      <ControlledInput control={control} name="body" label="Body" />
+      <Button onPress={handleSubmit(onSubmit)} isLoading={isPending}>
+        Submit
+      </Button>
+    </View>
+  );
+}
+```
+
+## VSCode Snippets
+
+Atlas ships snippets to speed up hook creation:
+
+| Snippet | Description |
+|---------|-------------|
+| `useq` | Create a query hook |
+| `useqv` | Create a query hook with variables |
+| `useiq` | Create an infinite query hook |
+| `usem` | Create a mutation hook |
+
+## React Query DevTools Plugin
+
+For real-time visibility into queries and cache, use the [React Query DevTools Expo plugin](https://docs.expo.dev/debugging/devtools-plugins/#react-query).
+
+In the terminal press `Shift` + `M` and select the React Query plugin from the list. The web interface opens and shows all active queries, allowing you to inspect, refetch, or remove them manually — making it straightforward to debug caching and synchronization issues.
