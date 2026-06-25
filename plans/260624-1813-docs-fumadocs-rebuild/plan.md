@@ -51,7 +51,7 @@ In-place replacement of `docs/` — the old Astro site is removed. Phased so str
 - [x] Bold branded dark-first theme; light mode works; responsive (mobile nav). (RootProvider defaultTheme dark, no forced class; Inter + IBM Plex Mono mapped into Tailwind)
 - [x] Atlas branding consistent and current; no dead/broken internal or GitHub links remain. (zero NativeWind/obytes/old-SDK hits; all /docs links resolve; dead GitHub image embeds removed)
 - [x] `llms.txt` (and `llms-full.txt`) reachable. (static routes; llms-full.txt = 8465 lines; llms.txt index verified)
-- [ ] Vercel deploy succeeds from `docs/`. (config ready in vercel.json + root-dir=docs; requires user's Vercel account to deploy)
+- [x] Vercel deploy succeeds from `docs/`. Live at https://react-native-template-atlas.vercel.app (/, /docs, /llms.txt all 200). Root README updated to live URL.
 
 ## Risks
 
