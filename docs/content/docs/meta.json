@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "pages": [
+    "index",
+    "getting-started",
+    "ui-and-theme",
+    "guides",
+    "recipes",
+    "testing",
+    "ci-cd",
+    "reference"
+  ]
+}

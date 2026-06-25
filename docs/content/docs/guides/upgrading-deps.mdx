@@ -1,0 +1,127 @@
+---
+title: Upgrading Project Dependencies
+description: How to update your project dependencies.
+---
+
+<Callout type="info">
+This guide covers updating your project's dependencies only. It does not guarantee your project stays in sync with the latest Atlas starter changes.
+
+To benefit from the latest starter improvements, compare your `osMetadata.initVersion` in `package.json` with the latest release on GitHub and manually apply any relevant changes.
+</Callout>
+
+## Easy Way
+
+Upgrading a React Native project can be painful, but Atlas is built on Expo with a custom dev client, which makes the process significantly simpler than a bare React Native project.
+
+To update most starter dependencies:
+
+1. Go to GitHub and compare your `osMetadata.initVersion` against the latest release.
+2. Check whether `package.json` has changed.
+3. Copy the updated `dependencies` and `devDependencies` versions into your `package.json`.
+4. Run the full verification sequence:
+
+```bash
+rm -rf node_modules   # remove node_modules folder
+pnpm install          # install new dependencies
+pnpm run doctor       # check for dependency issues
+pnpm lint             # linting
+pnpm type-check       # type checking
+pnpm test             # tests
+pnpm prebuild --clean # regenerate ios and android folders
+pnpm ios              # run iOS build
+pnpm android          # run Android build
+pnpm start -c         # start the server with cleared cache
+```
+
+<Callout type="info">
+If your starter version does not include `osMetadata.initVersion`, skip that step and follow the rest of this guide directly. The remaining sections also apply when you have added custom dependencies to your project.
+</Callout>
+
+## Upgrade Expo
+
+Check [npmjs.com/package/expo](https://www.npmjs.com/package/expo) for the latest Expo version, then run:
+
+```bash
+pnpm add expo@latest
+```
+
+Expo provides a command that automatically aligns your dependencies to the versions required by the installed Expo release:
+
+```bash
+pnpm expo install --fix
+```
+
+In some cases this command will flag additional manual changes required. After running it, use expo-doctor to catch any remaining issues with native dependencies and devDependencies:
+
+```bash
+pnpm run doctor
+```
+
+This outputs a list of packages that need manual version pinning. Once resolved, run the full verification sequence:
+
+```bash
+rm -rf node_modules
+pnpm install
+pnpm lint
+pnpm type-check
+pnpm test
+pnpm prebuild --clean
+pnpm ios
+pnpm android
+pnpm start -c
+```
+
+If errors appear, read the error message carefully, identify the packages involved, and check their changelogs for breaking changes in recent major versions.
+
+<Callout type="info">
+Upgrade regularly — ideally about a month after each new Expo major release. Smaller, frequent upgrades are far easier to manage than large catch-up upgrades.
+</Callout>
+
+## Upgrade Non-Native Dependencies
+
+Expo's upgrade process handles native dependencies automatically. JavaScript-only (non-native) dependencies need a separate pass.
+
+Run the interactive pnpm upgrade tool:
+
+```bash
+pnpm up -i
+```
+
+This lists all dependencies with available updates and lets you select which ones to upgrade:
+
+```bash
+◯ zod                               latest  3.19.1   ❯  3.21.4   https://zod.dev
+◯ zustand                           latest  4.1.4    ❯  4.3.6    https://github.com/pmndrs/zustand
+
+ devDependencies
+   name                              range   from        to       url
+ ◯ @babel/core                       latest  7.20.2   ❯  7.21.0   https://babel.dev/docs/en/next/babel-core
+ ◯ @commitlint/cli                   latest  17.2.0   ❯  17.4.4   https://commitlint.js.org/
+ ◯ @typescript-eslint/eslint-plugin  latest  5.42.1   ❯  5.54.1   https://github.com/typescript-eslint/typescript-eslint#readme
+ ◯ eslint                            latest  8.27.0   ❯  8.35.0   https://eslint.org
+```
+
+Pay close attention to major version bumps — these may contain breaking changes. Review the changelog for any package jumping a major version before selecting it.
+
+**Recommended order:**
+
+1. Select all `devDependencies` and update them.
+2. Run `pnpm doctor` to revert any that conflict with the current Expo version.
+3. Run the full verification sequence.
+4. If everything passes, update the remaining `dependencies`.
+
+```bash
+rm -rf node_modules
+pnpm install
+pnpm lint
+pnpm type-check
+pnpm test
+pnpm prebuild --clean
+pnpm ios
+pnpm android
+pnpm start -c
+```
+
+<Callout type="info">
+If your app is not fully covered by automated tests, manually exercise the most critical user flows before committing the upgrade. Automated checks catch many regressions but not all.
+</Callout>

@@ -1,21 +1,34 @@
-# build output
-dist/
-# generated types
-.astro/
-
 # dependencies
 node_modules/
 
-# logs
+# next.js
+.next/
+out/
+
+# fumadocs-mdx generated source
+.source/
+
+# production
+build/
+dist/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
-# environment variables
+# env
 .env
+.env*.local
 .env.production
 
-# macOS-specific files
-.DS_Store
+# typescript
+next-env.d.ts
+
+# migration snapshot (Astro source kept for Phase 3 reference, not shipped)
+.migration-src/

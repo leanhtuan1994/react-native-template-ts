@@ -1,0 +1,43 @@
+---
+title: Libraries Recommendation
+description: React Native / Expo library recommendations based on common use cases.
+---
+
+The starter kit comes with a set of pre-installed and configured libraries. We recommend using these libraries for your project.
+
+Below is a list of other libraries we often use in our projects. These aren't included in the starter because:
+
+1. They're for specific use cases.
+2. They need a lot of setup.
+
+This way, you can add them to your project only if you need them, keeping things simple to start with.
+
+### State Management
+
+The starter kit comes with Zustand out of the box, but if your application implements complex workflows, you might want to use [XState](https://xstate.js.org/) — it is more powerful for managing complex workflows and state machines.
+
+For example, if you have a multi-step, conditional workflow (such as creating a new card for a user), Zustand might not be the best choice as it is designed for simpler state management. XState is the better fit in those cases.
+
+### Error Reporting
+
+- [Sentry](https://sentry.io/welcome/): A very popular solution for error reporting in the JavaScript ecosystem with great Expo integration. See the [Sentry Setup guide](/docs/recipes/sentry-setup).
+
+### Notifications
+
+There is no one-size-fits-all solution for notifications, but based on your use case we would recommend one of the following:
+
+- [Expo Push Notifications](https://docs.expo.dev/push-notifications/overview/)
+- [OneSignal](https://onesignal.com/)
+
+### Analytics
+
+- [PostHog](https://posthog.com/docs/libraries/react-native): Easy to set up and use, with a generous free tier.
+- [Google Analytics](https://rnfirebase.io/analytics/usage)
+
+### Charts
+
+- [Victory Native](https://github.com/FormidableLabs/victory-native-xl)
+
+---
+
+We are likely missing some great libraries here, so we count on your contribution to add them. Feel free to open a [discussion](https://github.com/leanhtuan1994/react-native-template-atlas/discussions) or submit a pull request.

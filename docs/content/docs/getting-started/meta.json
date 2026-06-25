@@ -1,0 +1,11 @@
+{
+  "title": "Start Here",
+  "pages": [
+    "create-new-app",
+    "customize-app",
+    "rules-and-conventions",
+    "project-structure",
+    "react-compiler-new-arch",
+    "environment-vars-config"
+  ]
+}

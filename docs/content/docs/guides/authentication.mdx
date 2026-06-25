@@ -1,0 +1,105 @@
+---
+title: Authentication
+description: How to manage authentication in your app.
+---
+
+Most applications require some form of authentication. Atlas comes with a solid foundation for managing auth state so you can get started quickly without building it from scratch.
+
+Authentication is global to the application, so Atlas uses **Zustand** to manage the authentication state.
+
+[Zustand](https://github.com/pmndrs/zustand) is a lightweight, highly performant state management library that integrates cleanly with React. It outperforms a simple Context API by providing selectors that prevent unnecessary re-renders, and it works equally well inside and outside the React tree.
+
+## Authentication Store
+
+The authentication store lives at `src/lib/auth/index.tsx` and manages all auth state for the application.
+
+The store is composed of 2 states and 3 actions:
+
+- `status` — The current authentication status. One of:
+  - `idle`: App is still determining if the user is authenticated (loading tokens from storage)
+  - `signOut`: The user is not authenticated
+  - `signIn`: The user is authenticated
+
+- `token` — The user's token object, used to authenticate requests to the API. It is persisted to device storage via MMKV and used to hydrate the auth status on app start.
+
+  By default `token` contains `accessToken` and `refreshToken`. You can extend this by updating the `TokenType` type in `src/lib/auth/utils.ts`.
+
+- `signIn` — Accepts a token, stores it in MMKV, updates `token` state, and sets `status` to `signIn`.
+
+- `signOut` — Sets `token` to `null`, removes it from storage, and sets `status` to `signOut`.
+
+- `hydrate` — Called on app start to restore auth state. Reads the token from MMKV and calls `signIn` if a token exists, or sets `status` to `signOut` otherwise.
+
+## Using the Authentication Store
+
+Import the store from `@/lib` and use it in any component. Actions can also be called from outside the React tree.
+
+```tsx
+import { useAuth, hydrate } from '@/lib';
+
+hydrate(); // Call when the app starts to restore the previous session
+
+const App = () => {
+  const status = useAuth.use.status();
+  const signOut = useAuth.use.signOut();
+
+  return (
+    <View>
+      <Text>{status}</Text>
+      <Button title="Sign Out" onPress={signOut} />
+    </View>
+  );
+};
+```
+
+## Use Case: Protecting Navigation
+
+A common pattern is to gate navigation behind authentication status. In Atlas, the root layout (`src/app/_layout.tsx`) reads `status` from the auth store and redirects accordingly.
+
+```tsx
+import { useAuth } from '@/lib/auth';
+import { Redirect, Stack } from 'expo-router';
+
+export default function RootLayout() {
+  const status = useAuth.use.status();
+  const token = useAuth.use.token();
+
+  // Show splash/loading screen while hydrating
+  if (status === 'idle') {
+    return <SplashScreen />;
+  }
+
+  // Redirect unauthenticated users to onboarding
+  if (status === 'signOut' && !token) {
+    return <Redirect href="/onboarding" />;
+  }
+
+  return <Stack />;
+}
+```
+
+The `(home)` layout (`src/app/(home)/_layout.tsx`) follows the same pattern for tab-level protection.
+
+## Calling Auth Outside React
+
+Because Zustand stores expose `getState()`, you can call sign-out from API interceptors or other non-component code:
+
+```tsx
+import { signOut } from '@/lib/auth';
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      signOut();
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+## Additional Resources
+
+- [State Management Guide](/docs/guides/state-management) — Zustand selectors pattern and store conventions
+- [Storage Guide](/docs/guides/storage) — MMKV usage for token persistence
+- [Zustand Documentation](https://github.com/pmndrs/zustand)
