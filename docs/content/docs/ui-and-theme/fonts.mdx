@@ -3,13 +3,50 @@ title: Fonts
 description: How to add custom fonts to your app.
 ---
 
-With Expo, you can load fonts dynamically using the `useFont` hook from the `expo-font` library. With this approach, you need to wait for the font to load before showing or hiding your splash screen.
+Atlas ships with the [Inter](https://fonts.google.com/specimen/Inter) family from `@expo-google-fonts/inter`, loaded at runtime in `src/app/_layout.tsx`:
 
-With the version of `expo-font` introduced in Expo 50+, you can use `expo-font` as a plugin in your `app.config.js` to load fonts natively. Atlas uses Expo SDK 56, so this native approach is the recommended path.
+```tsx title="src/app/_layout.tsx"
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  useFonts,
+} from '@expo-google-fonts/inter';
 
-To add a custom font you only need to put the font file in `assets/fonts` and update the Expo config by adding the exact file path like the following:
+export default function RootLayout() {
+  const [loaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
 
-```js title="app.config.js"
+  if (!loaded) {
+    return null;
+  }
+
+  // ...
+}
+```
+
+The app renders nothing until `loaded` is true, which keeps text from flashing in a fallback face.
+
+## Adding another Google Font
+
+Install the family and swap the imports above:
+
+```bash
+pnpm add @expo-google-fonts/roboto
+```
+
+No prebuild is needed — these packages ship the font files as JS assets.
+
+## Adding a local font file
+
+For a font that is not on Google Fonts, create an `assets/fonts` folder (the starter has none, since Inter ships as a package), put the file in it, and register it with the `expo-font` config plugin. Atlas already lists the plugin in `app.config.ts`; add a `fonts` array to it:
+
+```ts title="app.config.ts"
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -18,37 +55,39 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-font',
       {
-        fonts: ['./assets/fonts/Inter.ttf'],
+        fonts: ['./assets/fonts/SpaceGrotesk-Regular.ttf'],
       },
     ],
   ],
 });
 ```
 
-Next, make sure to add your new font to the Tailwind CSS config to use it with `className`:
-
-```js title="tailwind.config.js"
-const colors = require('./src/components/ui/theme/colors');
-
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  // NOTE: Update this to include the paths to all of your component files.
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  presets: [require('uniwind/preset')],
-  theme: {
-    extend: {
-      fontFamily: {
-        inter: ['Inter'],
-      },
-      colors,
-    },
-  },
-  plugins: [],
-};
-```
-
 <Callout type="info">
-As we are linking fonts natively, you need to run `expo prebuild` and then `expo ios` or `expo android` to use the new font.
+This links the font natively, so you need to run `pnpm prebuild` and then `pnpm ios` or `pnpm android` before the font is available. A local font added this way does not need `useFonts`.
 </Callout>
 
-More details about adding fonts with TailwindCSS can be found in the [Uniwind documentation](https://docs.uniwind.dev/).
+## Using the font in your components
+
+Font families are theme tokens, set in `src/themes/sky.css` — not in a `tailwind.config.js`. Update the `--font-*` variables in **both** the `@variant light` and `@variant dark` blocks:
+
+```css title="src/themes/sky.css"
+@layer theme {
+  :root {
+    @variant light {
+      --font-normal: "Inter_400Regular";
+      --font-medium: "Inter_500Medium";
+      --font-semibold: "Inter_600SemiBold";
+      --font-bold: "Inter_700Bold";
+      /* ... */
+    }
+  }
+}
+```
+
+The value must match the name the font is registered under — the export name for `@expo-google-fonts` packages, or the file's PostScript name for a local file. These tokens back the `font-normal`, `font-medium`, `font-semibold`, and `font-bold` class names, and HeroUI Native components read them too:
+
+```tsx
+<Text className="font-bold text-lg">Hello</Text>
+```
+
+More details can be found in the [Uniwind documentation](https://docs.uniwind.dev/) and the [expo-font docs](https://docs.expo.dev/versions/latest/sdk/font/).
