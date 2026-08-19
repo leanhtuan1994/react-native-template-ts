@@ -7,12 +7,11 @@ Atlas starter enables two **experimental features** that represent the future of
 
 ## Overview
 
-Both features are enabled in `app.config.ts`:
+The New Architecture is always on from Expo SDK 55 onward — there is no config flag for it. React Compiler is opted into in `app.config.ts`:
 
 ```typescript
 export default ({ config }: ConfigContext): ExpoConfig => ({
   // ...
-  newArchEnabled: true,
   experiments: {
     typedRoutes: true,
     reactCompiler: true,
@@ -22,7 +21,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 ```
 
 <Callout type="warn">
-**Experimental Status**: While both features are stable enough for production use in Expo SDK 56, they're still marked as experimental. The React Native and React teams are actively developing them, and APIs may evolve.
+**Experimental Status**: The New Architecture is mandatory and always enabled from Expo SDK 55 onward. React Compiler is stable enough for production use in Expo SDK 57 but is still marked as experimental, and its APIs may evolve.
 </Callout>
 
 ---
@@ -393,23 +392,16 @@ pnpm prebuild
    // @react-compiler-disable
    ```
 
-### Disable New Architecture If:
+### You Cannot Disable the New Architecture
 
-1. **Critical library doesn't support it**
-   ```typescript
-   // app.config.ts
-   newArchEnabled: false,
-   ```
+The legacy architecture was removed in Expo SDK 55, and the `newArchEnabled` option no longer exists. Atlas runs on Expo SDK 57 / React Native 0.86, so the New Architecture is always active. If a library does not support it, replace the library rather than trying to opt out — see [Library Compatibility](#library-compatibility).
 
-2. **Debugging native module issues**
-
-### Disabling Steps
+### Disabling React Compiler
 
 **1. Update `app.config.ts`:**
 ```typescript
 export default ({ config }: ConfigContext): ExpoConfig => ({
   // ...
-  newArchEnabled: false,     // Disable New Architecture
   experiments: {
     typedRoutes: true,
     reactCompiler: false,    // Disable React Compiler
@@ -517,9 +509,9 @@ adb logcat | grep -i fabric
 
 If you're upgrading from an older starter version without these features:
 
-### Phase 1: Enable New Architecture First
+### Phase 1: Move to the New Architecture First
 
-1. Update `app.config.ts`: `newArchEnabled: true`
+1. Upgrade to Expo SDK 55 or later — the New Architecture is enabled automatically and cannot be turned off
 2. Update all dependencies to latest versions
 3. Test thoroughly on both platforms
 4. Fix any compatibility issues
@@ -565,15 +557,15 @@ If you're upgrading from an older starter version without these features:
 
 ### Q: Can I use New Architecture with Expo Go?
 
-**A:** Partially. Expo Go in Expo SDK 56 has New Architecture enabled, but you need a custom dev client for full support with native modules. Use `pnpm prebuild` and `pnpm ios`/`pnpm android`.
+**A:** Partially. Expo Go in Expo SDK 57 runs on the New Architecture, but you need a custom dev client for full support with native modules. Use `pnpm prebuild` and `pnpm ios`/`pnpm android`.
 
 ### Q: What if a critical library doesn't support New Architecture?
 
-**A:** You have options:
-1. Disable New Architecture temporarily: `newArchEnabled: false`
-2. Find an alternative library that supports it
-3. Wait for library to update (check GitHub issues)
-4. Contribute a PR to add support
+**A:** Opting out is not an option on SDK 55+, so you have to move the library forward:
+1. Find an alternative library that supports it
+2. Wait for the library to update (check GitHub issues)
+3. Contribute a PR to add support
+4. Pin to an older SDK only as a last resort, and plan the migration
 
 ### Q: Can I gradually adopt React Compiler per-file?
 

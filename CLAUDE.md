@@ -8,8 +8,8 @@ This is a production-ready React Native starter kit built with Expo, TypeScript,
 
 **Key Technologies:**
 
-- Expo SDK 54 with Custom Dev Client and New Architecture enabled
-- React Native 0.81.5 with React 19
+- Expo SDK 57 with Custom Dev Client and New Architecture (always on from SDK 55+)
+- React Native 0.86.2 with React 19
 - Expo Router (file-based routing with typed routes enabled)
 - React Compiler (experimental) - enabled in app.config.ts
 - Uniwind (TailwindCSS for React Native)
@@ -33,8 +33,6 @@ This is a production-ready React Native starter kit built with Expo, TypeScript,
 3. DO NOT use web-only HeroUI components (this is React Native)
 4. Follow documented APIs only - do not hallucinate props or components
 5. If conflict occurs: follow HeroUI Native component behavior + Uniwind styling conventions
-
-See `llms.txt` file in the root for additional references.
 
 ## Package Manager
 
@@ -399,14 +397,12 @@ Maximum 100 characters for summary line.
 When implementing UI from designs or images:
 
 1. **Layout Analysis:**
-
    - Identify main layout structure
    - List key UI components needed
    - Check if components from `@/components/ui` or HeroUI Native can be reused
    - Note spacing, alignment patterns
 
 2. **Implementation:**
-
    - Use Uniwind for styling with `className` prop
    - Reuse components from `@/components/ui`
    - Use placeholder images from `@assets/images/placeholder.png`
@@ -466,7 +462,7 @@ export function Component({ title }: ComponentProps) {
 
 7. **React Compiler enabled:** The project uses React Compiler (experimental), so avoid manual memoization unless profiling shows it's needed.
 
-8. **New Architecture:** The project has `newArchEnabled: true` in app.config.ts. Be aware of New Architecture compatibility when adding libraries.
+8. **New Architecture:** Always enabled on Expo SDK 55+ — there is no `newArchEnabled` flag and it cannot be disabled. Only add libraries that support it.
 
 9. **Import from correct packages:**
    - Use `@/components/ui` for basic components (View, Text, Image, ControlledInput)

@@ -64,11 +64,41 @@ export function ProfileCard() {
 
 Uniwind follows TailwindCSS configuration patterns, allowing you to customize themes and colors to match your design system.
 
-Like TailwindCSS, you can configure Uniwind through your `tailwind.config.js` file, customizing colors, spacing, typography, and more.
+Uniwind builds on TailwindCSS v4, which is configured **in CSS** — there is no `tailwind.config.js` file in this project.
 
-We have created a `ui/theme` folder where you can find our custom colors that have been imported into `tailwind.config.js` and used as a theme for our demo application. You can add your own color palette and use them in your components with Tailwind class names.
+`global.css` at the project root is the entry point. It pulls in Tailwind, Uniwind, the HeroUI Native styles, and the app theme:
 
-You can read more about how to [configure your project with Tailwind CSS](https://tailwindcss.com/docs/configuration).
+```css title="global.css"
+@import "tailwindcss";
+@import "uniwind";
+
+@import "heroui-native/styles";
+
+@import "./src/themes/sky.css";
+```
+
+Our design tokens live in `src/themes/sky.css`, declared as CSS custom properties inside `@layer theme` and split into `@variant light` and `@variant dark` blocks:
+
+```css title="src/themes/sky.css"
+@layer theme {
+  :root {
+    @variant light {
+      --background: oklch(97.02% 0.0048 225);
+      --foreground: oklch(21.03% 0.0059 225);
+      --accent: oklch(78% 0.16 225);
+      /* ... */
+    }
+
+    @variant dark {
+      /* same tokens, dark values */
+    }
+  }
+}
+```
+
+To use your own palette, edit the token values in `src/themes/sky.css` (or add another theme file and import it from `global.css`). The tokens back Tailwind class names such as `bg-background`, `text-foreground`, and `bg-accent`, and HeroUI Native components read the same tokens, so both stay in sync.
+
+You can read more in the [Uniwind documentation](https://docs.uniwind.dev/) and the [TailwindCSS v4 theme docs](https://tailwindcss.com/docs/theme).
 
 ## Dark Mode
 
@@ -88,11 +118,33 @@ This template comes with dark mode support out of the box, and it's very easy to
 
 ### Implementation
 
-Since we're using Uniwind (which follows TailwindCSS patterns) and expo-router, we let them handle the application of theme, and we just take care of the colors we want. We set the colors in `ui/theme/colors.js` and we use them in our hook `useThemeConfig.tsx` to get the theme object that we pass to ThemeProvider directly. For more information check out [expo-router](https://docs.expo.dev/router/appearance/).
+Uniwind applies the active theme, and we only take care of the colors. Every color is defined once per variant in `src/themes/sky.css`, so a component written with `bg-background text-foreground` automatically resolves to the right value in light and dark.
+
+`AppThemeProvider` (`src/lib/contexts/app-theme-context.tsx`) wraps the app in `src/app/_layout.tsx`. It reads the current theme from Uniwind's `useUniwind()` hook and exposes it through the `useAppTheme()` hook:
+
+```tsx
+const { currentTheme, isLight, isDark, setTheme, toggleTheme } = useAppTheme();
+```
+
+Under the hood `setTheme` and `toggleTheme` call `Uniwind.setTheme(...)`.
 
 ### How do we handle theme changes?
 
-We use the `loadSelectedTheme` function to load the theme from storage if there's a theme saved, otherwise we let Uniwind use the default theme (system). To set the selected theme, we use the `useSelectedTheme` hook, which sets the theme in storage and updates the color scheme of the app.
+The `useSelectedTheme` hook (`src/lib/hooks/use-selected-theme.tsx`) is the one place that persists the user's choice. It stores the value in MMKV under the `SELECTED_THEME` key via `useMMKVString`, so the selection survives restarts, and falls back to `'system'` when nothing is saved:
+
+```tsx
+const { selectedTheme, setSelectedTheme } = useSelectedTheme();
+
+setSelectedTheme('dark');
+```
+
+`setSelectedTheme` writes to storage and calls `setTheme` from `useAppTheme()` in the same step, so storage and the rendered color scheme never drift apart.
+
+For a plain light/dark switch that does not need to be persisted, `src/components/theme-toggle.tsx` uses `toggleTheme` and `isLight` from `useAppTheme()` directly.
+
+<Callout type="info">
+Use `useSelectedTheme` only for reading or changing the *selection* (a settings screen or toggle). To style a component based on the active theme, use `useAppTheme()` — or better, just write `dark:` variants in your `className`.
+</Callout>
 
 ### Add dark mode for each component
 

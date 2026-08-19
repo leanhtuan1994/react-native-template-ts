@@ -63,6 +63,8 @@ src/
 │   ├── storage.tsx               # MMKV wrapper
 │   ├── test-utils.tsx
 │   └── utils.ts
+├── themes/                       # Uniwind theme tokens (CSS)
+│   └── sky.css
 ├── translations/                 # i18n resource files
 │   ├── ar.json
 │   └── en.json
@@ -73,7 +75,8 @@ env.js                            # Environment variable validation (Zod)
 app.config.ts                     # Expo configuration
 package.json
 tsconfig.json
-tailwind.config.ts                # Uniwind (TailwindCSS) config
+global.css                        # Tailwind + Uniwind CSS entry
+uniwind-types.d.ts                # Auto-generated Uniwind typings
 babel.config.js
 metro.config.js
 jest.config.js
@@ -316,7 +319,6 @@ See [Environment Variables guide](/docs/getting-started/environment-vars-config)
 Dynamic Expo configuration with:
 - Multi-environment support (dev/staging/prod)
 - React Compiler enabled (experimental)
-- New Architecture enabled
 - Typed routes enabled
 - App icon badges for non-production builds
 
@@ -325,22 +327,34 @@ experiments: {
   typedRoutes: true,        // Type-safe navigation
   reactCompiler: true,      // Automatic optimization
 }
-newArchEnabled: true,       // New Architecture
 scheme: 'atlasApp',         // Deep linking
 ```
 
-### `tailwind.config.ts` - Uniwind Configuration
+The New Architecture is always enabled on Expo SDK 55+ and has no config flag.
 
-TailwindCSS configuration for React Native via Uniwind (v1.6.3):
+### `global.css` - Uniwind Configuration
 
-```typescript
-// Custom colors, fonts, spacing, etc.
-theme: {
-  extend: {
-    colors: { /* custom colors */ },
-    fontFamily: { /* custom fonts */ },
-  }
-}
+Uniwind v1.10.0 uses TailwindCSS v4, which is configured in CSS rather than a `tailwind.config.js` file. `global.css` is the entry point:
+
+```css
+@import "tailwindcss";
+@import "uniwind";
+
+@import "heroui-native/styles";
+@source './node_modules/heroui-native/lib';
+
+@import "./src/themes/sky.css";
+```
+
+Design tokens (colors, fonts, radius) live in `src/themes/sky.css` as CSS custom properties, split into `@variant light` and `@variant dark` blocks.
+
+Metro is what wires this up, in `metro.config.js`:
+
+```javascript
+module.exports = withUniwindConfig(config, {
+  cssEntryFile: './global.css',
+  dtsFile: './uniwind-types.d.ts',
+});
 ```
 
 See [UI & Theming guide](/docs/ui-and-theme/ui-theming) for styling.
