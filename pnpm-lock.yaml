@@ -22,7 +22,7 @@ importers:
         specifier: ^15.0.3
         version: 15.1.1(expo-font@57.0.1)(react-native@0.86.2(@babel/core@7.29.0)(@react-native/jest-preset@0.86.0(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)
       '@gorhom/bottom-sheet':
-        specifier: ^5.2.9
+        specifier: ^5.2.14
         version: 5.2.14(bce693ec4ff6b78235ead17d71fc3f3f)
       '@hookform/resolvers':
         specifier: ^3.9.0
@@ -3690,6 +3690,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'

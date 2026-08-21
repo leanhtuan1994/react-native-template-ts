@@ -44,7 +44,7 @@
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo/metro-runtime": "^57.0.11",
     "@expo/vector-icons": "^15.0.3",
-    "@gorhom/bottom-sheet": "^5.2.9",
+    "@gorhom/bottom-sheet": "^5.2.14",
     "@hookform/resolvers": "^3.9.0",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "^5.52.1",

@@ -76,30 +76,35 @@ export const Modal = React.forwardRef(
       () => getDetachedProps(detached),
       [detached]
     );
-    const modal = useModal();
+
+    const modalRef = React.useRef<BottomSheetModal>(null);
+
     const snapPoints = React.useMemo(() => _snapPoints, [_snapPoints]);
+
+    const dismiss = React.useCallback(() => {
+      modalRef.current?.dismiss();
+    }, []);
 
     React.useImperativeHandle(
       ref,
-      () => (modal.ref.current as BottomSheetModal) || null
+      () => (modalRef.current as BottomSheetModal) || null
     );
 
     const renderHandleComponent = React.useCallback(
       () => (
         <>
           <View className="mt-2 mb-8 h-1 w-12 self-center rounded-lg bg-gray-400 dark:bg-gray-700" />
-          <ModalHeader title={title} dismiss={modal.dismiss} />
+          <ModalHeader title={title} dismiss={dismiss} />
         </>
       ),
-      [title, modal.dismiss]
+      [title, dismiss]
     );
 
     return (
       <BottomSheetModal
         {...props}
         {...detachedProps}
-        // eslint-disable-next-line react-hooks/refs
-        ref={modal.ref}
+        ref={modalRef}
         index={0}
         snapPoints={snapPoints}
         backdropComponent={props.backdropComponent || renderBackdrop}
@@ -161,7 +166,7 @@ const ModalHeader = React.memo(({ title, dismiss }: ModalHeaderProps) => {
     <>
       {title && (
         <View className="flex-row px-2 py-4">
-          <View className="size-[24px]" />
+          <View className="size-6" />
           <View className="flex-1">
             <Text className="text-center font-bold text-[16px] text-[#26313D] dark:text-white">
               {title}
@@ -178,7 +183,7 @@ const CloseButton = ({ close }: { close: () => void }) => {
   return (
     <Pressable
       onPress={close}
-      className="absolute top-3 right-3 size-[24px] items-center justify-center"
+      className="absolute top-3 right-3 size-6 items-center justify-center"
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
       accessibilityLabel="close modal"
       accessibilityRole="button"
