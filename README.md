@@ -112,6 +112,26 @@ Feedback and suggestions are always welcome. Feel free to open an issue or discu
 - [Tailwind Variants](https://www.tailwind-variants.org/)
 - [Zod](https://zod.dev/)
 
+## ⚡ Build Configuration
+
+Atlas is tuned for build throughput out of the box:
+
+- **Prebuilt React Native.** `buildReactNativeFromSource` is off, so the RN C++ core
+  and Hermes are not recompiled on every build.
+- **Gradle daemon, parallel builds and build cache**, via the
+  `plugins/with-gradle-performance.js` config plugin. The daemon is disabled
+  automatically on EAS, where a throwaway container gains nothing from it.
+- **arm64-only development builds.** Release builds also include `armeabi-v7a`
+  for legacy 32-bit handsets.
+
+**Note on Intel Macs:** development builds target `arm64-v8a` only, so an
+x86/x86_64 Android emulator will not install them. On an Intel machine, add
+`'x86_64'` to `android.buildArchs` in `app.config.ts` and re-run `pnpm prebuild`.
+
+Fonts and icons are imported by subpath rather than through the package barrel,
+which keeps unused weights and icon families out of the native build. An ESLint
+rule enforces this — see the [Fonts docs](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/fonts).
+
 ## AI Configuration
 
 This repository includes a root `llms.txt` file that defines canonical documentation for AI tools.

@@ -6,13 +6,11 @@ description: How to add custom fonts to your app.
 Atlas ships with the [Inter](https://fonts.google.com/specimen/Inter) family from `@expo-google-fonts/inter`, loaded at runtime in `src/app/_layout.tsx`:
 
 ```tsx title="src/app/_layout.tsx"
-import {
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  useFonts,
-} from '@expo-google-fonts/inter';
+import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
+import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
+import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
+import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
+import { useFonts } from 'expo-font';
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -32,12 +30,24 @@ export default function RootLayout() {
 
 The app renders nothing until `loaded` is true, which keeps text from flashing in a fallback face.
 
+<Callout type="warn">
+Import each weight by its **subpath**, and take `useFonts` from `expo-font` rather
+than from the font package. The package barrel re-exports every weight and italic
+the family ships — 18 files for Inter — and all of them are linked into the native
+build, because React Native resolves fonts by name at runtime and no bundler or
+shrinker can prove the unused ones dead. An ESLint rule enforces this.
+</Callout>
+
 ## Adding another Google Font
 
 Install the family and swap the imports above:
 
 ```bash
 pnpm add @expo-google-fonts/roboto
+```
+
+```tsx
+import { Roboto_400Regular } from '@expo-google-fonts/roboto/400Regular';
 ```
 
 No prebuild is needed — these packages ship the font files as JS assets.
