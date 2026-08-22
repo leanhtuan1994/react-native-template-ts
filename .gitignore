@@ -24,3 +24,8 @@ android/
 ios/
 
 .claude/
+
+# Local build artifacts (eas build --local writes these to the project root)
+*.ipa
+*.aab
+*.apk

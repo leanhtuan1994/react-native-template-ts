@@ -40,12 +40,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   web: { favicon: './assets/favicon.png', bundler: 'metro' },
   plugins: [
+    './plugins/with-gradle-performance',
     [
       'expo-build-properties',
       {
-        buildReactNativeFromSource: true,
-        useHermesV1: true,
-        android: { usePrecompiledHeaders: true },
+        android: {
+          usePrecompiledHeaders: true,
+          // Drop x86/x86_64 — those only serve Intel emulators, and every
+          // shipping device is arm. Production keeps armeabi-v7a for legacy
+          // 32-bit handsets.
+          buildArchs:
+            Env.APP_ENV === 'production'
+              ? ['armeabi-v7a', 'arm64-v8a']
+              : ['arm64-v8a'],
+        },
       },
     ],
     [

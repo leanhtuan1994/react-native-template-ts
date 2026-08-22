@@ -65,6 +65,29 @@ export default defineConfig([
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      // Barrel imports of these packages bundle every asset the package ships
+      // (all 18 weights of a font family, all 19 icon families) into the
+      // native build, since React Native resolves them by name at runtime and
+      // no bundler or shrinker can prove the unused ones dead.
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@expo/vector-icons',
+              message:
+                'Import the icon set by subpath, e.g. `@expo/vector-icons/Ionicons`.',
+            },
+          ],
+          patterns: [
+            {
+              regex: '^@expo-google-fonts/[^/]+$',
+              message:
+                'Import each weight by subpath, e.g. `@expo-google-fonts/inter/400Regular`, and take `useFonts` from `expo-font`.',
+            },
+          ],
+        },
+      ],
       'import/prefer-default-export': 'off',
       'import/no-cycle': ['error', { maxDepth: '∞' }],
       'prettier/prettier': ['error', { ignores: ['expo-env.d.ts'] }],
