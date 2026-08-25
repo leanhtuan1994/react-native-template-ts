@@ -24,6 +24,7 @@ android/
 ios/
 
 .claude/
+.cursor/.mcp.json
 
 # Local build artifacts (eas build --local writes these to the project root)
 *.ipa
