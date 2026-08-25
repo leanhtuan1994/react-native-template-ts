@@ -12,7 +12,7 @@ export const baseOptions: BaseLayoutProps = {
       </span>
     ),
   },
-  githubUrl: 'https://github.com/leanhtuan1994/react-native-template-atlas',
+  githubUrl: 'https://github.com/leanhtuan1994/react-native-atlas',
   links: [
     {
       text: 'Documentation',

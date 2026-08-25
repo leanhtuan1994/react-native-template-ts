@@ -73,4 +73,4 @@ to `docs/`**. Vercel auto-detects Next.js; build config is in `vercel.json`.
 
 ## 🔗 Links
 
-- [Main Repository](https://github.com/leanhtuan1994/react-native-template-atlas)
+- [Main Repository](https://github.com/leanhtuan1994/react-native-atlas)
