@@ -1,16 +1,16 @@
 <p align="center">
-    <img alt="React Native Template Atlas" src="./assets/icon.png" width="200" />
+    <img alt="React Native Template Caracal" src="./assets/icon.png" width="200" />
 </p>
 
 <h1 align="center">
-  React Native Template Atlas
+  React Native Template Caracal
 </h1>
 
-![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-atlas/expo?label=expo) ![react-native](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-atlas/react-native?label=react-native) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-atlas) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-atlas) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-atlas) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-atlas)
+![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/expo?label=expo) ![react-native](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/react-native?label=react-native) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-caracal) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-caracal) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-caracal) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-caracal)
 
 📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo, TypeScript, TailwindCSS, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
 
-> Welcome to the Atlas's Expo / React Native Starter Kit!
+> Welcome to the Caracal's Expo / React Native Starter Kit!
 
 ## 🚀 Motivation
 
@@ -114,7 +114,7 @@ Feedback and suggestions are always welcome. Feel free to open an issue or discu
 
 ## ⚡ Build Configuration
 
-Atlas is tuned for build throughput out of the box:
+Caracal is tuned for build throughput out of the box:
 
 - **Prebuilt React Native.** `buildReactNativeFromSource` is off, so the RN C++ core
   and Hermes are not recompiled on every build.
@@ -154,9 +154,13 @@ This starter is maintained by [Tuan Anh Le](https://leanhtuan1994.github.io/team
 
 For custom projects and consulting, visit [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact).
 
+## 🙏 Credits
+
+Caracal is built on the [Obytes React Native starter](https://github.com/obytes/react-native-template-obytes), used under the MIT License. Thanks to the Obytes team for the foundation.
+
 ## ❓ FAQ
 
-If you have any questions about the starter, please open an [issue](https://github.com/leanhtuan1994/react-native-atlas/issues).
+If you have any questions about the starter, please open an [issue](https://github.com/leanhtuan1994/react-native-caracal/issues).
 
 ## 🔖 License
 

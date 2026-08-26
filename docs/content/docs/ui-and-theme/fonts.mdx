@@ -3,7 +3,7 @@ title: Fonts
 description: How to add custom fonts to your app.
 ---
 
-Atlas ships with the [Inter](https://fonts.google.com/specimen/Inter) family from `@expo-google-fonts/inter`, loaded at runtime in `src/app/_layout.tsx`:
+Caracal ships with the [Inter](https://fonts.google.com/specimen/Inter) family from `@expo-google-fonts/inter`, loaded at runtime in `src/app/_layout.tsx`:
 
 ```tsx title="src/app/_layout.tsx"
 import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
@@ -54,7 +54,7 @@ No prebuild is needed — these packages ship the font files as JS assets.
 
 ## Adding a local font file
 
-For a font that is not on Google Fonts, create an `assets/fonts` folder (the starter has none, since Inter ships as a package), put the file in it, and register it with the `expo-font` config plugin. Atlas already lists the plugin in `app.config.ts`; add a `fonts` array to it:
+For a font that is not on Google Fonts, create an `assets/fonts` folder (the starter has none, since Inter ships as a package), put the file in it, and register it with the `expo-font` config plugin. Caracal already lists the plugin in `app.config.ts`; add a `fonts` array to it:
 
 ```ts title="app.config.ts"
 import type { ConfigContext, ExpoConfig } from '@expo/config';

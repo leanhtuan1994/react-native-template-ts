@@ -1,13 +1,13 @@
 ---
 title: State Management
-description: Complete guide to global state management using Zustand with the selectors pattern in Atlas.
+description: Complete guide to global state management using Zustand with the selectors pattern in Caracal.
 ---
 
-Atlas uses **Zustand** for global client state management, combined with **React Query** for server state. This guide covers Zustand patterns, the selectors optimization, and MMKV persistence integration.
+Caracal uses **Zustand** for global client state management, combined with **React Query** for server state. This guide covers Zustand patterns, the selectors optimization, and MMKV persistence integration.
 
 ## Overview
 
-Atlas follows a clear separation of concerns for state management:
+Caracal follows a clear separation of concerns for state management:
 
 - **Zustand**: Global client state (auth, user preferences, UI state)
 - **React Query**: Server state (API data, caching, synchronization)
@@ -39,7 +39,7 @@ Zustand is a small (1KB), fast, and scalable state management solution that does
 
 ## The Selectors Pattern
 
-Atlas uses a **custom selectors pattern** to optimize component re-renders. Instead of subscribing to the entire store, components subscribe only to the specific state slices they need.
+Caracal uses a **custom selectors pattern** to optimize component re-renders. Instead of subscribing to the entire store, components subscribe only to the specific state slices they need.
 
 ### How It Works
 
@@ -81,7 +81,7 @@ Without selectors, all 3 components would re-render on every state change. With 
 
 ## Auth Store Example
 
-Atlas includes a production-ready authentication store (`src/lib/auth/index.tsx`) demonstrating all key patterns.
+Caracal includes a production-ready authentication store (`src/lib/auth/index.tsx`) demonstrating all key patterns.
 
 ### Key Features
 
@@ -163,7 +163,7 @@ axios.interceptors.response.use(
 
 ## MMKV Persistence
 
-Atlas integrates Zustand with **MMKV** for fast, synchronous, encrypted storage.
+Caracal integrates Zustand with **MMKV** for fast, synchronous, encrypted storage.
 
 The storage utilities live in `src/lib/storage.tsx`.
 
@@ -233,7 +233,7 @@ export const useSettings = createSelectors(_useSettings);
 
 ## Creating Custom Stores
 
-Follow this pattern to create new Zustand stores in Atlas.
+Follow this pattern to create new Zustand stores in Caracal.
 
 ### 1. Define Types
 

@@ -3,7 +3,7 @@ title: Storage
 description: Storage guide with the react-native-mmkv library.
 ---
 
-Atlas ships with a simple storage module built on [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv), a fast key-value store for React Native. A thin utility wrapper lives at `src/lib/storage.tsx` to keep usage ergonomic and type-safe across the codebase.
+Caracal ships with a simple storage module built on [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv), a fast key-value store for React Native. A thin utility wrapper lives at `src/lib/storage.tsx` to keep usage ergonomic and type-safe across the codebase.
 
 ## Storage Utilities
 
@@ -13,7 +13,7 @@ The wrapper at `src/lib/storage.tsx` exports three helpers:
 - `setItem<T>(key, value)` — JSON-serializes and writes a value
 - `removeItem(key)` — deletes a key
 
-These are used throughout Atlas for token persistence, user preferences, and language selection.
+These are used throughout Caracal for token persistence, user preferences, and language selection.
 
 ```typescript title="src/lib/storage.tsx"
 import { MMKV } from 'react-native-mmkv';

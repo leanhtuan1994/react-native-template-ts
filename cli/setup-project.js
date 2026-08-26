@@ -55,9 +55,9 @@ const updateProjectConfig = async (projectName) => {
     encoding: 'utf-8',
   });
   const replaced = contents
-    .replace(/AtlasApp/gi, projectName)
-    .replace(/com.atlas/gi, `com.${projectName.toLowerCase()}`)
-    .replace(/atlas/gi, 'expo-owner');
+    .replace(/CaracalApp/gi, projectName)
+    .replace(/com.caracal/gi, `com.${projectName.toLowerCase()}`)
+    .replace(/caracal/gi, 'expo-owner');
 
   fs.writeFileSync(configPath, replaced, { spaces: 2 });
   const readmeFilePath = path.join(

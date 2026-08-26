@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
 
-const REPO = 'leanhtuan1994/react-native-atlas';
+const REPO = 'leanhtuan1994/react-native-caracal';
 
 /** Small pill that fetches and displays the GitHub star count. */
 export function GithubStar() {

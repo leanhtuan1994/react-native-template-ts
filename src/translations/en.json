@@ -1,6 +1,6 @@
 {
   "onboarding": {
-    "message": "Welcome to obytes app site"
+    "message": "Welcome to Caracal"
   },
   "settings": {
     "about": "About",
@@ -29,5 +29,5 @@
     "vietnamese": "Vietnamese",
     "website": "Website"
   },
-  "welcome": "Welcome to obytes app site"
+  "welcome": "Welcome to Caracal"
 }

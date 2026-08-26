@@ -1,7 +1,7 @@
 const { runCommand } = require('./utils.js');
 const { consola } = require('consola');
 
-const REPOSITORY = 'leanhtuan1994/react-native-atlas';
+const REPOSITORY = 'leanhtuan1994/react-native-caracal';
 const DEFAULT_BRANCH = 'main';
 const TAGS_PER_PAGE = 100;
 
@@ -67,9 +67,9 @@ const getLatestTemplateRef = async () => {
 const cloneLastTemplateRelease = async (projectName) => {
   consola.start('Extracting last release number 👀');
   const latestTemplateRef = await getLatestTemplateRef();
-  consola.info(`Using Atlas starter ${latestTemplateRef}`);
+  consola.info(`Using Caracal starter ${latestTemplateRef}`);
 
-  // create a new project based on atlas template
+  // create a new project based on caracal template
   const cloneStarter = `git clone -b ${latestTemplateRef} --depth=1 https://github.com/${REPOSITORY}.git ${projectName}`;
   await runCommand(cloneStarter, {
     loading: 'Extracting the starter template...',

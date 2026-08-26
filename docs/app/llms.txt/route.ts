@@ -8,7 +8,7 @@ export async function GET() {
   const pages = source.getPages();
 
   const lines = [
-    '# Atlas Starter — React Native / Expo Template',
+    '# Caracal Starter — React Native / Expo Template',
     '',
     "> Your All-in-One Solution for Building Outstanding React Native/Expo Apps. From editor setup to store submission, we've got you covered.",
     '',

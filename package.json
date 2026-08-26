@@ -1,5 +1,5 @@
 {
-  "name": "atlasapp",
+  "name": "caracalapp",
   "version": "9.3.0",
   "private": true,
   "main": "expo-router/entry",
@@ -38,7 +38,8 @@
     "test:ci": "pnpm run test --coverage",
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
-    "e2e-test": "maestro test .maestro/ -e APP_ID=com.atlas.development"
+    "e2e-test": "maestro test .maestro/ -e APP_ID=com.caracal.development",
+    "brand:assets": "node scripts/render-brand-assets.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -135,6 +136,7 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "react-native-svg-transformer": "^1.5.2",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.1.17",
     "ts-jest": "^29.1.2",
     "typescript": "^5.9.3",
@@ -148,7 +150,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leanhtuan1994/react-native-atlas.git"
+    "url": "git+https://github.com/leanhtuan1994/react-native-caracal.git"
   },
   "packageManager": "pnpm@10.12.3",
   "expo": {

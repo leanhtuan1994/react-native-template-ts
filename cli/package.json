@@ -1,18 +1,18 @@
 {
-  "name": "create-atlas-rn-app",
-  "version": "2.0.3",
-  "description": "Atlas expo starter cli",
-  "homepage": "https://github.com/leanhtuan1994/react-native-atlas",
+  "name": "create-caracal-app",
+  "version": "3.0.0",
+  "description": "Caracal expo starter cli",
+  "homepage": "https://github.com/leanhtuan1994/react-native-caracal",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leanhtuan1994/react-native-atlas.git"
+    "url": "git+https://github.com/leanhtuan1994/react-native-caracal.git"
   },
   "main": "index.js",
   "scripts": {
     "start": "node ."
   },
   "bin": {
-    "create-atlas-rn-app": "index.js"
+    "create-caracal-app": "index.js"
   },
   "files": [
     "index.js",
@@ -33,6 +33,6 @@
     "react-native-boilerplate",
     "expo-boilerplate",
     "cli",
-    "atlas"
+    "caracal"
   ]
 }

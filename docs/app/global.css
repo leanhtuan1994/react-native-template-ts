@@ -8,45 +8,71 @@
 /* Map the next/font CSS vars into Tailwind's font utilities (inline so the
  * runtime-defined variables are referenced, not their empty build-time value). */
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 /*
- * Atlas docs — bold, dark-first brand system.
- * Deep blue/purple ink base + single bold "blurple" accent.
- * Fumadocs theme CSS vars are overridden below for both schemes.
+ * Caracal docs — dark-first brand system.
+ * Ink base + Caracal orange primary and Orbit cyan secondary.
+ * See assets/brand/README.md for the palette contract; the light column is
+ * mandatory on light surfaces (the dark values fail 4.5:1 against Sand).
  */
 
 :root {
-  /* Brand blurple accent (light mode) */
-  --color-fd-primary: oklch(0.55 0.22 277);
-  --brand-blurple: #5b53ff;
-  --brand-blurple-soft: #8a84ff;
+  /* Sand surface, light-mode brand values */
+  --color-fd-background: #f5f1ea;
+  --color-fd-foreground: #171c22;
+  --color-fd-card: #fffdf9;
+  --color-fd-popover: #fffdf9;
+  --color-fd-muted: #ebe5d9;
+  --color-fd-muted-foreground: #5c5346;
+  --color-fd-border: #ddd5c6;
+  --color-fd-secondary: #ebe5d9;
+  --color-fd-accent: #e2dacb;
+  /* UI text/fill roles need a darker step than the mark colors: the brand
+   * sheet's #b0642f / #1b7e97 only reach 3.96:1 and 4.17:1 on Sand, which is
+   * fine for a mark (3:1) but fails 4.5:1 body text. Measured values below. */
+  --color-fd-primary: #a25c2b; /* 4.55:1 on Sand, 5.04:1 for its foreground */
+  --color-fd-primary-foreground: #fffdf9;
+  --color-fd-ring: #a25c2b;
+
+  /* Mark colors — non-text, brand-sheet exact */
+  --brand-caracal: #b0642f;
+  --brand-orbit: #1b7e97;
+  /* Text-safe variants for links and inline accents */
+  --brand-caracal-text: #a25c2b;
+  --brand-orbit-text: #1a788f;
 }
 
 .dark {
-  /* Dark-first: deep blue/purple ink base */
-  --color-fd-background: oklch(0.16 0.03 277);
-  --color-fd-foreground: oklch(0.96 0.01 277);
-  --color-fd-card: oklch(0.2 0.035 277);
-  --color-fd-popover: oklch(0.18 0.035 277);
-  --color-fd-muted: oklch(0.24 0.03 277);
-  --color-fd-muted-foreground: oklch(0.72 0.02 277);
-  --color-fd-border: oklch(0.3 0.03 277);
-  --color-fd-secondary: oklch(0.24 0.03 277);
-  --color-fd-accent: oklch(0.28 0.04 277);
-  --color-fd-primary: oklch(0.72 0.18 277);
-  --color-fd-ring: oklch(0.72 0.18 277);
+  /* Ink base, dark-mode brand values */
+  --color-fd-background: #0a0d11;
+  --color-fd-foreground: #e8edf2;
+  --color-fd-card: #0e1319;
+  --color-fd-popover: #131b23;
+  --color-fd-muted: #141b22;
+  --color-fd-muted-foreground: #94a3af;
+  --color-fd-border: #1c242d;
+  --color-fd-secondary: #141b22;
+  --color-fd-accent: #1c242d;
+  --color-fd-primary: #c8763c;
+  --color-fd-primary-foreground: #0a0d11;
+  --color-fd-ring: #c8763c;
+
+  --brand-caracal: #c8763c;
+  --brand-orbit: #7dd3e8;
+  /* Dark mode already clears 4.5:1 (5.67:1 / 11.45:1) — no separate step */
+  --brand-caracal-text: #c8763c;
+  --brand-orbit-text: #7dd3e8;
 }
 
 /* Brand gradient utilities used by hero / landing */
 .brand-gradient-text {
   background-image: linear-gradient(
     110deg,
-    var(--brand-blurple-soft),
-    var(--brand-blurple) 55%,
-    #b39dff
+    var(--brand-caracal),
+    var(--brand-orbit) 85%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -55,8 +81,8 @@
 
 .brand-mesh {
   background:
-    radial-gradient(60% 50% at 20% 0%, rgba(91, 83, 255, 0.28), transparent 70%),
-    radial-gradient(50% 50% at 90% 10%, rgba(138, 132, 255, 0.18), transparent 70%);
+    radial-gradient(60% 50% at 20% 0%, rgba(200, 118, 60, 0.26), transparent 70%),
+    radial-gradient(50% 50% at 90% 10%, rgba(125, 211, 232, 0.16), transparent 70%);
 }
 
 .brand-grid {

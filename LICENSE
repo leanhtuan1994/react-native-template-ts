@@ -1,6 +1,11 @@
 MIT License
 
 Copyright (c) 2021 Obytes
+Copyright (c) 2026 Tuan Anh Le
+
+This project is a derivative of the Obytes React Native starter
+(https://github.com/obytes/react-native-template-obytes), used under the MIT
+License. Modifications and additions are copyright Tuan Anh Le.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

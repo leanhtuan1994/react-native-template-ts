@@ -3,9 +3,9 @@ title: Authentication
 description: How to manage authentication in your app.
 ---
 
-Most applications require some form of authentication. Atlas comes with a solid foundation for managing auth state so you can get started quickly without building it from scratch.
+Most applications require some form of authentication. Caracal comes with a solid foundation for managing auth state so you can get started quickly without building it from scratch.
 
-Authentication is global to the application, so Atlas uses **Zustand** to manage the authentication state.
+Authentication is global to the application, so Caracal uses **Zustand** to manage the authentication state.
 
 [Zustand](https://github.com/pmndrs/zustand) is a lightweight, highly performant state management library that integrates cleanly with React. It outperforms a simple Context API by providing selectors that prevent unnecessary re-renders, and it works equally well inside and outside the React tree.
 
@@ -54,7 +54,7 @@ const App = () => {
 
 ## Use Case: Protecting Navigation
 
-A common pattern is to gate navigation behind authentication status. In Atlas, the root layout (`src/app/_layout.tsx`) reads `status` from the auth store and redirects accordingly.
+A common pattern is to gate navigation behind authentication status. In Caracal, the root layout (`src/app/_layout.tsx`) reads `status` from the auth store and redirects accordingly.
 
 ```tsx
 import { useAuth } from '@/lib/auth';

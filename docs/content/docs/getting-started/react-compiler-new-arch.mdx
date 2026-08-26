@@ -1,9 +1,9 @@
 ---
 title: React Compiler & New Architecture
-description: Understanding the experimental features enabled in Atlas starter - React Compiler and New Architecture.
+description: Understanding the experimental features enabled in Caracal starter - React Compiler and New Architecture.
 ---
 
-Atlas starter enables two **experimental features** that represent the future of React Native development. This guide explains what they are, how they affect your development, and when you might need to disable them.
+Caracal starter enables two **experimental features** that represent the future of React Native development. This guide explains what they are, how they affect your development, and when you might need to disable them.
 
 ## Overview
 
@@ -53,7 +53,7 @@ function ExpensiveComponent({ data, onUpdate }) {
 export default React.memo(ExpensiveComponent);
 ```
 
-**With React Compiler (enabled in Atlas):**
+**With React Compiler (enabled in Caracal):**
 ```tsx
 // No manual memoization needed!
 function ExpensiveComponent({ data, onUpdate }) {
@@ -394,7 +394,7 @@ pnpm prebuild
 
 ### You Cannot Disable the New Architecture
 
-The legacy architecture was removed in Expo SDK 55, and the `newArchEnabled` option no longer exists. Atlas runs on Expo SDK 57 / React Native 0.86, so the New Architecture is always active. If a library does not support it, replace the library rather than trying to opt out — see [Library Compatibility](#library-compatibility).
+The legacy architecture was removed in Expo SDK 55, and the `newArchEnabled` option no longer exists. Caracal runs on Expo SDK 57 / React Native 0.86, so the New Architecture is always active. If a library does not support it, replace the library rather than trying to opt out — see [Library Compatibility](#library-compatibility).
 
 ### Disabling React Compiler
 
@@ -575,7 +575,7 @@ If you're upgrading from an older starter version without these features:
 
 ## Summary
 
-Atlas starter enables **React Compiler** and **New Architecture** to provide:
+Caracal starter enables **React Compiler** and **New Architecture** to provide:
 
 - Automatic performance optimization without manual memoization
 - Faster native module access and better threading

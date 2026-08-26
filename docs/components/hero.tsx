@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-const REPO = 'https://github.com/leanhtuan1994/react-native-atlas';
+const REPO = 'https://github.com/leanhtuan1994/react-native-caracal';
 
 function GithubMark({ className }: { className?: string }) {
   return (

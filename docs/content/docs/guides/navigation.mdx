@@ -1,13 +1,13 @@
 ---
 title: Navigation with Expo Router
-description: Complete guide to navigation using Expo Router with typed routes and route groups in Atlas.
+description: Complete guide to navigation using Expo Router with typed routes and route groups in Caracal.
 ---
 
 [Expo Router](https://docs.expo.dev/router/introduction/) is a file-based routing library for React Native and web apps built with Expo. It brings the simplicity of file-based routing (like Next.js) to React Native, making navigation intuitive and type-safe.
 
 ## Overview
 
-Atlas uses **Expo Router** with the following features enabled:
+Caracal uses **Expo Router** with the following features enabled:
 
 - **Typed Routes**: Compile-time route validation and autocomplete
 - **Route Groups**: Organize routes without affecting URL structure
@@ -25,7 +25,7 @@ Atlas uses **Expo Router** with the following features enabled:
 
 ## Project Structure
 
-Atlas organizes routes using **route groups** — folders wrapped in parentheses that don't appear in the URL.
+Caracal organizes routes using **route groups** — folders wrapped in parentheses that don't appear in the URL.
 
 ```
 src/app/
@@ -99,7 +99,7 @@ The `(components)` group uses stack navigation for hierarchical screens.
 
 ## Typed Routes
 
-Atlas has **typed routes enabled** in `app.config.ts`:
+Caracal has **typed routes enabled** in `app.config.ts`:
 
 ```typescript
 experiments: {
@@ -291,32 +291,32 @@ Every route in Expo Router is automatically deep-linkable. No configuration requ
 
 ### URL Schemes
 
-Atlas is configured with URL schemes in `app.config.ts`:
+Caracal is configured with URL schemes in `app.config.ts`:
 
 ```typescript
 // app.config.ts
 export default {
-  scheme: 'atlas',
+  scheme: 'caracal',
   // ...
 }
 ```
 
 **Available schemes:**
-- `atlas://` — Custom scheme (all environments)
-- `exp+atlas://` — Expo Go scheme (development)
+- `caracalApp://` — Custom scheme (all environments)
+- `exp+caracalapp://` — Expo Go scheme (development)
 - `https://yourapp.com/` — Universal links (production)
 
 ### Deep Link Examples
 
 ```bash
 # Open settings screen
-atlas://settings
+caracalApp://settings
 
 # Open component showcase
-atlas://components/button
+caracalApp://components/button
 
 # With query parameters
-atlas://settings?theme=dark
+caracalApp://settings?theme=dark
 
 # Universal link (production)
 https://yourapp.com/components/text-field
@@ -326,18 +326,18 @@ https://yourapp.com/components/text-field
 
 **iOS Simulator:**
 ```bash
-xcrun simctl openurl booted "atlas://settings"
+xcrun simctl openurl booted "caracalApp://settings"
 ```
 
 **Android Emulator:**
 ```bash
-adb shell am start -W -a android.intent.action.VIEW -d "atlas://settings"
+adb shell am start -W -a android.intent.action.VIEW -d "caracalApp://settings"
 ```
 
 **Expo Go:**
 ```bash
-npx uri-scheme open "exp+atlas://components/button" --ios
-npx uri-scheme open "exp+atlas://components/button" --android
+npx uri-scheme open "exp+caracalapp://components/button" --ios
+npx uri-scheme open "exp+caracalapp://components/button" --android
 ```
 
 ### Handling Deep Links
@@ -616,7 +616,7 @@ function handleNavigate(item: Item) {
 **Solution:**
 1. Ensure `scheme` is configured in `app.config.ts`
 2. Rebuild app after config changes: `pnpm prebuild`
-3. Test with correct scheme: `atlas://` (not `http://`)
+3. Test with correct scheme: `caracalApp://` (not `http://`)
 4. Check URL format matches file structure
 
 ### Tab Bar Flickering
@@ -655,11 +655,11 @@ function handleNavigate(item: Item) {
 
 ## Component Showcase Routes
 
-Atlas includes 30 component showcase routes in the `(components)` group — interactive examples demonstrating HeroUI Native components.
+Caracal includes 30 component showcase routes in the `(components)` group — interactive examples demonstrating HeroUI Native components.
 
 **View the showcase:**
 - Navigate to Settings → Component Showcase
-- Or use deep link: `atlas://components`
+- Or use deep link: `caracalApp://components`
 - Or see [Component Showcase documentation](/docs/ui-and-theme/component-showcase)
 
 All showcase routes are listed in [Project Structure](/docs/getting-started/project-structure).
