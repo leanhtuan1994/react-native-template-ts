@@ -10,10 +10,12 @@ repo before publishing the CLI means `create-caracal-app` clones a repo that exi
 - [ ] Rename `leanhtuan1994/react-native-template-atlas` if it is a separate live repo — the
       `source` git remote points at it
 - [ ] Update local remotes:
-      `bash
-    git remote set-url origin git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
-    git remote set-url source git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
-    `
+
+```bash
+git remote set-url origin git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
+git remote set-url source git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
+```
+
 - [ ] Update the repo description and topics
 - [ ] Upload `docs/public/og.jpg` as the repo's social preview image
 - [ ] Verify GitHub's rename redirect covers `https://api.github.com/repos/{owner}/{repo}/tags`,
@@ -24,9 +26,11 @@ repo before publishing the CLI means `create-caracal-app` clones a repo that exi
 - [x] `create-caracal-app` availability — **verified free** (registry returns 404)
 - [ ] Publish from `cli/`: `cd cli && npm publish` (version is already set to `3.0.0`)
 - [ ] Deprecate the old package — it is live at `2.0.3`, so this matters:
-      `bash
-    npm deprecate create-atlas-rn-app "Renamed to create-caracal-app"
-    `
+
+```bash
+npm deprecate create-atlas-rn-app "Renamed to create-caracal-app"
+```
+
 - [ ] End-to-end check from a clean directory: `npx create-caracal-app test-app`
 
 ## 3. Expo / EAS
@@ -48,13 +52,16 @@ This is why `atlas` still appears in the repo — see "Intentional exceptions" b
 
 - [ ] Optional now, required later: rename the Vercel project off the Atlas name
 - [ ] When a custom domain is ready, update every reference in one pass:
-      `bash
-    grep -rl "react-native-template-atlas.vercel.app" . \
-      --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next \
-      | xargs sed -i '' 's#react-native-template-atlas.vercel.app#YOUR-DOMAIN#g'
-    `
+
+```bash
+grep -rl "react-native-template-atlas.vercel.app" . \
+  --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next \
+  | xargs sed -i '' 's#react-native-template-atlas.vercel.app#YOUR-DOMAIN#g'
+```
+
       That covers `docs/app/layout.tsx` (`metadataBase`), `cli/utils.js`, `README.md`,
       `README-project.md`, `cli/README.md`, and 7 CI workflow header comments.
+
 - [ ] Add a redirect from the old docs domain to the new one
 - [ ] Confirm the reconnected GitHub repo (post-rename) still triggers deploys
 
@@ -100,17 +107,8 @@ The rebrand updated their assertion strings for consistency but did not make the
 `src/app/[...messing].tsx` and `src/components/ui/modal.tsx` predate the rebrand. They were
 autofixed here (pure reordering, no behavior change) so `pnpm check-all` could go green.
 
-**The documented deep-link scheme does not match the real one.**
-`docs/content/docs/guides/navigation.mdx` documents `caracal://` and `exp+caracal://`, but
-`env.js` sets `SCHEME = 'caracalApp'`, so working deep links are `caracalApp://settings`,
-`caracalApp://components/button`, etc. This mismatch predates the rebrand — the file previously
-said `atlas://` while the scheme was `atlasApp`. Renaming carried it forward faithfully rather
-than silently fixing it. Worth correcting, but it is a content fix, not a rename:
-
-```
-- `caracal://` — Custom scheme (all environments)      → should be `caracalApp://`
-- `exp+caracal://` — Expo Go scheme (development)      → should be `exp+caracalApp://`
-```
-
-Affects roughly six lines in `guides/navigation.mdx` plus one in
-`ui-and-theme/component-showcase.mdx`.
+**The documented deep-link scheme was wrong — now fixed.**
+`docs/content/docs/guides/navigation.mdx` advertised `caracal://` (and before the rebrand,
+`atlas://`) while `env.js` sets `SCHEME = 'caracalApp'`. All 11 occurrences were corrected to
+`caracalApp://`. Note the Expo Go prefix derives from the **slug**, not the scheme, so it is
+`exp+caracalapp://` (lowercase) rather than `exp+caracalApp://`.
