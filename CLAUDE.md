@@ -108,7 +108,7 @@ The project supports three environments (development, staging, production) throu
 **Environment-specific app identifiers:**
 
 - The `withEnvSuffix()` function in `env.js` appends environment suffix to bundle IDs
-- Example: `com.atlas` becomes `com.atlas.staging` for staging
+- Example: `com.caracal` becomes `com.caracal.staging` for staging
 - Production builds use the base identifier without suffix
 - This allows installing different environment builds side-by-side on the same device
 
