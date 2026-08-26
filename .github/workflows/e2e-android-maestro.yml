@@ -1,6 +1,6 @@
 # 🔗 Links:
-# Source file: https://github.com/leanhtuan1994/react-native-template-atlas/blob/master/.github/workflows/e2e-android.yml
-# End-to-end testing: https://starter.obytes.com/testing/end-to-end-testing/
+# Source file: https://github.com/leanhtuan1994/react-native-caracal/blob/master/.github/workflows/e2e-android.yml
+# End-to-end testing: https://react-native-template-atlas.vercel.app/testing/end-to-end-testing/
 
 # ✍️ Description:
 # This workflow is used to run end-to-end tests on Android using Maestro Cloud.
@@ -49,4 +49,4 @@ jobs:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: ./android/app/build/outputs/apk/release/app-release.apk
           env: |
-            APP_ID=com.atlas.staging
+            APP_ID=com.caracal.staging

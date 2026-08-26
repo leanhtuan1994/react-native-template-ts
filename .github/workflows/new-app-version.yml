@@ -1,6 +1,6 @@
 # 🔗 Links:
-# Source file: https://github.com/leanhtuan1994/react-native-template-atlas/blob/master/.github/workflows/lint-ts.yml
-# Starter releasing process: https://starter.obytes.com/ci-cd/app-releasing-process/
+# Source file: https://github.com/leanhtuan1994/react-native-caracal/blob/master/.github/workflows/lint-ts.yml
+# Starter releasing process: https://react-native-template-atlas.vercel.app/ci-cd/app-releasing-process/
 
 # ✍️ Description:
 # This workflow is used to create a new version of the app and push a new tag to the repo.
