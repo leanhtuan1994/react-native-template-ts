@@ -2,7 +2,7 @@
   <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
 Mobile App </h1>
 
-> This Project is based on [Atlas starter](https://leanhtuan1994.github.io/react-native-template-atlas)
+> This Project is based on [Caracal starter](https://react-native-template-atlas.vercel.app)
 
 ## Requirements
 
@@ -37,16 +37,32 @@ To run the app on Android
 pnpm android
 ```
 
+## 🎨 Replace the brand assets
+
+This project ships with the Caracal template's logo as a placeholder. To make it yours:
+
+1. Replace the SVG sources in `assets/brand/` with your own mark. Keep the filenames — the
+   render script looks them up by name.
+2. Regenerate every app icon, splash, and favicon from those sources:
+
+   ```sh
+   pnpm brand:assets
+   ```
+
+3. Update the splash and adaptive-icon `backgroundColor` values in `app.config.ts`.
+
+See `assets/brand/README.md` for the size ladder and which variant each output uses.
+
 ## ✍️ Documentation
 
-- [Rules and Conventions](https://leanhtuan1994.github.io/react-native-template-atlas/getting-started/rules-and-conventions/)
-- [Project structure](https://leanhtuan1994.github.io/react-native-template-atlas/getting-started/project-structure)
-- [Environment vars and config](https://leanhtuan1994.github.io/react-native-template-atlas/getting-started/environment-vars-config)
-- [UI and Theming](https://leanhtuan1994.github.io/react-native-template-atlas/ui-and-theme/ui-theming)
-- [Components](https://leanhtuan1994.github.io/react-native-template-atlas/ui-and-theme/components)
-- [Forms](https://leanhtuan1994.github.io/react-native-template-atlas/ui-and-theme/Forms)
-- [Data fetching](https://leanhtuan1994.github.io/react-native-template-atlas/guides/data-fetching)
-- [Contribute to starter](https://leanhtuan1994.github.io/react-native-template-atlas/how-to-contribute/)
+- [Rules and Conventions](https://react-native-template-atlas.vercel.app/getting-started/rules-and-conventions/)
+- [Project structure](https://react-native-template-atlas.vercel.app/getting-started/project-structure)
+- [Environment vars and config](https://react-native-template-atlas.vercel.app/getting-started/environment-vars-config)
+- [UI and Theming](https://react-native-template-atlas.vercel.app/ui-and-theme/ui-theming)
+- [Components](https://react-native-template-atlas.vercel.app/ui-and-theme/components)
+- [Forms](https://react-native-template-atlas.vercel.app/ui-and-theme/Forms)
+- [Data fetching](https://react-native-template-atlas.vercel.app/guides/data-fetching)
+- [Contribute to starter](https://react-native-template-atlas.vercel.app/how-to-contribute/)
 
 ## AI Configuration
 

@@ -35,7 +35,7 @@ const showMoreDetails = (projectName) => {
     `   \`cd ${projectName}\` \n`,
     '   IOS     :  `pnpm ios` \n',
     '   Android :  `pnpm android` \n\n',
-    '📚 Starter Documentation: https://leanhtuan1994.github.io/react-native-template-atlas'
+    '📚 Starter Documentation: https://react-native-template-atlas.vercel.app'
   );
 };
 

@@ -1,25 +1,25 @@
 <p align="center">
-    <img alt="React Native Template Atlas" src="https://user-images.githubusercontent.com/11137944/93101697-808bc580-f6a2-11ea-8ce3-482be6ca456a.png" width="200" />
+    <img alt="React Native Template Caracal" src="https://user-images.githubusercontent.com/11137944/93101697-808bc580-f6a2-11ea-8ce3-482be6ca456a.png" width="200" />
 
 </p>
 <h1 align="center">
-  React Native Template Atlas
+  React Native Template Caracal
 </h1>
 
-![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-atlas/expo?label=expo) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-atlas) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-atlas) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-atlas) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-atlas)
+![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/expo?label=expo) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-caracal) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-caracal) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-caracal) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-caracal)
 
 📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo,TypeScript,tailwindcss, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
 
 # 🚀 Quick start
 
 ```sh
-npx create-atlas-rn-app@latest MyApp
+npx create-caracal-app@latest MyApp
 
 ```
 
 # Overview
 
-As a team of experienced developers at Atlas, we have spent years refining our approach to building high-quality React Native applications. Our starter kit is based on the best practices and tools that we have found to be most effective in our own projects.
+As a team of experienced developers at Caracal, we have spent years refining our approach to building high-quality React Native applications. Our starter kit is based on the best practices and tools that we have found to be most effective in our own projects.
 
 This starter kit has been thoroughly tested and proven successful in multiple projects over the past four years. It is regularly used by our team on a daily basis and has helped us deliver great results for our clients.
 
@@ -61,15 +61,15 @@ When creating this starter kit, we had several guiding principles in mind::
 
 ## ✍️ Documentation
 
-- [Create new project ](https://leanhtuan1994.github.io/react-native-template-atlas/docs/getting-started/create-new-app)
-- [Rules and Conventions](https://leanhtuan1994.github.io/react-native-template-atlas/docs/getting-started/rules-and-convetions)
-- [Project structure](https://leanhtuan1994.github.io/react-native-template-atlas/docs/getting-started/project-structure)
-- [Environment vars and config](https://leanhtuan1994.github.io/react-native-template-atlas/docs/getting-started/environment-vars-config)
-- [UI and Theming](https://leanhtuan1994.github.io/react-native-template-atlas/docs/ui-and-theme/ui-theming)
-- [Components](https://leanhtuan1994.github.io/react-native-template-atlas/docs/ui-and-theme/components)
-- [Forms](https://leanhtuan1994.github.io/react-native-template-atlas/docs/ui-and-theme/Forms)
-- [Data fetching](https://leanhtuan1994.github.io/react-native-template-atlas/docs/guides/data-fetching)
-- [Contribute to starter](https://leanhtuan1994.github.io/react-native-template-atlas/docs/contribute)
+- [Create new project ](https://react-native-template-atlas.vercel.app/docs/getting-started/create-new-app)
+- [Rules and Conventions](https://react-native-template-atlas.vercel.app/docs/getting-started/rules-and-convetions)
+- [Project structure](https://react-native-template-atlas.vercel.app/docs/getting-started/project-structure)
+- [Environment vars and config](https://react-native-template-atlas.vercel.app/docs/getting-started/environment-vars-config)
+- [UI and Theming](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/ui-theming)
+- [Components](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/components)
+- [Forms](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/Forms)
+- [Data fetching](https://react-native-template-atlas.vercel.app/docs/guides/data-fetching)
+- [Contribute to starter](https://react-native-template-atlas.vercel.app/docs/contribute)
 
 ## 😉 Why Expo?
 
@@ -119,9 +119,9 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 ## Contributors
 
-This starter is maintained by [Atlas mobile tribe team](https://leanhtuan1994.github.io/team) and we welcome new contributors to join us in improving it. If you are interested in getting involved in the project, please don't hesitate to open an issue or submit a pull request.
+This starter is maintained by [Caracal mobile tribe team](https://leanhtuan1994.github.io/team) and we welcome new contributors to join us in improving it. If you are interested in getting involved in the project, please don't hesitate to open an issue or submit a pull request.
 
-In addition to maintaining this starter kit, we are also available to work on custom projects and help you build your dream app. If you are looking for experienced and reliable developers to bring your app vision to life, please visit our website at [obytes.com/contact](https://leanhtuan1994.github.io/contact) to get in touch with us. We would be happy to discuss your project in more detail and explore how we can help you achieve your goals.
+In addition to maintaining this starter kit, we are also available to work on custom projects and help you build your dream app. If you are looking for experienced and reliable developers to bring your app vision to life, please visit our website at [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact) to get in touch with us. We would be happy to discuss your project in more detail and explore how we can help you achieve your goals.
 
 ## 🔥 How to contribute?
 
@@ -136,7 +136,7 @@ We value the input and contributions of our community and look forward to workin
 
 ## ❓ FAQ
 
-If you have any questions about the starter, please open an [issue](https://github.com/leanhtuan1994/react-native-atlas/issues).
+If you have any questions about the starter, please open an [issue](https://github.com/leanhtuan1994/react-native-caracal/issues).
 
 ## 🔖 License
 
