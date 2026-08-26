@@ -30,8 +30,7 @@ across CI workflows, CLI, READMEs, and docs. Nothing outside `plans/` references
 - [ ] Confirm the Vercel Git connection (above) before deleting anything
 - [ ] Rename `leanhtuan1994/react-native-atlas` → `leanhtuan1994/react-native-caracal`
 - [ ] Delete `leanhtuan1994/react-native-template-atlas`
-- [ ] Drop the now-dead `source` remote: `git remote remove source`
-- [ ] Update local remotes:
+- [ ] Update local remotes (`source` goes away with its repo):
 
 ```bash
 git remote set-url origin git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
@@ -81,8 +80,8 @@ grep -rl "react-native-template-atlas.vercel.app" . \
   | xargs sed -i '' 's#react-native-template-atlas.vercel.app#YOUR-DOMAIN#g'
 ```
 
-      That covers `docs/app/layout.tsx` (`metadataBase`), `cli/utils.js`, `README.md`,
-      `README-project.md`, `cli/README.md`, and 7 CI workflow header comments.
+That covers `docs/app/layout.tsx` (`metadataBase`), `cli/utils.js`, `README.md`,
+`README-project.md`, `cli/README.md`, and 7 CI workflow header comments.
 
 - [ ] Add a redirect from the old docs domain to the new one
 - [ ] Confirm the reconnected GitHub repo (post-rename) still triggers deploys
