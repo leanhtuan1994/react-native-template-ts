@@ -1,4 +1,5 @@
 import './global.css';
+import { Analytics } from '@vercel/analytics/next';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Inter } from 'next/font/google';
 import { IBM_Plex_Mono } from 'next/font/google';
@@ -48,6 +49,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <RootProvider theme={{ defaultTheme: 'dark' }}>
           {children}
         </RootProvider>
+        <Analytics />
       </body>
     </html>
   );
