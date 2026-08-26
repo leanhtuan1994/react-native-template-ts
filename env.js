@@ -1,4 +1,3 @@
-/* eslint-env node */
 /*
  * Env file to load and validate env variables
  * Be cautious; this file should not be imported into your source folder.
