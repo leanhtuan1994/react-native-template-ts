@@ -2,10 +2,10 @@
   "name": "create-atlas-rn-app",
   "version": "2.0.2",
   "description": "Atlas expo starter cli",
-  "homepage": "https://github.com/leanhtuan1994/react-native-template-atlas",
+  "homepage": "https://github.com/leanhtuan1994/react-native-atlas",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leanhtuan1994/react-native-template-atlas.git"
+    "url": "git+https://github.com/leanhtuan1994/react-native-atlas.git"
   },
   "main": "index.js",
   "scripts": {

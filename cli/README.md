@@ -6,7 +6,7 @@
   React Native Template Atlas
 </h1>
 
-![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-template-atlas/expo?label=expo) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-template-atlas) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-template-atlas) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-template-atlas) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-template-atlas)
+![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-atlas/expo?label=expo) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-atlas) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-atlas) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-atlas) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-atlas)
 
 📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo,TypeScript,tailwindcss, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
 
@@ -136,7 +136,7 @@ We value the input and contributions of our community and look forward to workin
 
 ## ❓ FAQ
 
-If you have any questions about the starter and want answers, please check out the [Discussions](https://github.com/leanhtuan1994/react-native-template-atlas/discussions) page.
+If you have any questions about the starter, please open an [issue](https://github.com/leanhtuan1994/react-native-atlas/issues).
 
 ## 🔖 License
 
