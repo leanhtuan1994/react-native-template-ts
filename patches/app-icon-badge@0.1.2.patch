@@ -1,0 +1,13 @@
+diff --git a/dist/index.js b/dist/index.js
+index 3a05b922a0ab9f79e215ff7d2ac35cdd74122d3d..47571ae574900256d429c6109c7bb6699b69ee1e 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -240,7 +240,7 @@ function addBadge(_0) {
+     const resultFilename = dstPath ? dstPath : getResultPath({
+       icon
+     });
+-    resultImage.writeAsync(resultFilename);
++    yield resultImage.writeAsync(resultFilename);
+     return resultFilename;
+   });
+ }
