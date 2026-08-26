@@ -3,7 +3,7 @@ title: Internationalization
 description: How to add internationalization to your app.
 ---
 
-Atlas ships with a basic internationalization (i18n) setup using [expo-localization](https://docs.expo.dev/guides/localization/) and [i18next](https://www.i18next.com/). Everything i18n-related lives in `src/lib/i18n/`.
+Caracal ships with a basic internationalization (i18n) setup using [expo-localization](https://docs.expo.dev/guides/localization/) and [i18next](https://www.i18next.com/). Everything i18n-related lives in `src/lib/i18n/`.
 
 ## Adding a New Language
 
@@ -71,11 +71,11 @@ This hook:
 
 ### TypeScript Support
 
-Atlas adds TypeScript definitions for translation keys, giving you autocomplete and compile-time errors when you use an incorrect key. If you reference a key that doesn't exist in the translation files, TypeScript will flag it immediately.
+Caracal adds TypeScript definitions for translation keys, giving you autocomplete and compile-time errors when you use an incorrect key. If you reference a key that doesn't exist in the translation files, TypeScript will flag it immediately.
 
 ### ESLint Rules
 
-Atlas enforces translation file consistency via [eslint-plugin-i18n-json](https://github.com/godaddy/eslint-plugin-i18n-json) and a custom i18next validation script. These rules run as a pre-commit hook whenever translation files change.
+Caracal enforces translation file consistency via [eslint-plugin-i18n-json](https://github.com/godaddy/eslint-plugin-i18n-json) and a custom i18next validation script. These rules run as a pre-commit hook whenever translation files change.
 
 The checks enforce:
 - All resource files have identical keys (no missing translations)

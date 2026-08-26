@@ -1,9 +1,9 @@
 ---
 title: Environment Variables and Configuration
-description: Complete guide to managing environment variables with Zod validation, type-checking, and multi-environment support in Atlas starter.
+description: Complete guide to managing environment variables with Zod validation, type-checking, and multi-environment support in Caracal starter.
 ---
 
-Managing environment variables in React Native projects is essential but challenging. The Atlas starter includes a production-ready setup with **Zod validation**, **TypeScript type-checking**, and **multi-environment support** (development, staging, production).
+Managing environment variables in React Native projects is essential but challenging. The Caracal starter includes a production-ready setup with **Zod validation**, **TypeScript type-checking**, and **multi-environment support** (development, staging, production).
 
 ## Overview
 
@@ -201,12 +201,12 @@ const _buildTimeEnv = {
 Some variables are defined directly in `env.js` rather than `.env` files:
 
 ```javascript
-const BUNDLE_ID = 'com.atlas';
-const PACKAGE = 'com.atlas';
-const NAME = 'AtlasApp';
+const BUNDLE_ID = 'com.caracal';
+const PACKAGE = 'com.caracal';
+const NAME = 'CaracalApp';
 const EXPO_ACCOUNT_OWNER = 'leanhtuan1994';
 const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044';
-const SCHEME = 'atlasApp';
+const SCHEME = 'caracalApp';
 ```
 
 **Why static?**
@@ -223,9 +223,9 @@ const withEnvSuffix = (name) => {
 };
 
 // Results:
-// Development: com.atlas.development
-// Staging:     com.atlas.staging
-// Production:  com.atlas (no suffix)
+// Development: com.caracal.development
+// Staging:     com.caracal.staging
+// Production:  com.caracal (no suffix)
 ```
 
 **Benefit:** Install dev, staging, and production builds side-by-side on the same device.
@@ -731,7 +731,7 @@ See [App Releasing Process](/docs/ci-cd/app-releasing-process) for complete CI/C
 
 ## Summary
 
-Atlas starter provides a robust environment variable system with:
+Caracal starter provides a robust environment variable system with:
 
 - **Zod validation** - Runtime type checking with clear errors
 - **TypeScript inference** - Automatic types from schemas

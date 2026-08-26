@@ -26,7 +26,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Accordion,
     Accordions,
     Callout,
-    // Atlas brand components
+    // Caracal brand components
     Hero,
     FeatureGrid,
     FeatureCard,

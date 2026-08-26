@@ -1,13 +1,13 @@
 ---
 title: CI/CD Overview
-description: All you need to know about the CI/CD setup in Atlas.
+description: All you need to know about the CI/CD setup in Caracal.
 ---
 
 CI/CD stands for Continuous Integration and Continuous Delivery/Deployment. It is a set of practices that help developers automate the process of building, testing, and distributing applications to end-users (such as app stores for mobile apps).
 
 Having a good CI/CD process in place is crucial for any project. It helps you save time and effort, ensures you are delivering a high-quality product to your users, avoids common mistakes and bugs, reduces time to market, and allows for faster updates.
 
-As most projects are hosted on GitHub, Atlas uses [GitHub Actions](https://github.com/features/actions) and [Expo EAS](https://expo.dev/eas) as the CI/CD solution. The starter kit comes with over 14 GitHub Actions workflows:
+As most projects are hosted on GitHub, Caracal uses [GitHub Actions](https://github.com/features/actions) and [Expo EAS](https://expo.dev/eas) as the CI/CD solution. The starter kit comes with over 14 GitHub Actions workflows:
 
 - `.github/workflows/lint-ts.yml`: On PR and new commits on the master branch, run linting and formatting checks.
 - `.github/workflows/test.yml`: On PR and new commits on the master branch, run unit tests.
@@ -18,4 +18,4 @@ As most projects are hosted on GitHub, Atlas uses [GitHub Actions](https://githu
 
 You can check the full list of workflows in the [Workflows Reference](/docs/ci-cd/workflows-references).
 
-Pushing a new release to the stores is a regular process. To make it easier, Atlas provides a simple process using GitHub Actions and Expo EAS. You can check the full guide in the [App Releasing Process](/docs/ci-cd/app-releasing-process).
+Pushing a new release to the stores is a regular process. To make it easier, Caracal provides a simple process using GitHub Actions and Expo EAS. You can check the full guide in the [App Releasing Process](/docs/ci-cd/app-releasing-process).

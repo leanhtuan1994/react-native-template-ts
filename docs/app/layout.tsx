@@ -1,32 +1,39 @@
 import './global.css';
 import { Analytics } from '@vercel/analytics/next';
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { Inter } from 'next/font/google';
-import { IBM_Plex_Mono } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-ibm-plex-mono',
+  weight: ['400', '500', '700'],
+  variable: '--font-jetbrains-mono',
 });
 
 export const metadata: Metadata = {
+  // Required for the OG/Twitter image paths below to resolve to absolute URLs;
+  // without it Next falls back to localhost and the social card never loads.
+  // Deliberately still the pre-rebrand Vercel hostname — that deployment is the
+  // one actually serving these docs. Update it together with the Vercel project
+  // when a custom domain is set up.
+  metadataBase: new URL('https://react-native-template-atlas.vercel.app'),
   title: {
-    default: 'Atlas Starter | React Native Template',
-    template: '%s | Atlas Starter',
+    default: 'Caracal | React Native Template',
+    template: '%s | Caracal',
   },
   description:
     "Your All-in-One Solution for Building Outstanding React Native/Expo Apps. From editor setup to store submission, we've got you covered!",
   icons: { icon: '/favicon.svg' },
   openGraph: {
-    title: 'Atlas Starter | React Native Template',
+    title: 'Caracal | React Native Template',
     description:
       'Your All-in-One Solution for Building Outstanding React Native/Expo Apps.',
     images: ['/og.jpg'],
@@ -42,7 +49,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${ibmPlexMono.variable}`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans antialiased">

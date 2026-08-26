@@ -1,6 +1,6 @@
-# Atlas Starter Documentation
+# Caracal Starter Documentation
 
-Official documentation site for the React Native Atlas Starter Kit, built with
+Official documentation site for the React Native Caracal Starter Kit, built with
 [Fumadocs](https://fumadocs.dev/) on Next.js (App Router).
 
 ## 🚀 Quick Start
@@ -73,4 +73,4 @@ to `docs/`**. Vercel auto-detects Next.js; build config is in `vercel.json`.
 
 ## 🔗 Links
 
-- [Main Repository](https://github.com/leanhtuan1994/react-native-atlas)
+- [Main Repository](https://github.com/leanhtuan1994/react-native-caracal)
