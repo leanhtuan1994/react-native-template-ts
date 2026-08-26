@@ -8,8 +8,12 @@ global.window = global;
 
 // Mock @gorhom/bottom-sheet
 jest.mock('@gorhom/bottom-sheet', () => {
+  /* eslint-disable @typescript-eslint/no-require-imports --
+   * Jest mock factories are hoisted and must load dependencies lazily.
+   */
   const React = require('react');
   const RN = require('react-native');
+  /* eslint-enable @typescript-eslint/no-require-imports */
 
   class BottomSheetModalMock extends React.Component {
     present = jest.fn();
