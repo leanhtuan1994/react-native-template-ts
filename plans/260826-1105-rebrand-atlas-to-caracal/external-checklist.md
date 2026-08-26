@@ -6,14 +6,36 @@ repo before publishing the CLI means `create-caracal-app` clones a repo that exi
 
 ## 1. GitHub
 
+Two repos exist. Confirmed plan:
+
+| Repo                                        | Git remote | Action                              |
+| ------------------------------------------- | ---------- | ----------------------------------- |
+| `leanhtuan1994/react-native-atlas`          | `origin`   | **rename** → `react-native-caracal` |
+| `leanhtuan1994/react-native-template-atlas` | `source`   | **delete**                          |
+
+Every URL in this repo already points at `leanhtuan1994/react-native-caracal` — 35 references
+across CI workflows, CLI, READMEs, and docs. Nothing outside `plans/` references
+`react-native-template-atlas` as a repo, so deleting it breaks no in-repo link.
+
+> **Check before deleting `react-native-template-atlas`.** The docs domain
+> `react-native-template-atlas.vercel.app` takes its name from the Vercel _project_, and Vercel
+> default-names projects after the repo they were imported from. In Vercel → project →
+> Settings → Git, confirm which repo it is connected to:
+>
+> - connected to `react-native-atlas` → safe to delete, and the rename carries the connection over
+> - connected to `react-native-template-atlas` → **reconnect it to `react-native-atlas` first**,
+>   or the docs stop rebuilding while the hostname stays hard-coded in `metadataBase`,
+>   `cli/utils.js`, and every docs link
+
+- [ ] Confirm the Vercel Git connection (above) before deleting anything
 - [ ] Rename `leanhtuan1994/react-native-atlas` → `leanhtuan1994/react-native-caracal`
-- [ ] Rename `leanhtuan1994/react-native-template-atlas` if it is a separate live repo — the
-      `source` git remote points at it
+- [ ] Delete `leanhtuan1994/react-native-template-atlas`
+- [ ] Drop the now-dead `source` remote: `git remote remove source`
 - [ ] Update local remotes:
 
 ```bash
 git remote set-url origin git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
-git remote set-url source git@github-leanhtuan1994:leanhtuan1994/react-native-caracal.git
+git remote remove source   # its repo is being deleted
 ```
 
 - [ ] Update the repo description and topics
