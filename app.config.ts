@@ -1,15 +1,22 @@
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 import type { AppIconBadgeConfig } from 'app-icon-badge/types';
 
+import {
+  createAppIconBadgeConfig,
+  getAppIconBadgePaths,
+} from './app-icon-badge.config';
 import { ClientEnv, Env } from './env';
 
-const appIconBadgeConfig: AppIconBadgeConfig = {
-  enabled: Env.APP_ENV !== 'production',
-  badges: [
-    { text: Env.APP_ENV, type: 'banner', color: 'white' },
-    { text: Env.VERSION.toString(), type: 'ribbon', color: 'white' },
-  ],
-};
+const appIconBadgeConfig: AppIconBadgeConfig = createAppIconBadgeConfig(Env);
+const appIconBadgePaths = getAppIconBadgePaths(Env);
+const hasGeneratedBadges =
+  appIconBadgeConfig.enabled &&
+  Object.values(appIconBadgePaths).every((asset) =>
+    existsSync(resolve(__dirname, asset))
+  );
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -20,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'caracalapp',
   version: Env.VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: hasGeneratedBadges ? appIconBadgePaths.icon : './assets/icon.png',
   userInterfaceStyle: 'automatic',
   updates: { fallbackToCacheTimeout: 0 },
   assetBundlePatterns: ['**/*'],
@@ -32,7 +39,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   experiments: { typedRoutes: true, reactCompiler: true },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: hasGeneratedBadges
+        ? appIconBadgePaths.adaptiveIcon
+        : './assets/adaptive-icon.png',
       backgroundColor: '#0A0D11',
     },
     package: Env.PACKAGE,
@@ -67,7 +76,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ['expo-font'],
     'expo-localization',
     'expo-router',
-    ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
     ['expo-image'],
     'expo-status-bar',

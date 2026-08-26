@@ -5,9 +5,10 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "cross-env EXPO_NO_DOTENV=1 expo start",
-    "prebuild": "cross-env EXPO_NO_DOTENV=1 pnpm expo prebuild",
-    "android": "cross-env EXPO_NO_DOTENV=1 expo run:android",
-    "ios": "cross-env EXPO_NO_DOTENV=1 expo run:ios",
+    "generate:app-icon-badges": "cross-env EXPO_NO_DOTENV=1 node scripts/generate-app-icon-badges.js",
+    "prebuild": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 pnpm expo prebuild",
+    "android": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 expo run:android",
+    "ios": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 expo run:ios",
     "web": "cross-env EXPO_NO_DOTENV=1 expo start --web",
     "xcode": "xed -b ios",
     "doctor": "npx expo-doctor@latest",
@@ -39,11 +40,12 @@
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
     "e2e-test": "maestro test .maestro/ -e APP_ID=com.caracal.development",
-    "brand:assets": "node scripts/render-brand-assets.mjs"
+    "brand:assets": "node scripts/render-brand-assets.mjs",
+    "postinstall": "pnpm run generate:app-icon-badges"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
-    "@expo/metro-runtime": "^57.0.11",
+    "@expo/metro-runtime": "^57.0.13",
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5.2.14",
     "@hookform/resolvers": "^3.9.0",
@@ -51,21 +53,21 @@
     "@tanstack/react-query": "^5.52.1",
     "app-icon-badge": "^0.1.2",
     "axios": "^1.16.1",
-    "expo": "57.0.14",
+    "expo": "57.0.16",
     "expo-blur": "~57.0.2",
-    "expo-build-properties": "~57.0.12",
-    "expo-constants": "~57.0.12",
-    "expo-crypto": "57.0.1",
-    "expo-dev-client": "~57.0.13",
+    "expo-build-properties": "~57.0.14",
+    "expo-constants": "~57.0.14",
+    "expo-crypto": "57.0.2",
+    "expo-dev-client": "~57.0.15",
     "expo-font": "~57.0.1",
     "expo-glass-effect": "~57.0.1",
     "expo-haptics": "~57.0.1",
     "expo-image": "~57.0.3",
     "expo-linear-gradient": "~57.0.1",
-    "expo-linking": "~57.0.6",
+    "expo-linking": "~57.0.7",
     "expo-localization": "~57.0.1",
-    "expo-router": "57.0.14",
-    "expo-splash-screen": "~57.0.7",
+    "expo-router": "57.0.16",
+    "expo-splash-screen": "~57.0.8",
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.2",
     "heroui-native": "1.0.5",
@@ -146,6 +148,9 @@
     "overrides": {
       "hermes-compiler": "250829098.0.4",
       "@expo/dom-webview": "^56.0.5"
+    },
+    "patchedDependencies": {
+      "app-icon-badge@0.1.2": "patches/app-icon-badge@0.1.2.patch"
     }
   },
   "repository": {
