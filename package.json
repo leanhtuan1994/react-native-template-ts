@@ -153,6 +153,9 @@
     "url": "git+https://github.com/leanhtuan1994/react-native-caracal.git"
   },
   "packageManager": "pnpm@10.12.3",
+  "np": {
+    "branch": "main"
+  },
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
