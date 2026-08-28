@@ -134,26 +134,24 @@ The app uses Expo Router with typed routes (enabled in app.config.ts):
 **Global State (Zustand):**
 
 - Auth state managed in `src/lib/auth/index.tsx`
-- Uses Zustand store with selectors pattern (via `createSelectors` utility)
+- Uses Zustand's native selector API for focused subscriptions
 - Token persistence via MMKV storage
 - Hydration happens on app launch
 
-**Zustand selectors pattern:**
+**Zustand selector pattern:**
 
 ```tsx
-// Creating a store with selectors
-const _useStore = create<StoreState>((set) => ({
+// Create a standard Zustand store
+const useStore = create<StoreState>()((set) => ({
   // your store implementation
 }));
 
-export const useStore = createSelectors(_useStore);
-
 // Usage in components - select only what you need
-const token = useStore.use.token();
-const signIn = useStore.use.signIn();
+const token = useStore((state) => state.token);
+const signIn = useStore((state) => state.signIn);
 ```
 
-This pattern auto-generates selector hooks for each state property, improving performance by preventing unnecessary re-renders.
+Focused selectors prevent components from re-rendering for unrelated state changes.
 
 **Server State (React Query):**
 

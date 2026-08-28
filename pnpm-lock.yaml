@@ -171,8 +171,8 @@ importers:
         specifier: ^3.23.8
         version: 3.25.76
       zustand:
-        specifier: ^5.0.5
-        version: 5.0.13(@types/react@19.2.15)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
+        specifier: ^5.0.15
+        version: 5.0.15(@types/react@19.2.15)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
     devDependencies:
       '@babel/core':
         specifier: ^7.29.0
@@ -7728,8 +7728,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zustand@5.0.13:
-    resolution: {integrity: sha512-efI2tVaVQPqtOh114loML/Z80Y4NP3yc+Ff0fYiZJPauNeWZeIp/bRFD7I9bfmCOYBh/PHxlglQ9+wvlwnPikQ==}
+  zustand@5.0.15:
+    resolution: {integrity: sha512-MpSEjRiBkA9crSYeOUH32rJC7SVqAbm0Fqcqge/bUi2PPoLcBWKOsG+C8mevmpr8TwXHBVkChbbJiyvkE+i/3A==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -16449,7 +16449,7 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zustand@5.0.13(@types/react@19.2.15)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)):
+  zustand@5.0.15(@types/react@19.2.15)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)):
     optionalDependencies:
       '@types/react': 19.2.15
       react: 19.2.3

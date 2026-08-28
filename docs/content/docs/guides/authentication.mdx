@@ -35,13 +35,13 @@ The store is composed of 2 states and 3 actions:
 Import the store from `@/lib` and use it in any component. Actions can also be called from outside the React tree.
 
 ```tsx
-import { useAuth, hydrate } from '@/lib';
+import { hydrateAuth, useAuth } from '@/lib';
 
-hydrate(); // Call when the app starts to restore the previous session
+hydrateAuth(); // Call when the app starts to restore the previous session
 
 const App = () => {
-  const status = useAuth.use.status();
-  const signOut = useAuth.use.signOut();
+  const status = useAuth((state) => state.status);
+  const signOut = useAuth((state) => state.signOut);
 
   return (
     <View>
@@ -61,8 +61,8 @@ import { useAuth } from '@/lib/auth';
 import { Redirect, Stack } from 'expo-router';
 
 export default function RootLayout() {
-  const status = useAuth.use.status();
-  const token = useAuth.use.token();
+  const status = useAuth((state) => state.status);
+  const token = useAuth((state) => state.token);
 
   // Show splash/loading screen while hydrating
   if (status === 'idle') {
