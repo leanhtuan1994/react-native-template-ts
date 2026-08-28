@@ -1,9 +1,9 @@
 ---
 title: State Management
-description: Complete guide to global state management using Zustand with the selectors pattern in Caracal.
+description: Complete guide to global state management using Zustand selectors in Caracal.
 ---
 
-Caracal uses **Zustand** for global client state management, combined with **React Query** for server state. This guide covers Zustand patterns, the selectors optimization, and MMKV persistence integration.
+Caracal uses **Zustand** for global client state management, combined with **React Query** for server state. This guide covers Zustand selectors and MMKV persistence integration.
 
 ## Overview
 
@@ -39,11 +39,11 @@ Zustand is a small (1KB), fast, and scalable state management solution that does
 
 ## The Selectors Pattern
 
-Caracal uses a **custom selectors pattern** to optimize component re-renders. Instead of subscribing to the entire store, components subscribe only to the specific state slices they need.
+Caracal uses Zustand's native selector API to optimize component re-renders. Instead of subscribing to the entire store, components subscribe only to the specific state slices they need.
 
 ### How It Works
 
-The `createSelectors` utility (in `src/lib/utils.ts`) wraps a Zustand store and auto-generates selector hooks for each state property.
+Pass a selector function directly to the store hook. Zustand subscribes the component to that selected value.
 
 **Without selectors (inefficient):**
 ```tsx
@@ -57,7 +57,7 @@ return <Text>{token?.access}</Text>;
 **With selectors (optimized):**
 ```tsx
 // ✅ Component re-renders ONLY when token changes
-const token = useAuth.use.token();
+const token = useAuth((state) => state.token);
 
 return <Text>{token?.access}</Text>;
 ```
@@ -68,16 +68,52 @@ return <Text>{token?.access}</Text>;
 // Example: 3 components using auth state
 
 // Component A: Only needs token
-const token = useAuth.use.token(); // Re-renders only when token changes
+const token = useAuth((state) => state.token); // Re-renders only when token changes
 
 // Component B: Only needs status
-const status = useAuth.use.status(); // Re-renders only when status changes
+const status = useAuth((state) => state.status); // Re-renders only when status changes
 
 // Component C: Only needs signOut function
-const signOut = useAuth.use.signOut(); // Never re-renders (functions are stable)
+const signOut = useAuth((state) => state.signOut); // Never re-renders (functions are stable)
 ```
 
 Without selectors, all 3 components would re-render on every state change. With selectors, each component re-renders only when its specific data changes.
+
+### Zustand 5 Selector Rules
+
+Zustand 5 compares selector results with `Object.is`. Prefer one primitive, object reference, or action per selector because it gives React the smallest possible subscription and naturally returns a stable value.
+
+When a component needs several fields, separate selectors are the simplest default:
+
+```tsx
+const token = useAuth((state) => state.token);
+const status = useAuth((state) => state.status);
+```
+
+If grouping fields makes the component clearer, wrap the selector with `useShallow`. Without it, a new object or array is created on every call; in Zustand 5 that can cause unnecessary renders or a `Maximum update depth exceeded` loop.
+
+```tsx
+import { useShallow } from 'zustand/react/shallow';
+
+const { token, status } = useAuth(
+  useShallow((state) => ({
+    token: state.token,
+    status: state.status,
+  }))
+);
+```
+
+Derive simple values in selectors instead of duplicating them in the store:
+
+```tsx
+const isSignedIn = useAuth(
+  (state) => state.status === 'signIn' && state.token !== null
+);
+```
+
+<Callout type="warn">
+Never return a fresh object, array, or fallback function from a selector unless you stabilize it. Use separate selectors, `useShallow`, or a constant declared outside the component.
+</Callout>
 
 ## Auth Store Example
 
@@ -117,8 +153,8 @@ hydrate: () => {
 **4. Exported actions:**
 ```typescript
 // Call outside components (e.g., API interceptor)
-export const signOut = () => _useAuth.getState().signOut();
-export const signIn = (token: TokenType) => _useAuth.getState().signIn(token);
+export const signOut = () => useAuth.getState().signOut();
+export const signIn = (token: TokenType) => useAuth.getState().signIn(token);
 ```
 
 ### Using the Auth Store
@@ -128,9 +164,9 @@ export const signIn = (token: TokenType) => _useAuth.getState().signIn(token);
 import { useAuth } from '@/lib/auth';
 
 export function ProfileScreen() {
-  const token = useAuth.use.token();
-  const status = useAuth.use.status();
-  const signOut = useAuth.use.signOut();
+  const token = useAuth((state) => state.token);
+  const status = useAuth((state) => state.status);
+  const signOut = useAuth((state) => state.signOut);
 
   if (status === 'idle') {
     return <LoadingSpinner />;
@@ -180,7 +216,7 @@ The storage utilities live in `src/lib/storage.tsx`.
 ```tsx
 import { getItem, setItem } from '@/lib/storage';
 
-const useStore = create<State>((set) => ({
+const useStore = create<State>()((set) => ({
   data: null,
   setData: (data) => {
     setItem('my-data', data);  // Save to MMKV
@@ -204,7 +240,7 @@ type State = {
   setTheme: (theme: 'light' | 'dark') => void;
 };
 
-const _useSettings = create<State>()(
+export const useSettings = create<State>()(
   persist(
     (set) => ({
       theme: 'light',
@@ -227,8 +263,6 @@ const _useSettings = create<State>()(
     }
   )
 );
-
-export const useSettings = createSelectors(_useSettings);
 ```
 
 ## Creating Custom Stores
@@ -258,7 +292,6 @@ export interface PreferencesState {
 ```tsx
 // src/lib/preferences/index.tsx
 import { create } from 'zustand';
-import { createSelectors } from '@/lib/utils';
 import { getItem, setItem, removeItem } from '@/lib/storage';
 import type { PreferencesState, Theme, Language } from './types';
 
@@ -270,7 +303,7 @@ const initialState = {
   notifications: true,
 };
 
-const _usePreferences = create<PreferencesState>((set, get) => ({
+export const usePreferences = create<PreferencesState>()((set, get) => ({
   ...initialState,
 
   setTheme: (theme) => {
@@ -304,18 +337,16 @@ const _usePreferences = create<PreferencesState>((set, get) => ({
 // Hydrate from storage on app start
 const stored = getItem<PreferencesState>(STORAGE_KEY);
 if (stored) {
-  _usePreferences.setState(stored);
+  usePreferences.setState(stored);
 }
-
-export const usePreferences = createSelectors(_usePreferences);
 
 // Export actions for use outside components
 export const setTheme = (theme: Theme) =>
-  _usePreferences.getState().setTheme(theme);
+  usePreferences.getState().setTheme(theme);
 export const setLanguage = (language: Language) =>
-  _usePreferences.getState().setLanguage(language);
+  usePreferences.getState().setLanguage(language);
 export const resetPreferences = () =>
-  _usePreferences.getState().reset();
+  usePreferences.getState().reset();
 ```
 
 ### 3. Use in Components
@@ -324,10 +355,10 @@ export const resetPreferences = () =>
 import { usePreferences } from '@/lib/preferences';
 
 export function SettingsScreen() {
-  const theme = usePreferences.use.theme();
-  const language = usePreferences.use.language();
-  const setTheme = usePreferences.use.setTheme();
-  const setLanguage = usePreferences.use.setLanguage();
+  const theme = usePreferences((state) => state.theme);
+  const language = usePreferences((state) => state.language);
+  const setTheme = usePreferences((state) => state.setTheme);
+  const setLanguage = usePreferences((state) => state.setLanguage);
 
   return (
     <View>
@@ -411,30 +442,33 @@ const { data: isModalOpen } = useQuery(['modal'], () => false);
 
 ## Advanced Patterns
 
-### 1. Computed Values
+### 1. Derived Selectors
 
 ```tsx
-const _useCart = create<CartState>((set, get) => ({
+interface CartState {
+  items: CartItem[];
+  addItem: (item: CartItem) => void;
+  removeItem: (id: string) => void;
+}
+
+export const useCart = create<CartState>()((set) => ({
   items: [],
 
-  addItem: (item) => set({ items: [...get().items, item] }),
-
-  removeItem: (id) => set({
-    items: get().items.filter(item => item.id !== id)
-  }),
-
-  // Computed values as getters
-  get total() {
-    return get().items.reduce((sum, item) => sum + item.price, 0);
-  },
-
-  get itemCount() {
-    return get().items.length;
-  },
+  addItem: (item) =>
+    set((state) => ({ items: [...state.items, item] })),
+  removeItem: (id) =>
+    set((state) => ({
+      items: state.items.filter((item) => item.id !== id),
+    })),
 }));
 
-export const useCart = createSelectors(_useCart);
+const selectTotal = (state: CartState) =>
+  state.items.reduce((sum, item) => sum + item.price, 0);
+
+const total = useCart(selectTotal);
 ```
+
+Selectors keep derived values synchronized without storing duplicate state. Define expensive reusable selectors outside components so the selector function itself is stable.
 
 ### 2. Middleware for Logging
 
@@ -462,7 +496,7 @@ const initialState = {
   text: '',
 };
 
-const _useStore = create<State>((set) => ({
+const _useStore = create<State>()((set) => ({
   ...initialState,
 
   increment: () => set((state) => ({ count: state.count + 1 })),
@@ -475,7 +509,7 @@ const _useStore = create<State>((set) => ({
 ### 4. Async Actions
 
 ```tsx
-const _useStore = create<State>((set) => ({
+const _useStore = create<State>()((set) => ({
   data: null,
   loading: false,
   error: null,
@@ -498,22 +532,36 @@ While Zustand can handle async actions, React Query is better suited for server 
 
 ### 5. Subscribing to Changes
 
+Use `subscribeWithSelector` for selective subscriptions outside React. This is useful for high-frequency events, analytics, or imperative integrations that should not re-render a component.
+
 ```tsx
-import { useEffect } from 'react';
+import { create } from 'zustand';
+import { subscribeWithSelector } from 'zustand/middleware';
 
-// Subscribe to specific state changes
-useEffect(() => {
-  const unsubscribe = useAuth.subscribe(
-    (state) => state.token,
-    (token) => {
-      console.log('Token changed:', token);
-      // Update API headers, trigger analytics, etc.
-    }
-  );
+interface PositionState {
+  x: number;
+  setX: (x: number) => void;
+}
 
-  return unsubscribe;
-}, []);
+const usePosition = create<PositionState>()(
+  subscribeWithSelector((set) => ({
+    x: 0,
+    setX: (x) => set({ x }),
+  }))
+);
+
+const unsubscribe = usePosition.subscribe(
+  (state) => state.x,
+  (x) => {
+    updateNativeView(x);
+  }
+);
+
+// Call when the integration is disposed.
+unsubscribe();
 ```
+
+For React UI, keep using the store hook with a selector. Subscriptions are an escape hatch, not a replacement for reactive rendering.
 
 ## Best Practices
 
@@ -529,22 +577,32 @@ const usePrefs = create(...);     // Preferences only
 const useGlobalStore = create(...); // Everything in one store
 ```
 
-### 2. Use Selectors Pattern
+### 2. Use Focused Selectors
 
 ```tsx
 // ✅ Good: Selective subscriptions
-const token = useAuth.use.token();
-const status = useAuth.use.status();
+const token = useAuth((state) => state.token);
+const status = useAuth((state) => state.status);
 
 // ❌ Bad: Full store subscription
 const { token, status, signIn, signOut } = useAuth();
 ```
 
+Performance checklist:
+
+- Select only values the component renders.
+- Prefer separate selectors for unrelated fields.
+- Use `useShallow` when returning an object or array of multiple fields.
+- Keep selector outputs stable; do not create fallback functions inline.
+- Derive values in selectors instead of storing synchronized duplicates.
+- Use `getState()` only outside render logic where no reactive subscription is needed.
+- Use `subscribeWithSelector` only for high-frequency imperative work.
+
 ### 3. Export Actions
 
 ```tsx
 // ✅ Good: Actions available outside components
-export const signOut = () => _useAuth.getState().signOut();
+export const signOut = () => useAuth.getState().signOut();
 
 // Usage in API interceptor
 if (error.status === 401) {
@@ -561,7 +619,7 @@ interface State {
   increment: () => void;
 }
 
-const useStore = create<State>((set) => ({
+const useStore = create<State>()((set) => ({
   count: 0,
   increment: () => set((s) => ({ count: s.count + 1 })),
 }));
@@ -608,14 +666,16 @@ describe('Preferences Store', () => {
   });
 
   it('should set theme', () => {
-    const { result } = renderHook(() => usePreferences.use.setTheme());
+    const { result } = renderHook(() =>
+      usePreferences((state) => state.setTheme)
+    );
 
     act(() => {
       result.current('dark');
     });
 
     const { result: themeResult } = renderHook(() =>
-      usePreferences.use.theme()
+      usePreferences((state) => state.theme)
     );
 
     expect(themeResult.current).toBe('dark');
@@ -623,10 +683,10 @@ describe('Preferences Store', () => {
 
   it('should toggle notifications', () => {
     const { result: toggle } = renderHook(() =>
-      usePreferences.use.toggleNotifications()
+      usePreferences((state) => state.toggleNotifications)
     );
     const { result: notifications } = renderHook(() =>
-      usePreferences.use.notifications()
+      usePreferences((state) => state.notifications)
     );
 
     expect(notifications.current).toBe(true); // initial
@@ -646,7 +706,7 @@ describe('Preferences Store', () => {
 
 ```tsx
 // ✅ Correct
-const token = useAuth.use.token();
+const token = useAuth((state) => state.token);
 
 // ❌ Wrong: accessing property directly — no subscription
 const token = useAuth.getState().token;
@@ -659,7 +719,7 @@ const token = useAuth.getState().token;
 const store = useAuth();
 
 // ✅ Good: subscribes only to token
-const token = useAuth.use.token();
+const token = useAuth((state) => state.token);
 ```
 
 ### Persisted State Not Loading
@@ -677,8 +737,8 @@ useEffect(() => {
 ### TypeScript Errors with Selectors
 
 ```tsx
-const _useStore = create<State>(...);
-export const useStore = createSelectors(_useStore); // Don't forget this!
+const useStore = create<State>()(...);
+const value = useStore((state) => state.value);
 ```
 
 ### Actions Not Updating State
@@ -695,7 +755,10 @@ increment: () => {
 
 ## Additional Resources
 
-- [Zustand Documentation](https://docs.pmnd.rs/zustand/getting-started/introduction)
+- [Zustand Documentation](https://zustand.docs.pmnd.rs/)
+- [Prevent re-renders with `useShallow`](https://zustand.docs.pmnd.rs/learn/guides/prevent-rerenders-with-use-shallow)
+- [Zustand 5 migration guide](https://zustand.docs.pmnd.rs/reference/migrations/migrating-to-v5)
+- [Zustand TypeScript guide](https://zustand.docs.pmnd.rs/learn/guides/advanced-typescript)
 - [Zustand DevTools](https://github.com/pmndrs/zustand#devtools)
 - [MMKV Documentation](https://github.com/mrousavy/react-native-mmkv)
 - [React Query Documentation](https://tanstack.com/query/latest/docs/react/overview)
@@ -705,11 +768,13 @@ increment: () => {
 ## Summary
 
 1. **Use Zustand for client state**, React Query for server state
-2. **Always use the selectors pattern** with `createSelectors` for performance
-3. **Persist important state** with MMKV integration
-4. **Export actions** for use outside components (API interceptors, utils)
-5. **Keep stores focused** — single responsibility principle
-6. **Hydrate on app start** to restore persisted state
-7. **Type everything** for safety and autocomplete
+2. **Use focused, stable selector functions** for performance
+3. **Use `useShallow`** when one selector returns multiple fields
+4. **Derive values with selectors** instead of duplicating state
+5. **Persist important state** with MMKV integration
+6. **Export actions** for use outside components (API interceptors, utils)
+7. **Keep stores focused** — single responsibility principle
+8. **Hydrate on app start** to restore persisted state
+9. **Type everything** for safety and autocomplete
 
 The auth store (`src/lib/auth/index.tsx`) serves as a complete example demonstrating all these patterns in production.

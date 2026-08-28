@@ -192,9 +192,9 @@ type AuthState = {
   hydrate: () => void;
 };
 
-// Usage with selectors pattern
-const token = useAuth.use.token();
-const signIn = useAuth.use.signIn();
+// Subscribe only to the state each component needs
+const token = useAuth((state) => state.token);
+const signIn = useAuth((state) => state.signIn);
 ```
 
 See [Authentication guide](/docs/guides/authentication) for details.
@@ -251,7 +251,7 @@ See [Environment Variables guide](/docs/getting-started/environment-vars-config)
 #### `lib/utils.ts` - General Utilities
 
 Shared utilities including:
-- `createSelectors` - Zustand selectors pattern for performance
+- `openLinkInBrowser` - Safely opens supported URLs
 - Other helper functions
 
 ### `src/translations/` - Translation Resources

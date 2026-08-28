@@ -444,8 +444,8 @@ import { useAuth } from '@/lib/auth';
 import { Redirect, Stack } from 'expo-router';
 
 export default function RootLayout() {
-  const status = useAuth.use.status();
-  const token = useAuth.use.token();
+  const status = useAuth((state) => state.status);
+  const token = useAuth((state) => state.token);
 
   // Show splash while checking auth
   if (status === 'idle') {
