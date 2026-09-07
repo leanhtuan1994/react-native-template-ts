@@ -5,10 +5,9 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "cross-env EXPO_NO_DOTENV=1 expo start",
-    "generate:app-icon-badges": "cross-env EXPO_NO_DOTENV=1 node scripts/generate-app-icon-badges.js",
-    "prebuild": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 pnpm expo prebuild",
-    "android": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 expo run:android",
-    "ios": "pnpm run generate:app-icon-badges && cross-env EXPO_NO_DOTENV=1 expo run:ios",
+    "prebuild": "cross-env EXPO_NO_DOTENV=1 pnpm expo prebuild",
+    "android": "cross-env EXPO_NO_DOTENV=1 expo run:android",
+    "ios": "cross-env EXPO_NO_DOTENV=1 expo run:ios",
     "web": "cross-env EXPO_NO_DOTENV=1 expo start --web",
     "xcode": "xed -b ios",
     "doctor": "npx expo-doctor@latest",
@@ -40,8 +39,7 @@
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
     "e2e-test": "maestro test .maestro/ -e APP_ID=com.caracal.development",
-    "brand:assets": "node scripts/render-brand-assets.mjs",
-    "postinstall": "pnpm run generate:app-icon-badges"
+    "brand:assets": "node scripts/render-brand-assets.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -52,7 +50,6 @@
     "@hookform/resolvers": "^3.9.0",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "^5.52.1",
-    "app-icon-badge": "^0.1.2",
     "axios": "^1.16.1",
     "expo": "57.0.17",
     "expo-blur": "~57.0.2",
@@ -144,11 +141,6 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "app-icon-badge@0.1.2": "patches/app-icon-badge@0.1.2.patch"
-    }
   },
   "repository": {
     "type": "git",
