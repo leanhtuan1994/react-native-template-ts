@@ -1,37 +1,30 @@
 <p align="center">
-    <img alt="React Native Template Caracal" src="https://user-images.githubusercontent.com/11137944/93101697-808bc580-f6a2-11ea-8ce3-482be6ca456a.png" width="200" />
-
+    <img alt="React Native Template Caracal" src="https://raw.githubusercontent.com/leanhtuan1994/react-native-caracal/main/assets/icon.png" width="200" />
 </p>
+
 <h1 align="center">
   React Native Template Caracal
 </h1>
 
-![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/expo?label=expo) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-caracal) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-caracal) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-caracal) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-caracal)
+![expo](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/expo?label=expo) ![react-native](https://img.shields.io/github/package-json/dependency-version/leanhtuan1994/react-native-caracal/react-native?label=react-native) ![GitHub Repo stars](https://img.shields.io/github/stars/leanhtuan1994/react-native-caracal) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/leanhtuan1994/react-native-caracal) ![GitHub issues](https://img.shields.io/github/issues/leanhtuan1994/react-native-caracal) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/leanhtuan1994/react-native-caracal)
 
-📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo,TypeScript,tailwindcss, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
+📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo, TypeScript, TailwindCSS, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
 
-# 🚀 Quick start
+> Welcome to the Caracal's Expo / React Native Starter Kit!
+
+## 🚀 Quick start
 
 ```sh
 npx create-caracal-app@latest MyApp
-
 ```
-
-# Overview
-
-As a team of experienced developers at Caracal, we have spent years refining our approach to building high-quality React Native applications. Our starter kit is based on the best practices and tools that we have found to be most effective in our own projects.
-
-This starter kit has been thoroughly tested and proven successful in multiple projects over the past four years. It is regularly used by our team on a daily basis and has helped us deliver great results for our clients.
-
-While our starter kit is heavily influenced by our own opinions and experiences, we have carefully selected the included solutions to address common challenges and meet the needs of the majority of use cases. We believe it offers a streamlined and efficient approach to building React Native apps, and we are confident that it can help others achieve their project goals as well.
 
 ## 🚀 Motivation
 
-Our goal with this starter kit was to streamline the process of building React Native apps, both for our own team and for our clients. We wanted to create a resource that would allow us to create high-quality apps faster and with less effort, while ensuring that all of our projects adhere to the same code standards and architectural principles.
+The goal of this starter kit is to streamline the process of building React Native apps. It provides a resource for creating high-quality apps faster and with less effort, while ensuring projects adhere to consistent code standards and architectural principles.
 
-The benefits of using this starter kit are numerous. It helps our team easily switch between projects, as we can rely on a consistent foundation of code. It also allows us to focus on the business logic of each project rather than getting bogged down in boilerplate code. And, because it promotes consistency across projects, it makes it easier to maintain and scale our apps, as well as share code between teams.
+The benefits of using this starter kit are numerous. It provides a consistent foundation that makes it easy to switch between projects and focus on business logic rather than boilerplate code. Because it promotes consistency, it makes apps easier to maintain and scale.
 
-Overall, our starter kit is designed to facilitate efficient and effective app development, helping us to bring the best possible products to our clients
+Overall, this starter kit is designed to facilitate efficient and effective app development, helping you bring the best possible products to your users.
 
 ## ✍️ Philosophy
 
@@ -42,60 +35,62 @@ When creating this starter kit, we had several guiding principles in mind::
 - **🧩 Minimal code and dependencies**: We aimed to keep the codebase and dependencies as small as possible.
 - **💪 Well-maintained third-party libraries**: We included only well-maintained and reliable third-party libraries, to provide stability and support for our projects.
 
-## ⭐ key Features
+## ⭐ Key Features
 
-- ✅ The latest version of Expo SDK, along with the Custom Dev client, to give you access to a range of powerful features and tools.
-- 🎉 [TypeScript](https://www.typescriptlang.org/) for type checking, to help you catch bugs and improve code quality.
-- 💅 A minimal UI kit built with [tailwindcss](https://docs.uniwind.dev/), which provides a range of pre-defined classes for styling your app.
-- ⚙️ Support for multiple environment builds, including Production, Staging, and Development, using Expo configuration.
-- 🦊 Husky for Git Hooks, to automate your git hooks and enforce code standards.
-- 💡 A clean project structure with Absolute Imports, to make it easier to navigate and manage your code.
-- 🚫 Lint-staged for running linters and TypeScript checks on Git staged files, to ensure that your code is always up to standards.
-- 🗂 VSCode recommended extensions, settings, and snippets to enhance the developer experience.
-- ☂️ Pre-installed [Expo Router](https://docs.expo.dev/router/introduction/) with examples, to provide a comprehensive navigation solution for your app.
-- 💫 An auth flow with [zustand](https://github.com/pmndrs/zustand) and [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) as a storage solution to save sensitive data.
-- 🛠 A simple workflow for building, releasing, and distributing your app using [Github action](https://github.com/features/actions).
-- 🔥 [React Query](https://react-query.tanstack.com/) & [axios](https://github.com/axios/axios) and [axios](https://github.com/axios/axios) for fetching data, to help you build efficient and performant apps.
-- 🧵 A good approach for handling forms with [react-hook-form](https://react-hook-form.com/) and [zod](https://github.com/colinhacks/zod) for validation + keyboard handling.
-- 🎯 Localization with [i18next](https://www.i18next.com/) , along with Eslint for validation.
+- ✅ Latest Expo SDK with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
+- 🎉 [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
+- 💅 Minimal UI kit built with [TailwindCSS](https://docs.uniwind.dev/), featuring common components essential for your app.
+- ⚙️ Multi-environment build support (Production, Staging, Development) using Expo configuration.
+- 🦊 Husky for Git Hooks: Automate your git hooks and enforce code standards.
+- 💡 Clean project structure with Absolute Imports for easier code navigation and management.
+- 🚫 Lint-staged: Run Eslint and TypeScript checks on Git staged files to maintain code quality.
+- 🗂 VSCode recommended extensions, settings, and snippets for an enhanced developer experience.
+- ☂️ Pre-installed [Expo Router](https://docs.expo.dev/router/introduction/) with examples for comprehensive app navigation.
+- 💫 Auth flow implementation using [Zustand](https://github.com/pmndrs/zustand) for state management and [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) for secure data storage.
+- 🛠 10+ [Github Actions](https://github.com/features/actions) workflows for building, releasing, testing, and distributing your app.
+- 🔥 [React Query](https://react-query.tanstack.com/) and [axios](https://github.com/axios/axios) for efficient data fetching and state management.
+- 🧵 Robust form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://github.com/colinhacks/zod) for validation, plus keyboard handling.
+- 🎯 Localization support with [i18next](https://www.i18next.com/), including Eslint for validation.
+- 🧪 Unit testing setup with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
+- 🔍 E2E testing capabilities with [Maestro](https://maestro.mobile.dev/) for comprehensive app testing.
 
-## ✍️ Documentation
+## Is this starter for me?
 
-- [Create new project ](https://react-native-template-atlas.vercel.app/docs/getting-started/create-new-app)
-- [Rules and Conventions](https://react-native-template-atlas.vercel.app/docs/getting-started/rules-and-convetions)
-- [Project structure](https://react-native-template-atlas.vercel.app/docs/getting-started/project-structure)
-- [Environment vars and config](https://react-native-template-atlas.vercel.app/docs/getting-started/environment-vars-config)
-- [UI and Theming](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/ui-theming)
-- [Components](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/components)
-- [Forms](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/Forms)
-- [Data fetching](https://react-native-template-atlas.vercel.app/docs/guides/data-fetching)
-- [Contribute to starter](https://react-native-template-atlas.vercel.app/docs/contribute)
+Yes 😀
 
-## 😉 Why Expo?
+This starter kit is designed to benefit a wide range of React Native developers, from beginners to experienced professionals. Here's why it might be a good fit for you:
 
-Expo is a powerful tool for building React Native apps, offering a range of features and benefits that can help developers create high-quality apps more efficiently. One question we often receive from the community is why we choose to use Expo instead of the React Native CLI.
+1. **For beginners:** It provides a solid foundation with best practices and common solutions, helping you learn industry-standard approaches to React Native development.
 
-In the past, our team used the React Native CLI for our starter kit. However, we found that using Expo presented several advantages. In particular, the introduction of the Custom dev client feature allowed us to take advantage of the Expo ecosystem and utilize native libraries without the need for ejecting the app. This has greatly simplified our development process and enabled us to focus on the business logic of our projects.
+2. **For experienced developers:** It offers a well-structured, production-ready setup that can save you time and effort in project initialization and configuration.
 
-Additionally, we have found that using Expo has made it easier to upgrade our apps to new versions, eliminating the issues we previously encountered when using the React Native CLI.
+3. **For teams:** It ensures consistency across projects and team members, making it easier to onboard new developers and maintain code quality.
 
-Overall, we believe that Expo offers numerous benefits for building React Native apps and is a valuable tool for any developer. The real question may be, **why not use Expo?**
+4. **For explorers:** Even if you prefer not to use starter kits, this project can serve as a valuable reference. You can explore the codebase, documentation, and architectural decisions to gain insights and potentially adopt specific solutions for your projects.
 
-## 🤔 Is this starter for you?
+5. **For learners:** The starter kit incorporates up-to-date libraries and patterns, allowing you to familiarize yourself with current best practices in the React Native ecosystem.
 
-If you are planning to build a React Native app and are looking for a strong foundation, well-designed architecture, and a positive developer experience, then this starter kit is an excellent resource to consider. It offers a comprehensive set of best practices and tools that have been tested and proven effective in multiple projects.
+6. **For AI-assisted development:** This starter kit works well with AI coding tools. It provides a solid structure and best practices that can guide AI-generated code. This helps ensure that AI assistance leads to high-quality, maintainable code that fits well within your project.
 
-Even if you are not sure that using a starter kit is the right choice for your project, you can still benefit from this resource. You can explore the starter kit and draw inspiration from the solutions it provides for common challenges faced by React Native developers. This can be a helpful way to discover good practices and find effective solutions for your own app development process.
+Remember, you don't have to use the entire starter kit as-is. Feel free to cherry-pick ideas, configurations, or code snippets that align with your project needs. Whether you're building a new app from scratch or looking to improve your existing development process, this starter kit can provide valuable insights and practical solutions.
 
-Overall, whether you choose to use this starter kit as is or simply take some ideas from it, we believe it offers valuable insights and resources for anyone looking to build a high-quality React Native app.
+## Why Expo and not React Native CLI?
+
+We have been using Expo as our main framework since the introduction of [Continuous Native Generation (CNG)](https://docs.expo.dev/workflow/continuous-native-generation/) concept and we are happy with the experience.
+
+I think this question is not valid anymore, especially after the last React conference when the core React native team recommended using Expo for new projects.
+
+> "As of today, the only recommended community framework for React Native is Expo. Folks at Expo have been investing in the React Native ecosystem since the early days of React Native and as of today, we believe the developer experience offered by Expo is best in class." React native core team
+
+Still hesitating? Check out this [article](https://reactnative.dev/blog/2024/06/25/use-a-framework-to-build-react-native-apps) or this [video](https://www.youtube.com/watch?v=lifGTznLBcw), maybe this one [video](https://www.youtube.com/watch?v=ek_IdGC0G80) too.
 
 ## 🧑‍💻 Stay up to date
 
-We are committed to continually improving our starter kit and providing the best possible resources for building React Native apps. To that end, we regularly add new features and fix any bugs that are discovered.
+This starter kit is continually improved with new features and bug fixes.
 
-If you want to stay up to date with the latest developments in our starter kit, you can either watch the repository or hit the "star" button. This will allow you to receive notifications whenever new updates are available.
+If you want to stay up to date with the latest developments, you can either watch the repository or hit the "star" button. This will allow you to receive notifications whenever new updates are available.
 
-We value the feedback and contributions of our users, and we encourage you to let us know if you have any suggestions for improving our starter kit. We are always looking for ways to make it even more effective and useful for our community. So, please do not hesitate to reach out and share your thoughts with us.
+Feedback and suggestions are always welcome. Feel free to open an issue or discussion to share your thoughts.
 
 <!-- add a gif image here  -->
 
@@ -104,6 +99,7 @@ We value the feedback and contributions of our users, and we encourage you to le
 - [Expo](https://docs.expo.io/)
 - [Expo Router](https://docs.expo.dev/router/introduction/)
 - [Uniwind](https://docs.uniwind.dev/)
+- [HeroUI Native](https://v3.heroui.com/docs/native/getting-started)
 - [Flash list](https://github.com/Shopify/flash-list)
 - [React Query](https://tanstack.com/query/v4)
 - [Axios](https://axios-http.com/docs/intro)
@@ -114,25 +110,59 @@ We value the feedback and contributions of our users, and we encourage you to le
 - [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/)
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/)
 - [React Native Svg](https://github.com/software-mansion/react-native-svg)
-- [ React Error Boundaries](https://github.com/bvaughn/react-error-boundary)
+- [React Error Boundaries](https://github.com/bvaughn/react-error-boundary)
 - [Expo Image](https://docs.expo.dev/versions/unversioned/sdk/image/)
+- [React Native Keyboard Controller](https://github.com/kirillzyusko/react-native-keyboard-controller)
+- [React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)
+- [React Native Screens](https://github.com/software-mansion/react-native-screens)
+- [Tailwind Variants](https://www.tailwind-variants.org/)
+- [Zod](https://zod.dev/)
 
-## Contributors
+## ⚡ Build Configuration
 
-This starter is maintained by [Caracal mobile tribe team](https://leanhtuan1994.github.io/team) and we welcome new contributors to join us in improving it. If you are interested in getting involved in the project, please don't hesitate to open an issue or submit a pull request.
+Caracal is tuned for build throughput out of the box:
 
-In addition to maintaining this starter kit, we are also available to work on custom projects and help you build your dream app. If you are looking for experienced and reliable developers to bring your app vision to life, please visit our website at [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact) to get in touch with us. We would be happy to discuss your project in more detail and explore how we can help you achieve your goals.
+- **Prebuilt React Native.** `buildReactNativeFromSource` is off, so the RN C++ core
+  and Hermes are not recompiled on every build.
+- **Gradle daemon, parallel builds and build cache**, via the
+  `plugins/with-gradle-performance.js` config plugin. The daemon is disabled
+  automatically on EAS, where a throwaway container gains nothing from it.
+- **arm64-only development builds.** Release builds also include `armeabi-v7a`
+  for legacy 32-bit handsets.
 
-## 🔥 How to contribute?
+**Note on Intel Macs:** development builds target `arm64-v8a` only, so an
+x86/x86_64 Android emulator will not install them. On an Intel machine, add
+`'x86_64'` to `android.buildArchs` in `app.config.ts` and re-run `pnpm prebuild`.
 
-Thank you for your interest in contributing to our project. Your involvement is greatly appreciated and we welcome your contributions. Here are some ways you can help us improve this project:
+Fonts and icons are imported by subpath rather than through the package barrel,
+which keeps unused weights and icon families out of the native build. An ESLint
+rule enforces this — see the [Fonts docs](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/fonts).
 
-1. Show your support for the project by giving it a 🌟 on Github. This helps us increase visibility and attract more contributors.
-2. Share your thoughts and ideas with us by opening an issue. If you have any suggestions or feedback about any aspect of the project, we are always eager to hear from you and have a discussion.
-3. If you have any questions about the project, please don't hesitate to ask. Simply open an issue and our team will do our best to provide a helpful and informative response.
-4. If you encounter a bug or typo while using the starter kit or reading the documentation, we would be grateful if you could bring it to our attention. You can open an issue to report the issue, or even better, submit a pull request with a fix.
+## AI Configuration
 
-We value the input and contributions of our community and look forward to working with you to improve this project.
+This repository includes a root `llms.txt` file that defines canonical documentation for AI tools.
+
+## 📚 Documentation
+
+Full documentation is available at [react-native-template-atlas.vercel.app](https://react-native-template-atlas.vercel.app) (deployed on Vercel from the `docs/` directory).
+
+To run the docs locally:
+
+```bash
+cd docs
+pnpm install --ignore-workspace
+pnpm dev
+```
+
+## 👤 Maintainer
+
+This starter is maintained by [Tuan Anh Le](https://leanhtuan1994.github.io/team).
+
+For custom projects and consulting, visit [leanhtuan1994.github.io/contact](https://leanhtuan1994.github.io/contact).
+
+## 🙏 Credits
+
+Caracal is built on the [Obytes React Native starter](https://github.com/obytes/react-native-template-obytes), used under the MIT License. Thanks to the Obytes team for the foundation.
 
 ## ❓ FAQ
 
